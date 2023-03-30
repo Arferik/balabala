@@ -22,11 +22,33 @@ export const postRouter = createTRPCRouter({
   }),
   post20Latest: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.post.findMany({
+      select: {
+        title: true,
+        id: true,
+        release_date: true,
+        introduction: true,
+        cover: {
+          select: {
+            url: true,
+            name: true,
+          },
+        },
+        PostOnTag: {
+          select: {
+            tag: {
+              select: {
+                name: true,
+                icon: true,
+              },
+            },
+          },
+        },
+      },
       where: {
-        discoverable: true,
+        is_release: true,
       },
       orderBy: {
-        publish_date: "desc",
+        release_date: "desc",
       },
       take: 20,
     });
@@ -50,7 +72,7 @@ export const postRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       const posts = ctx.prisma.post.findMany({
         orderBy: {
-          publish_date: "desc",
+          release_date: "desc",
         },
         skip: (input.number - 1) * input.size,
         take: input.size,
@@ -77,7 +99,7 @@ export const postRouter = createTRPCRouter({
           data: {
             title: input.title,
             content: input.content,
-            discoverable: false,
+            is_release: false,
           },
           where: {
             id: input.id,
@@ -91,7 +113,7 @@ export const postRouter = createTRPCRouter({
         data: {
           title: input.title,
           content: input.content,
-          description: "",
+          introduction: "",
         },
         select: {
           id: true,

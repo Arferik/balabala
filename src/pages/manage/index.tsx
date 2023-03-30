@@ -38,7 +38,7 @@ const Manage: NextPage = () => {
       title: "是否发布",
       dataIndex: "discoverable",
       key: "discoverable",
-      render: (record: Post) => (record.discoverable ? "是" : "否"),
+      render: (record: Post) => (record.is_release ? "是" : "否"),
     },
     {
       title: "操作",
