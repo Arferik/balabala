@@ -33,17 +33,7 @@ export const Layout = ({
     <div tw="absolute flex left-0 right-0 bottom-0 top-0 flex-col">
       {!hiddenTopFooter && <TopAppBar></TopAppBar>}
       <section tw="bg-background flex-1 pb-20 box-border">{children}</section>
-      {!hiddenTopFooter && (
-        <Footer
-          footers={[
-            {
-              name: "关于",
-              icon: "github",
-              url: "dss",
-            },
-          ]}
-        />
-      )}
+      {!hiddenTopFooter && <Footer />}
       <BackToTopBtn />
       <Snackbar />
     </div>
