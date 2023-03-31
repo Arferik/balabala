@@ -71,7 +71,7 @@ model VerificationToken {
 model Post {
     id           String       @id @default(cuid())
     title        String
-    introduction String?      @default("")
+    introduce    String?      @default("")
     is_release   Boolean      @default(false)
     content      String       @db.Text
     release_date DateTime?    @default(now())
@@ -95,13 +95,25 @@ model Image {
 }
 
 model Config {
-    id     String @id @default(cuid())
-    key    String @unique
-    value  String @db.Text
-    User   User?  @relation(fields: [userId], references: [id])
-    userId String @map("user_id")
+    id             String  @id @default(cuid())
+    blog_title     String  @unique
+    blog_introduce String  @db.Text
+    User           User?   @relation(fields: [userId], references: [id])
+    userId         String  @map("user_id")
+    socals         Socal[]
 
     @@map("t_bl_config")
+}
+
+model Socal {
+    id       String  @id @default(cuid())
+    icon     String?
+    name     String?
+    url      String?
+    Config   Config? @relation(fields: [configId], references: [id])
+    configId String? @map("config_id")
+
+    @@map("t_bl_home_config")
 }
 
 model Tag {
