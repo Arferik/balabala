@@ -22,6 +22,19 @@ export const configRouter = createTRPCRouter({
       where: {
         userId: users[0]?.id,
       },
+      select: {
+        blog_introduce: true,
+        blog_title: true,
+        slogan: true,
+        socials: {
+          select: {
+            name: true,
+            url: true,
+            icon: true,
+            id: true,
+          },
+        },
+      },
     });
   }),
 });

@@ -26,7 +26,7 @@ export const postRouter = createTRPCRouter({
         title: true,
         id: true,
         release_date: true,
-        introduction: true,
+        introduce: true,
         cover: {
           select: {
             url: true,
@@ -113,7 +113,7 @@ export const postRouter = createTRPCRouter({
         data: {
           title: input.title,
           content: input.content,
-          introduction: "",
+          introduce: "",
         },
         select: {
           id: true,
