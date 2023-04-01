@@ -16,19 +16,20 @@ datasource db {
 
 // Necessary for Next auth
 model Account {
-    id                String  @id @default(cuid())
-    userId            String
-    type              String
-    provider          String
-    providerAccountId String
-    refresh_token     String? @db.Text
-    access_token      String? @db.Text
-    expires_at        Int?
-    token_type        String?
-    scope             String?
-    id_token          String? @db.Text
-    session_state     String?
-    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    id                       String  @id @default(cuid())
+    userId                   String  @map("user_id")
+    type                     String
+    provider                 String
+    providerAccountId        String  @map("provider_account_id")
+    refresh_token            String? @db.Text
+    refresh_token_expires_in Int? // github refresh_token_expires_in
+    access_token             String? @db.Text
+    expires_at               Int?
+    token_type               String?
+    scope                    String?
+    id_token                 String? @db.Text
+    session_state            String?
+    user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
     @@map("t_bl_account")
@@ -47,14 +48,11 @@ model Session {
 model User {
     id            String    @id @default(cuid())
     name          String?
-    password      String?
     email         String?   @unique
+    image         String
     emailVerified DateTime? @map("email_verified")
-    image         Image?    @relation(fields: [imageId], references: [id])
     accounts      Account[]
     sessions      Session[]
-    imageId       String?   @map("image_id")
-    config        Config[]
 
     @@map("t_bl_user")
 }
@@ -89,7 +87,6 @@ model Image {
     name String
     url  String
     Post Post[]
-    User User[]
 
     @@map("t_bl_image")
 }
@@ -99,8 +96,6 @@ model Config {
     blog_title     String   @unique
     blog_introduce String   @db.Text
     slogan         String?
-    User           User?    @relation(fields: [userId], references: [id])
-    userId         String   @map("user_id")
     socials        Social[]
 
     @@map("t_bl_config")
@@ -108,13 +103,12 @@ model Config {
 
 model Social {
     id       String  @id @default(cuid())
-    icon     String?
-    name     String?
+    name     String? @unique
     url      String?
     Config   Config? @relation(fields: [configId], references: [id])
     configId String? @map("config_id")
 
-    @@map("t_bl_home_config")
+    @@map("t_bl_social")
 }
 
 model Tag {

@@ -1,49 +1,15 @@
-import { type NextPage } from "next";
+import { type InferGetServerSidePropsType, type NextPage } from "next";
 import Head from "next/head";
 import "twin.macro";
-import { Button, Card, Icon, Input, Layout } from "~/components";
-import { useForm, type SubmitHandler } from "react-hook-form";
-import { getCsrfToken, signIn } from "next-auth/react";
+import { Button, Layout } from "~/components";
+import { getProviders, signIn } from "next-auth/react";
 import type { GetServerSidePropsContext } from "next";
-import { type LoginForm } from "types/login-input.types";
-import { useRouter } from "next/router";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { getServerSession } from "next-auth";
+import { authOptions } from "~/server/auth";
 
-const schema = z
-  .object({
-    username: z.string().min(3).max(20),
-    password: z.string().min(6).max(20),
-    csrfToken: z.string(),
-  })
-  .required();
-
-const SignIn: NextPage<{ csrfToken: string }> = ({ csrfToken }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginForm>({
-    resolver: zodResolver(schema),
-  });
-  const route = useRouter();
-
-  const signErrorQuery = route.query;
-
-  const onSubmit: SubmitHandler<LoginForm> = async (data) => {
-    await signIn("credentials", {
-      username: data.username,
-      password: data.password,
-      csrfToken: data.csrfToken,
-      redirect: true,
-      callbackUrl: "/",
-    });
-  };
-
-  const reBackHome = () => {
-    route.push("/");
-  };
-
+const SignIn: NextPage<{
+  providers: InferGetServerSidePropsType<typeof getServerSideProps>;
+}> = ({ providers }) => {
   return (
     <>
       <Head>
@@ -57,45 +23,16 @@ const SignIn: NextPage<{ csrfToken: string }> = ({ csrfToken }) => {
             <h1 tw="headline-large text-center text-on-surface ">
               登录您的博客
             </h1>
-            {signErrorQuery.error && (
-              <Card tw="body-small bg-error-container text-error py-2 flex items-center justify-center px-4">
-                <Icon name="Error" tw="mr-2"></Icon>
-                {signErrorQuery.error === "CredentialsSignin" && (
-                  <div tw="flex-1">用户名或密码错误</div>
-                )}
-              </Card>
-            )}
           </div>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <input
-              type="hidden"
-              defaultValue={csrfToken}
-              {...register("csrfToken")}
-            />
-            <Input
-              autoComplete="username"
-              trailingIcon={<Icon name="account_circle"></Icon>}
-              placeholder="用户名"
-              errors={errors}
-              {...register("username")}
-            ></Input>
-            <Input
-              type="password"
-              autoComplete="current-password"
-              trailingIcon={<Icon name="password"></Icon>}
-              {...register("password")}
-              placeholder="密码"
-              errors={errors}
-            ></Input>
-            <div tw="flex flex-col md:flex-row justify-center space-y-2 md:(space-x-2 space-y-0)">
-              <Button type="tonal" onClick={reBackHome} tw="w-full">
-                返回
-              </Button>
-              <Button nativeType="submit" type="filled" tw="w-full">
-                登录
-              </Button>
-            </div>
-          </form>
+          <div tw="flex flex-col md:flex-row justify-center space-y-2 md:(space-x-2 space-y-0)">
+            {Object.values(providers).map((provider: any) => (
+              <div key={provider.name}>
+                <Button onClick={() => signIn(provider?.id)}>
+                  通过 {provider.name} 登录
+                </Button>
+              </div>
+            ))}
+          </div>
         </div>
       </Layout>
     </>
@@ -105,9 +42,18 @@ const SignIn: NextPage<{ csrfToken: string }> = ({ csrfToken }) => {
 export default SignIn;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getServerSession(context.req, context.res, authOptions);
+
+  // If the user is already logged in, redirect.
+  // Note: Make sure not to redirect to the same page
+  // To avoid an infinite loop!
+  if (session) {
+    return { redirect: { destination: "/" } };
+  }
+
+  const providers = await getProviders();
+
   return {
-    props: {
-      csrfToken: await getCsrfToken(context),
-    },
+    props: { providers: providers ?? [] },
   };
 }

@@ -73,14 +73,6 @@ const Footer: React.FC = () => {
                 key={social.id}
               >
                 <div tw="flex flex-col cursor-pointer">
-                  {social.icon && (
-                    <>
-                      <Icon
-                        name={social.icon || ""}
-                        tw="headline-medium md:headline-large"
-                      ></Icon>
-                    </>
-                  )}
                   <span tw="title-small md:title-medium">{social.name}</span>
                 </div>
               </Link>
@@ -91,7 +83,7 @@ const Footer: React.FC = () => {
         <span>&copy; {new Date().getFullYear()} tansincosy</span>
         {session ? (
           <Button type="text" onClick={() => router.push("manage")}>
-            管理
+            {session.user.name}
           </Button>
         ) : (
           <Button type="text" onClick={() => router.push("/auth/sign_in")}>

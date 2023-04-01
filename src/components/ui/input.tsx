@@ -30,15 +30,16 @@ export type InputProps = {
   classNames?: string;
   errors?: FieldErrors;
   trailingIcon?: React.ReactNode;
+  label?: string;
 } & Pick<
   React.ComponentProps<"input">,
-  "placeholder" | "onChange" | "type" | "name" | "autoComplete" | "autoFocus"
+  "onChange" | "type" | "name" | "autoComplete" | "autoFocus"
 >;
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
-      placeholder,
+      label,
       trailingIcon,
       autoComplete,
       name = "",
@@ -79,7 +80,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             ></Button>
           )}
           <InputLabel isFocus={isFocus || value?.length !== 0}>
-            {placeholder}
+            {label}
           </InputLabel>
           <InputContainer isFocus={isFocus}>
             <InputMain

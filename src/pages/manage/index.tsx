@@ -97,7 +97,7 @@ const Manage: NextPage = () => {
               博客列表
             </div>
             <Input
-              placeholder="请输入搜索的博客名"
+              label="请输入搜索的博客名"
               onChange={onSearchHandle}
               trailingIcon={<Icon name="search"></Icon>}
             ></Input>

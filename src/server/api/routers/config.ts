@@ -1,40 +1,83 @@
-import { TRPCError } from "@trpc/server";
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
+import { env } from "~/env.mjs";
+import { z } from "zod";
 
 export const configRouter = createTRPCRouter({
   get: publicProcedure.query(async ({ ctx }) => {
-    const users = await ctx.prisma.user.findMany({});
-    if (users.length > 1) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "用户大于1个",
-        cause: console.trace(users),
-      });
-    }
-    if (users.length === 0) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "请先设置用户",
-        cause: console.trace(users),
-      });
-    }
-    return ctx.prisma.config.findFirst({
+    return ctx.prisma.config.findUnique({
       where: {
-        userId: users[0]?.id,
+        id: env.BLOG_ID,
       },
       select: {
-        blog_introduce: true,
         blog_title: true,
+        blog_introduce: true,
         slogan: true,
         socials: {
           select: {
             name: true,
             url: true,
-            icon: true,
             id: true,
           },
         },
       },
     });
   }),
+  upSert: protectedProcedure
+    .input(
+      z.object({
+        blog_title: z.string(),
+        blog_introduce: z.string(),
+        slogan: z.string(),
+        socials: z
+          .array(z.object({ name: z.string(), url: z.string() }))
+          .optional()
+          .default([]),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const config = await ctx.prisma.config.findUnique({
+        where: {
+          id: env.BLOG_ID,
+        },
+      });
+      if (config) {
+        return ctx.prisma.config.update({
+          where: {
+            id: env.BLOG_ID,
+          },
+          data: {
+            blog_title: input.blog_title,
+            blog_introduce: input.blog_introduce,
+            slogan: input.slogan,
+            socials: {
+              deleteMany: {
+                name: {
+                  in: input.socials.map((social) => social.name),
+                },
+              },
+              createMany: {
+                data: input.socials,
+              },
+            },
+          },
+        });
+      }
+      return ctx.prisma.config.create({
+        data: {
+          id: env.BLOG_ID,
+          blog_title: input.blog_title,
+          blog_introduce: input.blog_introduce,
+          slogan: input.slogan,
+          socials: {
+            createMany: {
+              data: input.socials,
+            },
+          },
+        },
+      });
+    }),
 });

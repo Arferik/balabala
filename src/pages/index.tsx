@@ -5,19 +5,12 @@ import "twin.macro";
 import { api } from "~/utils/api";
 import { Card, Chips, Layout } from "~/components";
 import Image from "next/image";
-import { prisma } from "~/server/db";
+import { env } from "~/env.mjs";
 
-const Home: NextPage<{ userCount: number }> = ({ userCount }) => {
+const Home: NextPage<{ coverUrl: string }> = ({ coverUrl }) => {
   const config = api.config.get.useQuery();
   const posts = api.post.post20Latest.useQuery();
 
-  if (userCount && userCount > 1) {
-    return (
-      <Layout>
-        <div tw="text-error">只可允许一个用户</div>;
-      </Layout>
-    );
-  }
   return (
     <>
       <Head>
@@ -33,7 +26,7 @@ const Home: NextPage<{ userCount: number }> = ({ userCount }) => {
           >
             <Image
               fill
-              src={config.data?.blog_title || ""}
+              src={coverUrl || ""}
               alt="Post picture"
               tw="[object-fit: cover] rounded-3xl"
             ></Image>
@@ -42,7 +35,7 @@ const Home: NextPage<{ userCount: number }> = ({ userCount }) => {
              flex-col items-center justify-center"
             >
               <h1 tw="display-small text-inverse-primary md:display-large">
-                {config.data?.blog_title}
+                {config.data.blog_title}
               </h1>
               <h4 tw="title-large mt-2 text-inverse-primary md:headline-medium">
                 {config.data?.slogan}
@@ -121,18 +114,13 @@ const Home: NextPage<{ userCount: number }> = ({ userCount }) => {
 export default Home;
 
 export async function getServerSideProps() {
-  const userCount = await prisma.user.count();
-  if (userCount === 0) {
-    return {
-      redirect: {
-        destination: "/auth/sign_up",
-        permanent: false,
-      },
-    };
-  }
+  const imageUrl = await fetch(env.UNSPLASH_RANDOM_IMAGE_API).then(
+    (res) => res.url
+  );
+
   return {
     props: {
-      userCount,
+      coverUrl: imageUrl,
     },
   };
 }

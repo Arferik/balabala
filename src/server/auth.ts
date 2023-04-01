@@ -1,16 +1,13 @@
-import { getCsrfToken } from "next-auth/react";
 import { type GetServerSidePropsContext } from "next";
 import {
   getServerSession,
   type NextAuthOptions,
   type DefaultSession,
 } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "~/server/db";
-import { type LoginForm } from "types/login-input.types";
 import { env } from "~/env.mjs";
-import { comparePbkdf2 } from "~/utils";
+import GitHubProvider from "next-auth/providers/github";
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
  * object and keep type safety.
@@ -39,60 +36,20 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session({ session, user }) {
-      if (session.user) {
-        session.user.id = user.id;
-        // session.user.role = user.role; <-- put other properties on the session here
-      }
-      return session;
+    async jwt({ token }) {
+      token.userRole = "admin";
+      return token;
     },
   },
   adapter: PrismaAdapter(prisma),
   pages: {
     signIn: "/auth/sign_in",
   },
+
   providers: [
-    CredentialsProvider({
-      // The name to display on the sign in form (e.g. 'Sign in with...')
-      name: "Credentials",
-      // The credentials is used to generate a suitable form on the sign in page.
-      // You can specify whatever fields you are expecting to be submitted.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
-      credentials: {
-        username: { label: "Username", type: "text", placeholder: "jsmith" },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials, req) {
-        // You need to provide your own logic here that takes the credentials
-        // submitted and returns either a object representing a user or value
-        // that is false/null if the credentials are invalid.
-        // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-        // You can also use the `req` object to obtain additional parameters
-        // (i.e., the request IP address)
-        const { username, password, csrfToken } = credentials as LoginForm;
-        // const generateCsrfToken = await getCsrfToken({ req });
-        // console.log("server crsf", generateCsrfToken);
-        // console.log("client crsf", csrfToken);
-        const userInfo = await prisma.user.findFirst({
-          where: {
-            name: username,
-          },
-        });
-        if (!userInfo) {
-          return null;
-        }
-        const isPasswordValid = await comparePbkdf2(
-          password,
-          env.AUTH_PRIMARY_KEY,
-          userInfo?.password || ""
-        );
-        if (isPasswordValid) {
-          return userInfo;
-        }
-        // Return null if user data could not be retrieved
-        return null;
-      },
+    GitHubProvider({
+      clientId: env.GITHUB_ID,
+      clientSecret: env.GITHUB_SECRET,
     }),
     /**
      * ...add more providers here.
