@@ -30,9 +30,11 @@ export const Layout = ({
     applyTheme(theme, { target: document.body, dark: systemDark });
   }, [themeColor]);
   return (
-    <div tw="absolute flex left-0 right-0 bottom-0 top-0 flex-col">
+    <div tw="relative overflow-hidden">
       {!hiddenTopFooter && <TopAppBar></TopAppBar>}
-      <section tw="bg-background flex-1 pb-20 box-border">{children}</section>
+      <section tw="bg-background flex-1 pb-20 box-border h-screen">
+        {children}
+      </section>
       {!hiddenTopFooter && <Footer />}
       <BackToTopBtn />
       <Snackbar />

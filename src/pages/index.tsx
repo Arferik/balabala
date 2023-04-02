@@ -21,17 +21,17 @@ const Home: NextPage<{ coverUrl: string }> = ({ coverUrl }) => {
       <Layout>
         {config.data ? (
           <div
-            tw="overflow-hidden w-full h-80 md:h-96 lg:h-[34rem]
-           relative mt-16 container mx-auto px-4 box-border"
+            tw="h-80 md:h-96 lg:h-[34rem]
+            relative mt-16  box-border px-4"
           >
             <Image
               fill
               src={coverUrl || ""}
               alt="Post picture"
-              tw="[object-fit: cover] rounded-3xl"
+              tw="[object-fit: cover] rounded-3xl overflow-hidden !static"
             ></Image>
             <div
-              tw="absolute top-0 z-10 flex h-full w-full
+              tw="absolute top-0 z-10 right-0 flex h-full w-full
              flex-col items-center justify-center"
             >
               <h1 tw="display-small text-inverse-primary md:display-large">
