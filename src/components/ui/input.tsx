@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useMemo, useState } from "react";
 import { Button } from "./button";
 import tw, { css, styled } from "twin.macro";
 import { Icon } from "./icon";
@@ -66,6 +66,23 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       setValue("");
     };
 
+    const errorMessage = useMemo(() => {
+      const [parentsName, indexName = -1, subName] = name.split(".") || "";
+      if (!parentsName || !errors || !errors[parentsName]) {
+        return false;
+      }
+
+      const indexNu = indexName === -1 ? 0 : +indexName;
+
+      const mutiMessage = errors[parentsName] as any;
+
+      if (!subName) {
+        return errors[parentsName]?.message;
+      }
+
+      return mutiMessage?.[indexNu]?.[subName]?.message;
+    }, [errors, name]);
+
     return (
       <div tw="mb-5">
         <div
@@ -115,9 +132,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             ></Button>
           )}
         </div>
-        {errors && errors[name] && (
-          <InputError>{errors[name]?.message?.toString()}</InputError>
-        )}
+        {errorMessage && <InputError>{errorMessage}</InputError>}
       </div>
     );
   }
