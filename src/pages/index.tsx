@@ -22,7 +22,7 @@ const Home: NextPage<{ coverUrl: string }> = ({ coverUrl }) => {
         {config.data ? (
           <div
             tw="h-80 md:h-96 lg:h-[34rem]
-            relative mt-16  box-border px-4"
+            relative mt-16 box-border px-4 md:(px-0) container mx-auto"
           >
             <Image
               fill
@@ -45,10 +45,16 @@ const Home: NextPage<{ coverUrl: string }> = ({ coverUrl }) => {
         ) : (
           []
         )}
-        <main tw="container mx-auto items-stretch mt-8">
-          <div tw="display-small md:display-medium lg:display-large text-on-surface px-4">
-            最新博客
-          </div>
+        <main tw="container mx-auto items-stretch mt-8 px-4 md:(px-0)">
+          {Array.isArray(posts.data) && posts.data.length > 0 ? (
+            <div tw="display-small md:display-medium lg:display-large text-on-surface px-4">
+              最新博客
+            </div>
+          ) : (
+            <div tw="headline-small text-on-surface w-full text-center">
+              没有数据
+            </div>
+          )}
           <div tw="grid grid-cols-1 md:(grid-cols-2) gap-2 xl:(grid-cols-3 gap-4) 2xl:(grid-cols-4 gap-4)">
             {Array.isArray(posts.data)
               ? posts.data.map((post) => {

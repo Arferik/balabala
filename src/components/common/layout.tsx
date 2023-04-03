@@ -9,6 +9,7 @@ import { TopAppBar } from "./top_app_bar";
 import "twin.macro";
 import Footer from "./footer";
 import { Snackbar } from "..";
+import { useMediaQuery } from "~/hooks";
 
 export interface LayoutProps {
   children: ReactNode;
@@ -22,6 +23,7 @@ export const Layout = ({
   themeColor,
   hiddenTopFooter,
 }: LayoutProps) => {
+  const isDesktop = useMediaQuery("(min-width: 768px)");
   useEffect(() => {
     const theme = themeFromSourceColor(argbFromHex(themeColor || "#066bf8"));
     const systemDark = window.matchMedia(
@@ -30,12 +32,10 @@ export const Layout = ({
     applyTheme(theme, { target: document.body, dark: systemDark });
   }, [themeColor]);
   return (
-    <div tw="relative overflow-hidden">
+    <div tw="relative  flex flex-col h-screen">
       {!hiddenTopFooter && <TopAppBar></TopAppBar>}
-      <section tw="bg-background flex-1 pb-20 box-border h-screen">
-        {children}
-      </section>
-      {!hiddenTopFooter && <Footer />}
+      <section tw="bg-background flex-1 pb-20 box-border">{children}</section>
+      {!hiddenTopFooter && isDesktop && <Footer />}
       <BackToTopBtn />
       <Snackbar />
     </div>

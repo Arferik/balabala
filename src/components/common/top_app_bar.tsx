@@ -4,43 +4,10 @@ import { useEffect, useMemo, useState } from "react";
 import { Button, Card, Icon } from "../index";
 import "twin.macro";
 import Drawer from "rc-drawer";
-
-const themeColors = () => {
-  return [
-    "primary",
-    "on-primary",
-    "primary-container",
-    "on-primary-container",
-    "error",
-    "on-error",
-    "error-container",
-    "on-error-container",
-    "secondary",
-    "on-secondary",
-    "secondary-container",
-    "on-secondary-container",
-    "surface",
-    "on-surface",
-    "surface-variant",
-    "on-surface-variant",
-    "tertiary",
-    "on-tertiary",
-    "tertiary-container",
-    "on-tertiary-container",
-    "background",
-    "on-background",
-    "outline",
-    "shadow",
-    "inverse-on-surface",
-    "inverse-primary",
-    "inverse-surface",
-  ].reduce((total, item) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    total[`${item}`] = `var(--md-sys-color-${item})`;
-    return total;
-  }, {});
-};
+import { useSession } from "next-auth/react";
+import { SideMenu } from "./side_menu";
+import { themeColors } from "~/utils";
+import { useMediaQuery } from "~/hooks";
 
 export interface TopAppBarProps {
   appTitle?: string;
@@ -50,41 +17,41 @@ export interface TopAppBarProps {
 export const TopAppBar = ({ appTitle = "", category = {} }: TopAppBarProps) => {
   const [isShowSideBar, setShowSideBar] = useState<boolean>(false);
   const [searchVisible, setSearchVisible] = useState<boolean>(false);
+  const { data: session } = useSession();
   const [activeClass, setActiveClass] = useState("active");
   const { asPath, isReady, push, query } = useRouter();
-
-  const mainNavs = useMemo(() => {
-    const staticMenu = [
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const menus = useMemo(() => {
+    let staticMenu = [
       {
         title: "主页",
         path: "/",
-      },
-      {
-        title: "所有标签",
-        path: "/tags",
-      },
-      {
-        title: "关于",
-        path: "/about",
+        icon: "home",
       },
     ];
-    return staticMenu.map((cate) => (
-      <Link href={`${cate.path}`} key={cate.title}>
-        <Button
-          className="title-medium text-on-surface-variant"
-          type={
-            cate.path === "/" && activeClass === cate.path
-              ? "filled"
-              : cate.path + "/" === activeClass
-              ? "filled"
-              : "text"
-          }
-        >
-          {cate.title}
-        </Button>
-      </Link>
-    ));
-  }, [activeClass, category]);
+    if (session?.user) {
+      staticMenu = [
+        ...staticMenu,
+        {
+          title: "配置",
+          path: "/manage/config",
+          icon: "settings",
+        },
+        {
+          title: "博客编辑",
+          path: "/manage/post",
+          icon: "edit_note",
+        },
+        {
+          title: "日志",
+          path: "/manage/log",
+          icon: "note",
+        },
+      ];
+    }
+
+    return staticMenu;
+  }, [session?.user]);
 
   useEffect(() => {
     if (isReady) {
@@ -102,8 +69,10 @@ export const TopAppBar = ({ appTitle = "", category = {} }: TopAppBarProps) => {
   };
 
   const onRequestClose = () => {
-    // push(`genre/${query.genreId}`);
+    push(`post/${query.genreId}`);
   };
+
+  const closeSlideBar = () => setShowSideBar(false);
 
   const targetHomePage = () => {
     push("/");
@@ -130,7 +99,24 @@ export const TopAppBar = ({ appTitle = "", category = {} }: TopAppBarProps) => {
           {appTitle || "Blog"}
         </div>
         <div tw="title-medium hidden w-full text-on-surface md:block">
-          <div tw="mr-8 flex justify-end space-x-2">{mainNavs}</div>
+          <div tw="mr-8 flex justify-end space-x-2">
+            {menus.map((menu) => (
+              <Link href={`${menu.path}`} key={menu.title}>
+                <Button
+                  className="title-medium text-on-surface-variant"
+                  type={
+                    menu.path === "/" && activeClass === menu.path
+                      ? "filled"
+                      : menu.path + "/" === activeClass
+                      ? "filled"
+                      : "text"
+                  }
+                >
+                  {menu.title}
+                </Button>
+              </Link>
+            ))}
+          </div>
         </div>
         <Icon
           onClick={openSearchDialog}
@@ -145,6 +131,15 @@ export const TopAppBar = ({ appTitle = "", category = {} }: TopAppBarProps) => {
           tw="h-12 w-12 cursor-pointer text-[1.5rem] leading-[3rem] text-on-surface"
         ></Icon>
       </div>
+      {!isDesktop && (
+        <SideMenu
+          isVisible={isShowSideBar}
+          onClose={closeSlideBar}
+          appTitle={appTitle}
+          menus={menus}
+        ></SideMenu>
+      )}
+
       <Drawer
         open={debugSide}
         onClose={() => {

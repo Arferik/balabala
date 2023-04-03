@@ -6,11 +6,11 @@ import { Button, Icon, Input, Layout, useSnackbar } from "~/components";
 import { useForm, type SubmitHandler, useFieldArray } from "react-hook-form";
 import { useRouter } from "next/router";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type Social, type Config } from "@prisma/client";
+import { type Config } from "@prisma/client";
 import { ConfigSchema } from "~/utils/schema";
 
 interface ConfigForm extends Config {
-  socials: Pick<Social, "name" | "url">[];
+  socials: { name: string; url: string }[];
 }
 
 const ConfigManager: NextPage = () => {
@@ -61,7 +61,7 @@ const ConfigManager: NextPage = () => {
       <Layout>
         <div tw="mt-52 container mx-auto px-4 md:w-96">
           <div tw="mb-4">
-            <h1 tw="headline-large text-center text-on-surface ">
+            <h1 tw="headline-large text-center text-on-surface">
               配置你的博客
             </h1>
           </div>

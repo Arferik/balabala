@@ -117,3 +117,40 @@ export function joinKey(...keys: string[]) {
 
 export const capitalized = (word: string) =>
   word.charAt(0).toUpperCase() + word.slice(1);
+
+export const themeColors = () => {
+  return [
+    "primary",
+    "on-primary",
+    "primary-container",
+    "on-primary-container",
+    "error",
+    "on-error",
+    "error-container",
+    "on-error-container",
+    "secondary",
+    "on-secondary",
+    "secondary-container",
+    "on-secondary-container",
+    "surface",
+    "on-surface",
+    "surface-variant",
+    "on-surface-variant",
+    "tertiary",
+    "on-tertiary",
+    "tertiary-container",
+    "on-tertiary-container",
+    "background",
+    "on-background",
+    "outline",
+    "shadow",
+    "inverse-on-surface",
+    "inverse-primary",
+    "inverse-surface",
+  ].reduce((total, item) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    total[`${item}`] = `var(--md-sys-color-${item})`;
+    return total;
+  }, {});
+};

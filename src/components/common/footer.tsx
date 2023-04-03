@@ -3,7 +3,7 @@ import { Button } from "../ui/button";
 import { useRouter } from "next/router";
 import { api } from "~/utils";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 const SVGLine = () => {
   return (
@@ -53,10 +53,10 @@ const Footer: React.FC = () => {
   return (
     <footer
       tw="w-full bg-background
-     box-border px-10 py-16  text-on-surface-variant flex-none h-96"
+     box-border px-10 py-16  text-on-surface-variant md:(h-96 flex flex-col)"
     >
       <SVGLine />
-      <div tw="flex flex-col h-full box-border pt-10 md:(flex-row space-x-4)">
+      <div tw="flex flex-col  box-border pt-10 md:(flex-row space-x-4 flex-1)">
         <div tw="flex-1">
           <div>LOGO</div>
           {config.data && (
@@ -92,8 +92,8 @@ const Footer: React.FC = () => {
       <div tw="title-medium flex w-full items-center">
         <span>&copy; {new Date().getFullYear()} tansincosy</span>
         {session ? (
-          <Button type="text" onClick={() => router.push("manage")}>
-            {session.user.name}
+          <Button type="text" onClick={() => signOut()}>
+            {session.user.name} 注销
           </Button>
         ) : (
           <Button type="text" onClick={() => router.push("/auth/sign_in")}>
