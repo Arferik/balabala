@@ -81,7 +81,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({
         })
         .map((item) => {
           return (
-            <Link key={item.title} passHref href={item.href}>
+            <Link key={item.title} legacyBehavior href={item.href}>
               <MenuItem {...item}></MenuItem>
             </Link>
           );

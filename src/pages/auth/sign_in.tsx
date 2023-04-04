@@ -24,10 +24,10 @@ const SignIn: NextPage<{
               登录您的博客
             </h1>
           </div>
-          <div tw="flex flex-col md:flex-row justify-center space-y-2 md:(space-x-2 space-y-0)">
+          <div tw="flex flex-col md:flex-row justify-center space-y-2 md:(space-x-2 space-y-0) text-center">
             {Object.values(providers).map((provider: any) => (
-              <div key={provider.name}>
-                <Button onClick={() => signIn(provider?.id)}>
+              <div key={provider.id}>
+                <Button onClick={() => signIn(provider?.id)} tw="w-full">
                   通过 {provider.name} 登录
                 </Button>
               </div>
