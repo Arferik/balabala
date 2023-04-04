@@ -31,7 +31,7 @@ export const Layout = ({
     const systemDark = window.matchMedia(
       "(prefers-color-scheme: dark)"
     ).matches;
-    applyTheme(theme, { target: document.body, dark: systemDark });
+    applyTheme(theme, { target: document.body, dark: false });
   }, [themeColor]);
   return (
     <div tw="relative flex flex-col h-screen">

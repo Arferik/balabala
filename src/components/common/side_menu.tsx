@@ -44,7 +44,12 @@ export const MenuItem = forwardRef<HTMLAnchorElement, MenuProps>(
   ({ title, icon, href, onClick, exact = false }, ref) => {
     return (
       <ItemContainer exact={exact} href={href} onClick={onClick} ref={ref}>
-        <Icon name={icon} tw="text-2xl mr-3 text-primary"></Icon>
+        <Icon
+          name={icon}
+          size="md"
+          tw="mr-3 fill-on-surface"
+          type="line"
+        ></Icon>
         <div tw="label-large flex-1 text-on-secondary-container">{title}</div>
       </ItemContainer>
     );

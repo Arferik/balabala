@@ -1,7 +1,7 @@
 import { type InferGetServerSidePropsType, type NextPage } from "next";
 import Head from "next/head";
 import "twin.macro";
-import { Button, Layout } from "~/components";
+import { Button, Icon, Layout } from "~/components";
 import { getProviders, signIn } from "next-auth/react";
 import type { GetServerSidePropsContext } from "next";
 import { getServerSession } from "next-auth";
@@ -26,11 +26,15 @@ const SignIn: NextPage<{
           </div>
           <div tw="flex flex-col md:flex-row justify-center space-y-2 md:(space-x-2 space-y-0) text-center">
             {Object.values(providers).map((provider: any) => (
-              <div key={provider.id}>
-                <Button onClick={() => signIn(provider?.id)} tw="w-full">
-                  通过 {provider.name} 登录
-                </Button>
-              </div>
+              <Button
+                key={provider.id}
+                type="outlined"
+                onClick={() => signIn(provider?.id)}
+                tw="w-full"
+                icon={<Icon name="github" tw="fill-primary"></Icon>}
+              >
+                {provider.name} 登录
+              </Button>
             ))}
           </div>
         </div>

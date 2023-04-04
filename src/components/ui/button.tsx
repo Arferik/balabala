@@ -99,10 +99,6 @@ const TextSpan = styled.span<{ icon?: React.ReactNode }>(({ icon }) => [
   icon && tw`ml-1`,
 ]);
 
-const IconSpan = styled.div<{ icon?: React.ReactNode }>(({ icon }) => [
-  tw`text-2xl w-8 h-[1.125rem] overflow-hidden`,
-]);
-
 export const Button: React.FC<ButtonProps> = ({
   icon,
   children,
@@ -121,7 +117,7 @@ export const Button: React.FC<ButtonProps> = ({
       className={className}
       btnChildNode={children}
     >
-      {icon && <IconSpan>{icon}</IconSpan>}
+      {icon}
       {children && <TextSpan icon={icon}>{children}</TextSpan>}
     </ButtonWrapper>
   );

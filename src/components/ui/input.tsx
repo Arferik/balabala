@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useMemo, useState } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import { Button } from "./button";
 import tw, { css, styled } from "twin.macro";
 import { Icon } from "./icon";
@@ -9,8 +9,9 @@ const InputLabel = styled.label<{ isFocus: boolean }>(({ isFocus }) => [
 ]);
 
 const InputMain = tw.input`w-full pl-0 pr-2 h-6 bg-transparent relative inline-flex outline-none top-2`;
+const TextArea = tw.textarea`w-full pl-0 pr-2 h-6 bg-transparent relative inline-flex outline-none top-2`;
 const InputContainer = styled.div<{ isFocus: boolean }>(({ isFocus }) => [
-  tw`w-full flex
+  tw`w-full flex ml-4
   before:(border-b border-on-surface-variant left-0 bottom-0 absolute right-0 pointer-events-none)
   after:(border-b-2 border-primary absolute right-0 left-0 pointer-events-none transform-gpu scale-x-0 bottom-0)`,
   css`
@@ -40,6 +41,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
       label,
+      classNames,
       trailingIcon,
       autoComplete,
       name = "",
@@ -66,40 +68,35 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       setValue("");
     };
 
-    const errorMessage = useMemo(() => {
+    const errorMessage = () => {
       const [parentsName, indexName = -1, subName] = name.split(".") || "";
       if (!parentsName || !errors || !errors[parentsName]) {
         return false;
       }
 
       const indexNu = indexName === -1 ? 0 : +indexName;
-
       const mutiMessage = errors[parentsName] as any;
-
       if (!subName) {
         return errors[parentsName]?.message;
       }
-
+      console.log("errorMessage", errorMessage);
       return mutiMessage?.[indexNu]?.[subName]?.message;
-    }, [errors, name]);
+    };
 
     return (
-      <div tw="mb-5">
+      <div>
         <div
           tw="relative cursor-text inline-flex h-14
        rounded-t-md bg-surface-variant items-center text-on-surface w-full"
+          className={classNames || ""}
         >
           {trailingIcon && (
-            <Button
-              type="tonal"
-              icon={trailingIcon}
-              tw="mr-2 text-on-surface-variant"
-            ></Button>
+            <span tw="ml-1.5 fill-on-surface-variant">{trailingIcon}</span>
           )}
-          <InputLabel isFocus={isFocus || value?.length !== 0}>
-            {label}
-          </InputLabel>
           <InputContainer isFocus={isFocus}>
+            <InputLabel isFocus={isFocus || value?.length !== 0}>
+              {label}
+            </InputLabel>
             <InputMain
               ref={ref}
               autoComplete={autoComplete}
@@ -127,12 +124,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               onClick={onClearHandle}
               type="text"
               icon={
-                <Icon name="close-circle" tw="text-on-surface-variant"></Icon>
+                <Icon name="close-circle" tw="fill-on-surface-variant"></Icon>
               }
             ></Button>
           )}
         </div>
-        {errorMessage && <InputError>{errorMessage}</InputError>}
+        {errorMessage() && <InputError>{errorMessage()}</InputError>}
       </div>
     );
   }

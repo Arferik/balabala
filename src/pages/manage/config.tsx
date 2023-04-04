@@ -50,7 +50,6 @@ const ConfigManager: NextPage = () => {
     });
   };
 
-  console.log("errors=====", errors);
   return (
     <>
       <Head>
@@ -65,9 +64,9 @@ const ConfigManager: NextPage = () => {
               配置你的博客
             </h1>
           </div>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit)} tw="space-y-5">
             <Input
-              trailingIcon={<Icon name="title"></Icon>}
+              trailingIcon={<Icon name="text" type="default"></Icon>}
               label="标题"
               errors={errors}
               {...register("blog_title")}
@@ -76,28 +75,30 @@ const ConfigManager: NextPage = () => {
               {...register("slogan")}
               label="标语"
               errors={errors}
-              trailingIcon={<Icon name="auto_awesome"></Icon>}
+              trailingIcon={<Icon name="star"></Icon>}
             ></Input>
             <Input
-              trailingIcon={<Icon name="description"></Icon>}
+              trailingIcon={<Icon name="file-text"></Icon>}
               {...register("blog_introduce")}
               label="描述"
               errors={errors}
             ></Input>
             {fields.map((item, index) => (
-              <div key={item.id} tw="flex">
+              <div key={item.id} tw="flex w-full items-center">
                 <Input
+                  tw="flex-1 !m-0"
                   {...register(`socials.${index}.name`)}
                   label="社交名称"
                   errors={errors}
                 />
                 <Input
+                  tw="flex-1 !m-0"
                   {...register(`socials.${index}.url`)}
                   label="社交链接"
                   errors={errors}
                 />
                 <Button
-                  icon={<Icon name="delete"></Icon>}
+                  icon={<Icon name="delete-bin-5"></Icon>}
                   onClick={() => remove(index)}
                 ></Button>
               </div>
