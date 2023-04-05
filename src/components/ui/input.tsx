@@ -9,18 +9,20 @@ const InputLabel = styled.label(() => [
 ]);
 
 const InputMain = styled.input(() => [
-  tw`m-0 bg-transparent outline-none placeholder-shown:placeholder:(text-transparent) w-full h-full`,
+  tw`m-0 bg-transparent outline-none placeholder-shown:placeholder:(text-transparent) 
+  w-full h-full border-outline border text-on-surface rounded-md `,
   css`
     &:not(:placeholder-shown) ~ .input-label,
     &:focus ~ .input-label {
-      transform: scale(0.75) translate(-2px, -22px);
+      background: var(--md-sys-color-surface);
+      transform: scale(0.75) translate(-2px, -36px);
     }
-    &:focus > .input-outline {
-      border: 1px solid var(--md-sys-color-primary);
+    &:focus {
+      border-color: var(--md-sys-color-primary) !important;
     }
   `,
 ]);
-const InputContainer = tw.div`relative w-full h-full`;
+const InputContainer = tw.div`relative w-full h-full `;
 const InputError = tw.div`body-small text-error mt-1 indent-3`;
 
 export type InputProps = {
@@ -77,11 +79,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div>
         <div
-          tw="relative cursor-text inline-flex h-14 border-outline border
-       rounded-t-md  items-center text-on-surface w-full"
-          className={
-            classNames ? "input-outline " + classNames : "input-outline"
-          }
+          tw="relative cursor-text inline-flex h-14 
+         items-center  w-full"
+          className={classNames || ""}
         >
           {trailingIcon && (
             <span tw="ml-1.5 fill-on-surface-variant">{trailingIcon}</span>
