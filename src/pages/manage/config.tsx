@@ -2,7 +2,14 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import "twin.macro";
 import { api } from "~/utils/api";
-import { Button, Icon, Input, Layout, useSnackbar } from "~/components";
+import {
+  Button,
+  Icon,
+  Input,
+  Layout,
+  Textarea,
+  useSnackbar,
+} from "~/components";
 import { useForm, type SubmitHandler, useFieldArray } from "react-hook-form";
 import { useRouter } from "next/router";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -77,12 +84,12 @@ const ConfigManager: NextPage = () => {
               errors={errors}
               trailingIcon={<Icon name="star"></Icon>}
             ></Input>
-            <Input
+            <Textarea
               trailingIcon={<Icon name="file-text"></Icon>}
               {...register("blog_introduce")}
               label="描述"
               errors={errors}
-            ></Input>
+            ></Textarea>
             {fields.map((item, index) => (
               <div key={item.id} tw="flex w-full items-center">
                 <Input
