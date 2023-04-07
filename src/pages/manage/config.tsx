@@ -15,17 +15,22 @@ import { useRouter } from "next/router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type Config } from "@prisma/client";
 import { ConfigSchema } from "~/utils/schema";
+import { prisma } from "~/server/db";
+import { configRouter } from "~/server/api/routers/config";
+import { useEffect } from "react";
 
 interface ConfigForm extends Config {
   socials: { name: string; url: string }[];
 }
 
-const ConfigManager: NextPage = () => {
+const ConfigManager: NextPage<{ config: Config }> = ({ config }) => {
   const { open } = useSnackbar();
   const {
     register,
     handleSubmit,
     control,
+    reset,
+    setValue,
     formState: { errors },
   } = useForm<ConfigForm>({
     resolver: zodResolver(ConfigSchema),
@@ -49,13 +54,23 @@ const ConfigManager: NextPage = () => {
   const route = useRouter();
 
   const onSubmit: SubmitHandler<ConfigForm> = async (data) => {
-    ConfigApi.mutate({
+    await ConfigApi.mutate({
       blog_title: data.blog_title,
       blog_introduce: data.blog_introduce,
       slogan: data.slogan || "",
       socials: data.socials || [],
     });
+    reset({});
   };
+
+  useEffect(() => {
+    if (config) {
+      setValue("blog_title", config.blog_title);
+      setValue("blog_introduce", config.blog_introduce);
+      setValue("slogan", config.slogan);
+      setValue("socials", config.socials);
+    }
+  }, [config]);
 
   return (
     <>
@@ -73,33 +88,30 @@ const ConfigManager: NextPage = () => {
           </div>
           <form onSubmit={handleSubmit(onSubmit)} tw="space-y-5">
             <Input
-              trailingIcon={<Icon name="text" type="default"></Icon>}
+              trailingIcon="text"
               label="标题"
               errors={errors}
               {...register("blog_title")}
             ></Input>
             <Input
+              trailingIcon="play"
               {...register("slogan")}
               label="标语"
               errors={errors}
-              trailingIcon={<Icon name="star"></Icon>}
             ></Input>
             <Textarea
-              trailingIcon={<Icon name="file-text"></Icon>}
               {...register("blog_introduce")}
               label="描述"
               errors={errors}
             ></Textarea>
             {fields.map((item, index) => (
-              <div key={item.id} tw="flex w-full items-center">
+              <div key={item.id} tw="flex space-x-1 w-full items-center">
                 <Input
-                  tw="flex-1 !m-0"
                   {...register(`socials.${index}.name`)}
                   label="社交名称"
                   errors={errors}
                 />
                 <Input
-                  tw="flex-1 !m-0"
                   {...register(`socials.${index}.url`)}
                   label="社交链接"
                   errors={errors}
@@ -126,3 +138,13 @@ const ConfigManager: NextPage = () => {
 };
 
 export default ConfigManager;
+
+export async function getServerSideProps() {
+  const configCaller = configRouter.createCaller({ prisma, session: null });
+  const configData = await configCaller.get();
+  return {
+    props: {
+      config: configData,
+    },
+  };
+}

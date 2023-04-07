@@ -4,36 +4,44 @@ import tw, { css, styled } from "twin.macro";
 import { Icon } from "./icon";
 import { type FieldErrors } from "react-hook-form";
 
-const InputLabel = styled.label(() => [
-  tw`body-large absolute pointer-events-none top-4 left-12 text-on-surface-variant transition-all`,
-]);
+const InputLabel = styled.label<{ trailingIcon: boolean }>(
+  ({ trailingIcon }) => [
+    !!trailingIcon ? tw`left-12` : tw`left-3`,
+    tw`body-large absolute pointer-events-none top-4  text-on-surface-variant transition-all px-1`,
+  ]
+);
 
-const InputMain = styled.input(() => [
-  tw`m-0 bg-transparent outline-none placeholder-shown:placeholder:(text-transparent) 
-  w-full h-full border-outline border text-on-surface rounded-md `,
-  css`
-    &:not(:placeholder-shown) ~ .input-label,
-    &:focus ~ .input-label {
-      background: var(--md-sys-color-surface);
-      transform: scale(0.75) translate(-2px, -36px);
-    }
-    &:focus {
-      border-color: var(--md-sys-color-primary) !important;
-    }
-  `,
-]);
-const InputContainer = tw.div`relative w-full h-full `;
+const InputMain = styled.input<{ trailingIcon?: string }>(
+  ({ trailingIcon }) => [
+    !!trailingIcon ? tw`pl-12` : tw`pl-6`,
+    tw`m-0 bg-transparent  outline-none placeholder-shown:placeholder:(text-transparent) 
+  border-outline border absolute w-full rounded-md text-on-surface h-full box-border pr-12`,
+    css`
+      &:not(:placeholder-shown) ~ .input-label,
+      &:focus ~ .input-label {
+        background: var(--md-sys-color-surface);
+        color: var(--md-sys-color-primary);
+        transform: scale(0.85) translate(-2px, -32px);
+      }
+      &:focus {
+        border-width: 2px;
+        border-color: var(--md-sys-color-primary) !important;
+      }
+    `,
+  ]
+);
+const InputContainer = tw.div`relative w-full h-14 flex items-center `;
 const InputError = tw.div`body-small text-error mt-1 indent-3`;
 
 export type InputProps = {
   value?: string;
   classNames?: string;
   errors?: FieldErrors;
-  trailingIcon?: React.ReactNode;
+  trailingIcon?: string;
   label?: string;
 } & Pick<
   React.ComponentProps<"input">,
-  "onChange" | "type" | "name" | "autoComplete" | "autoFocus"
+  "onChange" | "type" | "name" | "autoComplete" | "autoFocus" | "onBlur"
 >;
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -47,10 +55,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       onChange,
       errors,
       type = "text",
+      onBlur,
     }: InputProps,
     ref
   ) => {
     const [value, setValue] = useState<string>("");
+
+    const isShowClearButton = React.useMemo(() => {
+      return value.length > 0;
+    }, [value]);
 
     const onChangeHandle: React.ChangeEventHandler<HTMLInputElement> = (
       event
@@ -58,7 +71,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       setValue(event.target.value);
       onChange && onChange(event);
     };
-
     const onClearHandle = () => {
       setValue("");
     };
@@ -77,38 +89,41 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     };
 
     return (
-      <div>
-        <div
-          tw="relative cursor-text inline-flex h-14 
-         items-center  w-full"
-          className={classNames || ""}
-        >
+      <div
+        tw="cursor-text inline-flex flex-col w-full"
+        className={classNames || ""}
+      >
+        <InputContainer>
           {trailingIcon && (
-            <span tw="ml-1.5 fill-on-surface-variant">{trailingIcon}</span>
+            <Icon name={trailingIcon} tw="absolute left-3"></Icon>
           )}
-          <InputContainer>
-            <InputMain
-              ref={ref}
-              autoComplete={autoComplete}
-              name={name}
-              value={value}
-              onChange={onChangeHandle}
-              type={type}
-              placeholder={label}
-              aria-invalid={errorMessage() ? "true" : "false"}
-            />
-            <InputLabel className="input-label">{label}</InputLabel>
-          </InputContainer>
-          {value?.length !== 0 && (
-            <Button
-              onClick={onClearHandle}
-              type="text"
-              icon={
-                <Icon name="close-circle" tw="fill-on-surface-variant"></Icon>
-              }
-            ></Button>
+          <InputMain
+            trailingIcon={trailingIcon}
+            ref={ref}
+            autoComplete={autoComplete}
+            name={name}
+            value={value}
+            onBlur={onBlur}
+            onChange={onChangeHandle}
+            type={type}
+            placeholder={label}
+            aria-invalid={errorMessage() ? "true" : "false"}
+          />
+          <InputLabel className="input-label" trailingIcon={!!trailingIcon}>
+            {label}
+          </InputLabel>
+          {isShowClearButton && (
+            <div tw="flex items-center absolute right-0">
+              <Button
+                onClick={onClearHandle}
+                type="text"
+                icon={
+                  <Icon name="close-circle" tw="fill-on-surface-variant"></Icon>
+                }
+              ></Button>
+            </div>
           )}
-        </div>
+        </InputContainer>
         {errorMessage() && <InputError>{errorMessage()}</InputError>}
       </div>
     );

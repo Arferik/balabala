@@ -99,7 +99,7 @@ const Manage: NextPage = () => {
             <Input
               label="请输入搜索的博客名"
               onChange={onSearchHandle}
-              trailingIcon={<Icon name="search"></Icon>}
+              trailingIcon="search"
             ></Input>
           </div>
           <div>
