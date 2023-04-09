@@ -18,7 +18,7 @@ interface SnackbarProviderType {
   isOpen?: boolean;
   onClose?: () => void;
   onAction?: () => void;
-  open?: OpenHandle;
+  open: OpenHandle;
   actionText?: string;
   closeHandle?: () => void;
 }

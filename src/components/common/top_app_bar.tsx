@@ -34,17 +34,17 @@ export const TopAppBar = ({ appTitle = "", category = {} }: TopAppBarProps) => {
         ...staticMenu,
         {
           title: "配置",
-          path: "/manage/config",
+          path: "/config",
           icon: "settings-2",
         },
         {
           title: "博客编辑",
-          path: "/manage/post",
+          path: "/post/edit",
           icon: "edit-box",
         },
         {
           title: "日志",
-          path: "/manage/log",
+          path: "/log",
           icon: "file-4",
         },
       ];

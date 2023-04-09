@@ -23,7 +23,7 @@ interface ButtonProps {
 const BaseButton = tw.button`inline-flex justify-center items-center
                       relative overflow-hidden cursor-pointer leading-none
                       appearance-none box-border outline-none m-0
-                      rounded-full h-10`;
+                      rounded-full h-10 whitespace-nowrap`;
 
 const ButtonWrapper = styled(BaseButton)<ButtonWrapperProps>(
   ({ mdType, disabled, icon, btnChildNode }) => [

@@ -53,53 +53,55 @@ const Footer: React.FC = () => {
   return (
     <footer
       tw="w-full bg-background
-     box-border px-10 py-16  text-on-surface-variant md:(h-96 flex flex-col)"
+     box-border px-10 md:px-0 py-16  text-on-surface-variant md:(h-96 flex flex-col)"
     >
-      <SVGLine />
-      <div tw="flex flex-col  box-border pt-10 md:(flex-row space-x-4 flex-1)">
-        <div tw="flex-1">
-          <div>LOGO</div>
-          {config.data && (
-            <div tw="body-medium">{config.data?.blog_introduce}</div>
+      <div tw="container mx-auto">
+        <SVGLine />
+        <div tw="flex flex-col  box-border pt-10 md:(flex-row space-x-4 flex-1)">
+          <div tw="flex-1">
+            <div>LOGO</div>
+            {config.data && (
+              <div tw="body-medium">{config.data?.blog_introduce}</div>
+            )}
+          </div>
+          {config.data && Array.isArray(config.data?.socials) && (
+            <div tw="w-full md:(w-full flex-1 block)">
+              <div tw="body-small my-4">链接</div>
+              <div tw="md:flex-1 space-x-2 flex flex-wrap md:(block space-y-2 space-x-0)">
+                {config.data &&
+                  Array.isArray(config.data?.socials) &&
+                  config.data.socials.map((social) => {
+                    return (
+                      <Link
+                        passHref
+                        legacyBehavior
+                        href={social.url || "#"}
+                        key={social.id}
+                      >
+                        <div tw="cursor-pointer">
+                          <span tw="title-small md:title-medium text-primary cursor-pointer">
+                            {social.name}
+                          </span>
+                        </div>
+                      </Link>
+                    );
+                  })}
+              </div>
+            </div>
           )}
         </div>
-        {config.data && Array.isArray(config.data?.socials) && (
-          <div tw="w-full md:(w-full flex-1 block)">
-            <div tw="body-small my-4">链接</div>
-            <div tw="md:flex-1 space-x-2 flex flex-wrap md:(block space-y-2 space-x-0)">
-              {config.data &&
-                Array.isArray(config.data?.socials) &&
-                config.data.socials.map((social) => {
-                  return (
-                    <Link
-                      passHref
-                      legacyBehavior
-                      href={social.url || "#"}
-                      key={social.id}
-                    >
-                      <div tw="cursor-pointer">
-                        <span tw="title-small md:title-medium text-primary cursor-pointer">
-                          {social.name}
-                        </span>
-                      </div>
-                    </Link>
-                  );
-                })}
-            </div>
-          </div>
-        )}
-      </div>
-      <div tw="title-medium flex w-full items-center">
-        <span>&copy; {new Date().getFullYear()} tansincosy</span>
-        {session ? (
-          <Button type="text" onClick={() => signOut()}>
-            {session.user.name} 注销
-          </Button>
-        ) : (
-          <Button type="text" onClick={() => router.push("/auth/sign_in")}>
-            登录
-          </Button>
-        )}
+        <div tw="title-medium flex w-full items-center">
+          <span>&copy; {new Date().getFullYear()} tansincosy</span>
+          {session ? (
+            <Button type="text" onClick={() => signOut()}>
+              {session.user.name} 注销
+            </Button>
+          ) : (
+            <Button type="text" onClick={() => router.push("/auth/sign_in")}>
+              登录
+            </Button>
+          )}
+        </div>
       </div>
     </footer>
   );

@@ -1,7 +1,16 @@
 import { type NextPage } from "next";
 import { useEffect, useState } from "react";
 import Drawer from "rc-drawer";
-import { Button, Layout, Input, Card, Fab, Icon } from "~/components";
+import {
+  Button,
+  Layout,
+  Input,
+  Card,
+  Fab,
+  Icon,
+  useSnackbar,
+  PostLayout,
+} from "~/components";
 import breaks from "@bytemd/plugin-breaks";
 import frontMatter from "@bytemd/plugin-frontmatter";
 import gemoji from "@bytemd/plugin-gemoji";
@@ -16,6 +25,7 @@ import { api } from "~/utils";
 import { useRouter } from "next/router";
 import throttle from "lodash/throttle";
 import Select, { Option } from "rc-select";
+import Upload from "rc-upload";
 
 const plugins = [
   gfm(),
@@ -30,13 +40,17 @@ const plugins = [
 
 const NewPost: NextPage = () => {
   const route = useRouter();
-  const post_id = route.query.post_id as string;
-  const postDraft = api.post.getPostById.useQuery(post_id || "");
+  const { editParam } = route.query;
+  if (editParam) {
+  }
+  const postDraft = api.post.getPostById.useQuery("");
+  api.post.pageList.useMutation();
   const [value, setValue] = useState<string>("");
   const [confirmPublish, setConfigPublish] = useState<boolean>(false);
   const [articleTitle, setArticleTitle] = useState<string>("");
+  const { open } = useSnackbar();
   useEffect(() => {
-    if (post_id) {
+    if (post_id !== "new_post") {
       setValue(postDraft.data?.content || "");
       setArticleTitle(postDraft.data?.title || "");
     }
@@ -57,13 +71,62 @@ const NewPost: NextPage = () => {
     setValue(markContent);
   }, 2000);
 
+  const uploadProps = {
+    action: "/upload.do",
+    multiple: false,
+    data: { a: 1, b: 2 },
+    headers: {
+      Authorization: "$prefix $token",
+    },
+    onStart(file) {
+      console.log("onStart", file, file.name);
+    },
+    onSuccess(res, file) {
+      console.log("onSuccess", res, file.name);
+    },
+    onError(err) {
+      console.log("onError", err);
+    },
+    onProgress({ percent }, file) {
+      console.log("onProgress", `${percent}%`, file.name);
+    },
+    customRequest({
+      action,
+      data,
+      file,
+      filename,
+      headers,
+      onError,
+      onProgress,
+      onSuccess,
+      withCredentials,
+    }) {
+      // EXAMPLE: post form-data with 'axios'
+      // eslint-disable-next-line no-undef
+      const formData = new FormData();
+      if (data) {
+        Object.keys(data).forEach((key) => {
+          formData.append(key, data[key]);
+        });
+      }
+      formData.append(filename, file);
+
+      return {
+        abort() {
+          console.log("upload progress is aborted.");
+        },
+      };
+    },
+  };
+
   return (
     <Layout>
+      <PostLayout>dsad</PostLayout>
       <section tw="flex justify-between">
         <div tw="flex-1">
           <Input
             type="text"
-            placeholder="请输入文章标题"
+            label="请输入文章标题"
             value={articleTitle}
             onChange={onInputChange}
           />
@@ -72,7 +135,7 @@ const NewPost: NextPage = () => {
       <Editor value={value} plugins={plugins} onChange={editorOnChange} />
       <Fab
         onClick={beginPublish}
-        icon="publish"
+        icon="file-upload"
         tw="fixed right-20 bottom-20 z-40 text-3xl"
         size="large"
       ></Fab>
@@ -84,26 +147,22 @@ const NewPost: NextPage = () => {
       >
         <div tw="title-small box-border py-4 space-y-3 leading-[3.5rem] text-on-surface-variant flex flex-col items-center">
           <Card tw="w-64 h-32">
-            <input
-              type="file"
-              placeholder="请上传封面图片"
-              tw="hidden"
-              id="upload-image"
-            />
-            <label
-              tw="w-full h-full block cursor-pointer text-center"
-              className="material-symbols-outlined"
-              htmlFor="upload-image"
-            >
-              <Icon
-                name="add_photo_alternate"
-                tw="text-9xl text-surface-variant"
-              ></Icon>
-            </label>
+            <Upload {...uploadProps}>
+              <label
+                tw="w-full h-full block cursor-pointer text-center"
+                className="material-symbols-outlined"
+                htmlFor="upload-image"
+              >
+                <Icon
+                  name="file-upload"
+                  tw="text-9xl fill-surface-variant"
+                ></Icon>
+              </label>
+            </Upload>
           </Card>
           <Card tw="h-36 w-full">
             <div>
-              <Select tw="w-full">
+              <Select tw="w-full" prefixCls="rc-select">
                 <Option value="jack">jack</Option>
                 <Option value="lucy">lucy</Option>
                 <Option value="yiminghe">yiminghe</Option>

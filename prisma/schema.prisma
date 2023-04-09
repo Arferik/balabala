@@ -72,12 +72,13 @@ model Post {
     introduce    String?      @default("")
     is_release   Boolean      @default(false)
     content      String       @db.Text
-    release_date DateTime?    @default(now())
+    release_date DateTime?
     PostOnTag    PostOnTags[]
     Category     Category?    @relation(fields: [category_id], references: [id])
     category_id  String?
     cover        Image?       @relation(fields: [imageId], references: [id])
     imageId      String?      @map("image_id")
+    created_at   DateTime     @default(now())
 
     @@map("t_bl_post")
 }

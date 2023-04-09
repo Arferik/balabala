@@ -42,7 +42,7 @@ const Post: NextPage = () => {
                   {postDetail?.data?.title}
                 </h1>
                 <h4 tw="title-large mt-2 text-secondary md:headline-medium">
-                  {postDetail?.data?.description}
+                  {postDetail?.data?.introduce}
                 </h4>
               </div>
             </header>
@@ -50,8 +50,8 @@ const Post: NextPage = () => {
               {postDetail?.data?.cover && (
                 <Image
                   fill
-                  src={postDetail?.data?.cover || ""}
-                  alt="Post picture"
+                  src={postDetail?.data?.cover.url || ""}
+                  alt={postDetail?.data?.cover.name || ""}
                   tw="[object-fit: cover] rounded-3xl"
                 ></Image>
               )}

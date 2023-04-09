@@ -1,3 +1,4 @@
+import { prisma } from "./../../db";
 import { z } from "zod";
 import {
   createTRPCRouter,
@@ -13,10 +14,51 @@ export const postRouter = createTRPCRouter({
       },
     });
   }),
+
+  infinitePosts: publicProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(100).nullish(),
+        cursor: z.date().nullish(),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      const limit = input.limit ?? 50;
+      const { cursor } = input;
+      const items = await ctx.prisma.post.findMany({
+        take: limit + 1, // get an extra item at the end which we'll use as next cursor
+        cursor: cursor ? { created_at: cursor } : undefined,
+        orderBy: {
+          created_at: "asc",
+        },
+      });
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (items.length > limit) {
+        const nextItem = items.pop();
+        nextCursor = nextItem!.created_at;
+      }
+      return {
+        items,
+        nextCursor,
+      };
+    }),
   getPostById: publicProcedure.input(z.string()).query(({ input, ctx }) => {
     return ctx.prisma.post.findUnique({
       where: {
         id: input,
+      },
+      select: {
+        title: true,
+        id: true,
+        release_date: true,
+        introduce: true,
+        content: true,
+        cover: {
+          select: {
+            url: true,
+            name: true,
+          },
+        },
       },
     });
   }),
@@ -61,29 +103,6 @@ export const postRouter = createTRPCRouter({
           id: input,
         },
       });
-    }),
-  pageList: protectedProcedure
-    .input(
-      z.object({
-        number: z.number().default(1),
-        size: z.number().default(20),
-      })
-    )
-    .mutation(async ({ input, ctx }) => {
-      const posts = ctx.prisma.post.findMany({
-        orderBy: {
-          release_date: "desc",
-        },
-        skip: (input.number - 1) * input.size,
-        take: input.size,
-      });
-      const postCounts = ctx.prisma.post.count({});
-      const [data, count] = await ctx.prisma.$transaction([posts, postCounts]);
-      return {
-        data,
-        count,
-        input,
-      };
     }),
   savePostDraft: protectedProcedure
     .input(

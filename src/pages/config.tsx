@@ -18,18 +18,21 @@ import { ConfigSchema } from "~/utils/schema";
 import { prisma } from "~/server/db";
 import { configRouter } from "~/server/api/routers/config";
 import { useEffect } from "react";
+import { defer } from "lodash";
 
 interface ConfigForm extends Config {
   socials: { name: string; url: string }[];
 }
+interface ConfigParams extends Config {
+  socials: { name: string; url: string }[];
+}
 
-const ConfigManager: NextPage<{ config: Config }> = ({ config }) => {
+const ConfigManager: NextPage<{ config: ConfigParams }> = ({ config }) => {
   const { open } = useSnackbar();
   const {
     register,
     handleSubmit,
     control,
-    reset,
     setValue,
     formState: { errors },
   } = useForm<ConfigForm>({
@@ -60,17 +63,18 @@ const ConfigManager: NextPage<{ config: Config }> = ({ config }) => {
       slogan: data.slogan || "",
       socials: data.socials || [],
     });
-    reset({});
   };
 
   useEffect(() => {
     if (config) {
-      setValue("blog_title", config.blog_title);
-      setValue("blog_introduce", config.blog_introduce);
-      setValue("slogan", config.slogan);
       setValue("socials", config.socials);
+      defer(() => {
+        setValue("blog_title", config.blog_title);
+        setValue("blog_introduce", config.blog_introduce);
+        setValue("slogan", config.slogan);
+      });
     }
-  }, [config]);
+  }, [config, setValue]);
 
   return (
     <>

@@ -195,6 +195,7 @@
     min-height: 100px;
     position: absolute;
     background: #fff;
+    z-index: 999;
 
     &-hidden {
       display: none;
