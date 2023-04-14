@@ -1,15 +1,15 @@
 import { type NextPage } from "next";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Drawer from "rc-drawer";
 import {
   Button,
   Layout,
   Input,
   Card,
-  Fab,
   Icon,
   useSnackbar,
   PostLayout,
+  Textarea,
 } from "~/components";
 import breaks from "@bytemd/plugin-breaks";
 import frontMatter from "@bytemd/plugin-frontmatter";
@@ -25,8 +25,7 @@ import { api } from "~/utils";
 import { useRouter } from "next/router";
 import throttle from "lodash/throttle";
 import Select, { Option } from "rc-select";
-import Upload from "rc-upload";
-
+import Upload, { type UploadProps } from "rc-upload";
 const plugins = [
   gfm(),
   breaks(),
@@ -38,23 +37,33 @@ const plugins = [
   frontMatter(),
 ];
 
+// TODO: 1. 上传图片 2.自定义标签 tags
+
 const NewPost: NextPage = () => {
   const route = useRouter();
-  const { editParam } = route.query;
-  if (editParam) {
-  }
-  const postDraft = api.post.getPostById.useQuery("");
-  api.post.pageList.useMutation();
   const [value, setValue] = useState<string>("");
-  const [confirmPublish, setConfigPublish] = useState<boolean>(false);
-  const [articleTitle, setArticleTitle] = useState<string>("");
   const { open } = useSnackbar();
+  const [confirmPublish, setConfigPublish] = useState<boolean>(false);
+  const [showPostSlider, setShowPostSlider] = useState<boolean>(false);
+  const [articleTitle, setArticleTitle] = useState<string>("");
+  const { mutate: postIdMutate } = api.post.getPostById.useMutation({
+    onSuccess: (data) => {
+      setValue(data?.content || "");
+    },
+  });
+  const { data: tags } = api.post.allTags.useQuery();
+  const { data: categories } = api.post.allCatagories.useQuery();
+
   useEffect(() => {
-    if (post_id !== "new_post") {
-      setValue(postDraft.data?.content || "");
-      setArticleTitle(postDraft.data?.title || "");
+    if (route.query.p) {
+      const editParam = route.query.p;
+      if (typeof editParam === "string") {
+        postIdMutate(editParam);
+      }
+    } else {
     }
-  }, [postDraft.data, post_id]);
+  }, [route.query.p]);
+
   const onClose = () => {
     setConfigPublish(false);
   };
@@ -71,13 +80,8 @@ const NewPost: NextPage = () => {
     setValue(markContent);
   }, 2000);
 
-  const uploadProps = {
-    action: "/upload.do",
+  const uploadProps: UploadProps = {
     multiple: false,
-    data: { a: 1, b: 2 },
-    headers: {
-      Authorization: "$prefix $token",
-    },
     onStart(file) {
       console.log("onStart", file, file.name);
     },
@@ -87,29 +91,25 @@ const NewPost: NextPage = () => {
     onError(err) {
       console.log("onError", err);
     },
-    onProgress({ percent }, file) {
-      console.log("onProgress", `${percent}%`, file.name);
-    },
-    customRequest({
-      action,
-      data,
-      file,
-      filename,
-      headers,
-      onError,
-      onProgress,
-      onSuccess,
-      withCredentials,
-    }) {
-      // EXAMPLE: post form-data with 'axios'
-      // eslint-disable-next-line no-undef
+    async customRequest({ data, file, filename, headers, onError, onSuccess }) {
       const formData = new FormData();
       if (data) {
         Object.keys(data).forEach((key) => {
           formData.append(key, data[key]);
         });
       }
-      formData.append(filename, file);
+      if (filename) formData.append(filename, file);
+      try {
+        const res = await fetch(`/api/image?id=${route.query.p}&type=cover`, {
+          method: "POST",
+          body: formData,
+          headers: headers,
+        }).then((resp) => resp.body);
+
+        onSuccess && onSuccess(res, file);
+      } catch (err) {
+        onError && onError(err, null);
+      }
 
       return {
         abort() {
@@ -119,26 +119,66 @@ const NewPost: NextPage = () => {
     },
   };
 
+  const onPostSliderClose = () => {
+    setShowPostSlider(false);
+  };
+
+  const uploadImages: (files: File[]) => any = () => {
+    return ["demo.url"];
+  };
+
+  const [name, setName] = useState("");
+  const inputRef = useRef<any>(null);
+
+  const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
+  };
+
+  const [items, setItems] = useState<any>([...categories]);
+  const addItem = (
+    e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
+  ) => {
+    e.preventDefault();
+    setItems([...items, name || `New item ${index++}`]);
+    setName("");
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 0);
+  };
+
   return (
     <Layout>
-      <PostLayout>dsad</PostLayout>
-      <section tw="flex justify-between">
-        <div tw="flex-1">
-          <Input
-            type="text"
-            label="请输入文章标题"
-            value={articleTitle}
-            onChange={onInputChange}
-          />
-        </div>
-      </section>
-      <Editor value={value} plugins={plugins} onChange={editorOnChange} />
-      <Fab
-        onClick={beginPublish}
-        icon="file-upload"
-        tw="fixed right-20 bottom-20 z-40 text-3xl"
-        size="large"
-      ></Fab>
+      <div tw="mt-20 flex container mx-auto mb-8 items-center">
+        <Input
+          type="text"
+          label="请输入文章标题"
+          onChange={onInputChange}
+          value={articleTitle}
+        />
+        <Button
+          icon={<Icon name="menu-4" tw="fill-on-surface"></Icon>}
+          onClick={() => setShowPostSlider(true)}
+        ></Button>
+        <Button
+          onClick={beginPublish}
+          icon={<Icon name="file-upload" tw="fill-on-surface"></Icon>}
+        ></Button>
+      </div>
+      <Editor
+        value={value}
+        plugins={plugins}
+        onChange={editorOnChange}
+        uploadImages={uploadImages}
+      />
+
+      <Drawer
+        open={showPostSlider}
+        onClose={onPostSliderClose}
+        autoFocus={true}
+        prefixCls="drawer"
+      >
+        <PostLayout></PostLayout>
+      </Drawer>
       <Drawer
         open={confirmPublish}
         onClose={onClose}
@@ -146,31 +186,49 @@ const NewPost: NextPage = () => {
         prefixCls="drawer"
       >
         <div tw="title-small box-border py-4 space-y-3 leading-[3.5rem] text-on-surface-variant flex flex-col items-center">
-          <Card tw="w-64 h-32">
+          <Card tw="w-64 h-32 flex items-center justify-center bg-on-primary-container cursor-pointer">
             <Upload {...uploadProps}>
-              <label
-                tw="w-full h-full block cursor-pointer text-center"
-                className="material-symbols-outlined"
-                htmlFor="upload-image"
-              >
-                <Icon
-                  name="file-upload"
-                  tw="text-9xl fill-surface-variant"
-                ></Icon>
-              </label>
+              <Icon name="upload" tw="text-9xl fill-primary" size="lg"></Icon>
             </Upload>
           </Card>
-          <Card tw="h-36 w-full">
-            <div>
-              <Select tw="w-full" prefixCls="rc-select">
-                <Option value="jack">jack</Option>
-                <Option value="lucy">lucy</Option>
-                <Option value="yiminghe">yiminghe</Option>
-              </Select>
-            </div>
-          </Card>
-          <Card tw="h-36 w-full">分类</Card>
-          <Card tw="h-36 w-full">摘要</Card>
+          <div tw="w-full">
+            <Select
+              tw="w-full"
+              prefixCls="rc-select"
+              mode="tags"
+              maxTagCount={5}
+            >
+              {Array.isArray(tags) &&
+                tags.length > 0 &&
+                tags.map((item) => {
+                  return (
+                    <Option value={item.id} key={item.id}>
+                      {item.name}
+                    </Option>
+                  );
+                })}
+            </Select>
+          </div>
+          <div tw="w-full">
+            <Select
+              tw="w-full"
+              prefixCls="rc-select"
+              dropdownRender={(menu) => (
+                <>
+                  {menu}
+                  <Input ref={inputRef} value={name} onChange={onNameChange} />
+                  <Button type="text" onClick={addItem}>
+                    Add item
+                  </Button>
+                </>
+              )}
+              options={items.map((item: { name: any; id: any }) => ({
+                label: item.name,
+                value: item.id,
+              }))}
+            ></Select>
+          </div>
+          <Textarea tw="h-36 w-full" label="摘要"></Textarea>
           <Button type="filled" tw="w-full m-14">
             确认发布
           </Button>

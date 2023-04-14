@@ -1,4 +1,3 @@
-import { prisma } from "./../../db";
 import { z } from "zod";
 import {
   createTRPCRouter,
@@ -7,12 +6,19 @@ import {
 } from "~/server/api/trpc";
 
 export const postRouter = createTRPCRouter({
-  draft: publicProcedure.input(z.string()).query(({ input, ctx }) => {
-    return ctx.prisma.post.findFirst({
-      where: {
-        id: input,
+  savePostEmpty: protectedProcedure.mutation(async ({ ctx }) => {
+    const post = await ctx.prisma.post.create({
+      data: {
+        title: "未命名",
+        content: "未命名",
+        introduce: "未命名",
+        is_release: false,
+      },
+      select: {
+        id: true,
       },
     });
+    return post;
   }),
 
   infinitePosts: publicProcedure
@@ -42,7 +48,7 @@ export const postRouter = createTRPCRouter({
         nextCursor,
       };
     }),
-  getPostById: publicProcedure.input(z.string()).query(({ input, ctx }) => {
+  getPostById: publicProcedure.input(z.string()).mutation(({ input, ctx }) => {
     return ctx.prisma.post.findUnique({
       where: {
         id: input,
@@ -59,6 +65,24 @@ export const postRouter = createTRPCRouter({
             name: true,
           },
         },
+      },
+    });
+  }),
+  allTags: publicProcedure.query(({ ctx }) => {
+    return ctx.prisma.tag.findMany({
+      select: {
+        id: true,
+        name: true,
+        icon: true,
+      },
+    });
+  }),
+  allCatagories: publicProcedure.query(({ ctx }) => {
+    return ctx.prisma.category.findMany({
+      select: {
+        id: true,
+        name: true,
+        icon: true,
       },
     });
   }),

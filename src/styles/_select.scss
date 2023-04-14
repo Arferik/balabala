@@ -134,7 +134,7 @@
 
       &-mirror {
         position: absolute;
-        z-index: 999;
+        z-index: 9999;
         white-space: nowrap;
         position: none;
         left: 0;
@@ -195,7 +195,7 @@
     min-height: 100px;
     position: absolute;
     background: #fff;
-    z-index: 999;
+    z-index: 9999;
 
     &-hidden {
       display: none;
