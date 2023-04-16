@@ -187,11 +187,9 @@
 
   // ============== Dropdown ===============
   &-dropdown {
-    border: 1px solid green;
     min-height: 100px;
-    position: absolute;
-    background: #fff;
     z-index: 9999;
+    @apply absolute rounded-md  bg-on-surface shadow-lg;
 
     &-hidden {
       display: none;
