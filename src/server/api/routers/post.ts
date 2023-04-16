@@ -77,15 +77,6 @@ export const postRouter = createTRPCRouter({
       },
     });
   }),
-  allCatagories: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.category.findMany({
-      select: {
-        id: true,
-        name: true,
-        icon: true,
-      },
-    });
-  }),
   post20Latest: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.post.findMany({
       select: {
