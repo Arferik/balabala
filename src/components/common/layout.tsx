@@ -34,7 +34,6 @@ export const Layout = ({
     applyTheme(theme, {
       target: document.body,
       dark: systemDark,
-      brightnessSuffix: true,
     });
   }, [themeColor]);
   return (

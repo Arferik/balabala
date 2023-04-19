@@ -28,7 +28,7 @@ const plugins = [
 const Post: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
-  const postDetail = api.post.getPostById.useMutation();
+  const postDetail = api.post.postById.useQuery(id);
   return (
     <Layout>
       {postDetail.isLoading ? (

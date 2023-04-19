@@ -21,6 +21,64 @@ export const postRouter = createTRPCRouter({
     return post;
   }),
 
+  updatePost: protectedProcedure
+    .input(
+      z.object({
+        title: z.string(),
+        category: z.string(),
+        introduce: z.string(),
+        content: z.string(),
+        is_release: z.boolean().default(false).optional(),
+        id: z.string(),
+        tags: z.array(z.string()).optional(),
+        cover: z.object({
+          url: z.string(),
+          name: z.string(),
+        }),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const currentCategoryId = await ctx.prisma.category.findFirst({
+        where: {
+          name: input.category,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      console.log(
+        "input.category =",
+        input.category,
+        "currentCategoryId = ",
+        currentCategoryId
+      );
+
+      const postUpDate = await ctx.prisma.post.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          title: input.title,
+          introduce: input.introduce,
+          content: input.content,
+          is_release: input.is_release,
+          Category: {
+            connect: {
+              id: input.category,
+            },
+          },
+          PostOnTag: {},
+          cover: {
+            create: {
+              url: input.cover.url,
+              name: input.cover.name,
+            },
+          },
+        },
+      });
+      return postUpDate;
+    }),
   infinitePosts: publicProcedure
     .input(
       z.object({
@@ -48,6 +106,36 @@ export const postRouter = createTRPCRouter({
         nextCursor,
       };
     }),
+  postById: publicProcedure.input(z.string()).query(({ input, ctx }) => {
+    return ctx.prisma.post.findUnique({
+      where: {
+        id: input,
+      },
+      select: {
+        title: true,
+        id: true,
+        release_date: true,
+        introduce: true,
+        content: true,
+        cover: {
+          select: {
+            url: true,
+            name: true,
+          },
+        },
+        PostOnTag: {
+          select: {
+            tag: {
+              select: {
+                name: true,
+                icon: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  }),
   getPostById: publicProcedure.input(z.string()).mutation(({ input, ctx }) => {
     return ctx.prisma.post.findUnique({
       where: {

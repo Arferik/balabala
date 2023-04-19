@@ -46,6 +46,9 @@ const NewPost: NextPage = () => {
   const route = useRouter();
   const utils = api.useContext();
   const [value, setValue] = useState<string>("");
+  const [tagsVal, setTagVal] = useState<string[]>();
+  const [categoryVal, setCategoryVal] = useState<string>();
+  const [introduceVal, setIntroduceVal] = useState<string>("");
   const { open } = useSnackbar();
   const [confirmPublish, setConfigPublish] = useState<boolean>(false);
   const [showPostSlider, setShowPostSlider] = useState<boolean>(false);
@@ -59,6 +62,8 @@ const NewPost: NextPage = () => {
       setValue(data?.content || "");
       // 设置图片
       setCoverImage(data?.cover || {});
+      setArticleTitle(data?.title || "");
+      setIntroduceVal(data?.introduce || "");
     },
   });
   const { data: tags } = api.post.allTags.useQuery();
@@ -67,6 +72,12 @@ const NewPost: NextPage = () => {
     onSuccess: () => {
       open("添加分类成功");
       utils.category.allCatagories.refetch();
+    },
+  });
+
+  const { mutate: postMutate } = api.post.updatePost.useMutation({
+    onSuccess: () => {
+      open("更新成功");
     },
   });
 
@@ -86,6 +97,17 @@ const NewPost: NextPage = () => {
 
   const beginPublish = () => {
     setConfigPublish(true);
+    postMutate({
+      id: route.query.p as string,
+      title: articleTitle,
+      content: value,
+      cover: {
+        url: coverImage.url || "",
+        name: coverImage.name || "",
+      },
+      introduce: introduceVal,
+      category: categoryVal,
+    });
   };
 
   const onInputChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
@@ -246,46 +268,46 @@ const NewPost: NextPage = () => {
               <Image src={coverImage?.url || ""} alt="cover" fill></Image>
             </Upload>
           </Card>
-          <div tw="w-full">
-            <Select
-              placeholder="placeholder"
-              tw="w-full"
-              prefixCls="rc-select"
-              mode="tags"
-              tokenSeparators={[","]}
-              maxTagCount={5}
-            >
-              {Array.isArray(tags) &&
-                tags.length > 0 &&
-                tags.map((item) => {
-                  return (
-                    <Option value={item.id} key={item.id}>
-                      {item.name}
-                    </Option>
-                  );
-                })}
-            </Select>
-          </div>
-          <div tw="w-full">
-            <Select tw="w-full" prefixCls="rc-select">
-              {Array.isArray(categories) &&
-                categories.length > 0 &&
-                categories.map((item) => {
-                  return (
-                    <Option value={item.id} key={item.id}>
-                      {item.name}
-                    </Option>
-                  );
-                })}
-            </Select>
-          </div>
-          <div tw="w-full">
-            <Button type="outlined" tw="w-full" onClick={openAddCateDialog}>
-              新增类别
-            </Button>
-          </div>
+          <Select
+            tw="w-full"
+            prefixCls="rc-select"
+            mode="tags"
+            tokenSeparators={[","]}
+            maxTagCount={5}
+            value={tagsVal}
+            onChange={(val) => setTagVal(val)}
+          >
+            {Array.isArray(tags) &&
+              tags.length > 0 &&
+              tags.map((item) => {
+                return (
+                  <Option value={item.id} key={item.id}>
+                    {item.name}
+                  </Option>
+                );
+              })}
+          </Select>
+          <Select
+            tw="w-full"
+            prefixCls="rc-select"
+            value={categoryVal}
+            onChange={(val) => setCategoryVal(val)}
+          >
+            {Array.isArray(categories) &&
+              categories.length > 0 &&
+              categories.map((item) => {
+                return (
+                  <Option value={item.id} key={item.id}>
+                    {item.name}
+                  </Option>
+                );
+              })}
+          </Select>
+          <Button type="outlined" tw="w-full" onClick={openAddCateDialog}>
+            新增类别
+          </Button>
           <Textarea tw="h-36 w-full" label="摘要"></Textarea>
-          <Button type="filled" tw="w-full m-14">
+          <Button type="filled" tw="w-full m-14" onClick={beginPublish}>
             确认发布
           </Button>
         </div>
