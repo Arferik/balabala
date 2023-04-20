@@ -11,6 +11,7 @@ import Footer from "./footer";
 import { Snackbar } from "..";
 import { useMediaQuery } from "~/hooks";
 import { api } from "~/utils";
+import { useTheme } from "~/hooks/useTheme";
 
 export interface LayoutProps {
   children: ReactNode;
@@ -24,18 +25,9 @@ export const Layout = ({
   themeColor,
   hiddenTopFooter,
 }: LayoutProps) => {
+  useTheme(themeColor);
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const config = api.config.get.useQuery();
-  useEffect(() => {
-    const theme = themeFromSourceColor(argbFromHex(themeColor || "#066bf8"));
-    const systemDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
-    applyTheme(theme, {
-      target: document.body,
-      dark: systemDark,
-    });
-  }, [themeColor]);
   return (
     <div tw="relative flex flex-col h-screen">
       {!hiddenTopFooter && (

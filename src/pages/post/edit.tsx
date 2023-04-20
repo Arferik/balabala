@@ -106,7 +106,7 @@ const NewPost: NextPage = () => {
         name: coverImage.name || "",
       },
       introduce: introduceVal,
-      category: categoryVal,
+      category: categoryVal || "",
     });
   };
 
