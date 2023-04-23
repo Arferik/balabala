@@ -1,3 +1,4 @@
+import { createContext, useContext, useEffect, useState } from "react";
 import {
   type Theme,
   applyTheme,
@@ -5,7 +6,11 @@ import {
   themeFromSourceColor,
   hexFromArgb,
 } from "@material/material-color-utilities";
-import { useEffect, useState } from "react";
+
+type ThemeType = {
+  color?: string;
+};
+const ThemeContext = createContext<Record<string, string>>({});
 
 const getTokenColorFromScheme = (
   colorScheme: Record<string, number>
@@ -61,10 +66,14 @@ const getPalettes = (theme: Theme, isDark: boolean) => {
     return newSurfaceColorToken.light;
   }
 };
-export const useTheme = (themeColor?: string) => {
+
+export function ThemeProvider({
+  children,
+  color,
+}: { children: React.ReactNode } & ThemeType) {
   const [palettes, setColorPalettes] = useState({});
   useEffect(() => {
-    const theme = themeFromSourceColor(argbFromHex(themeColor || "#066bf8"));
+    const theme = themeFromSourceColor(argbFromHex(color || "#066bf8"));
     const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     const newPalettesSchema = getPalettes(theme, isDark);
     applyTheme(theme, {
@@ -76,6 +85,15 @@ export const useTheme = (themeColor?: string) => {
       ...getTokenColorFromScheme(scheme.toJSON()),
       ...getTokenColorFromScheme(newPalettesSchema),
     });
-  }, [themeColor]);
-  return { palettes };
-};
+  }, [color]);
+
+  return (
+    <ThemeContext.Provider value={{ ...palettes }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+}
+
+export function useThemeContext() {
+  return useContext(ThemeContext);
+}

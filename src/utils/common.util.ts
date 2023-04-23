@@ -36,6 +36,16 @@ const colorToHex = (color: number) => {
   return hexadecimal.length == 1 ? "0" + hexadecimal : hexadecimal;
 };
 
+export const hexToRgba = (hex = "", alpha: number) => {
+  if (!hex) {
+    return "";
+  }
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+};
+
 //rgb to hex
 export const rgbToHex = ([r, g, b]: [r: number, g: number, g: number]) => {
   return `#${colorToHex(r)}${colorToHex(g)}${colorToHex(b)}`;

@@ -5,6 +5,13 @@ const plugin = require("tailwindcss/plugin");
 
 const themeColors = () => {
   return [
+    "surface-dim",
+    "surface-bright",
+    "surface-container-lowest",
+    "surface-container-low",
+    "surface-container",
+    "surface-container-high",
+    "surface-container-highest",
     "primary",
     "on-primary",
     "primary-container",
@@ -40,109 +47,109 @@ const themeColors = () => {
   }, {});
 };
 
-const fontUnit = (/** @type {number} */ size) => {
+const unit = (/** @type {number} */ size) => {
   return `${size / 16}rem`;
 };
 
 const typography = plugin(({ addComponents, theme }) => {
   addComponents({
     ".display-large": {
-      lineHeight: fontUnit(64),
-      fontSize: fontUnit(57),
+      lineHeight: unit(64),
+      fontSize: unit(57),
       fontWeight: 400,
       fontFamily: "Roboto ,sans-serif",
     },
     ".display-medium": {
-      lineHeight: fontUnit(52),
-      fontSize: fontUnit(45),
+      lineHeight: unit(52),
+      fontSize: unit(45),
       fontWeight: 400,
       fontFamily: "Roboto ,sans-serif",
     },
     ".display-small": {
-      lineHeight: fontUnit(44),
-      fontSize: fontUnit(36),
+      lineHeight: unit(44),
+      fontSize: unit(36),
       fontWeight: 400,
       fontFamily: "Roboto ,sans-serif",
     },
     ".headline-large": {
-      lineHeight: fontUnit(40),
-      fontSize: fontUnit(32),
+      lineHeight: unit(40),
+      fontSize: unit(32),
       fontWeight: 400,
       fontFamily: "Roboto ,sans-serif",
     },
     ".headline-medium": {
-      lineHeight: fontUnit(36),
-      fontSize: fontUnit(28),
+      lineHeight: unit(36),
+      fontSize: unit(28),
       fontWeight: 400,
       fontFamily: "Roboto ,sans-serif",
     },
     ".headline-small": {
-      lineHeight: fontUnit(32),
-      fontSize: fontUnit(24),
+      lineHeight: unit(32),
+      fontSize: unit(24),
       fontWeight: 400,
       fontFamily: "Roboto ,sans-serif",
     },
     ".title-large": {
-      lineHeight: fontUnit(28),
-      fontSize: fontUnit(22),
+      lineHeight: unit(28),
+      fontSize: unit(22),
       fontWeight: 400,
       fontFamily: "Roboto ,sans-serif",
     },
     ".title-medium": {
-      lineHeight: fontUnit(24),
-      fontSize: fontUnit(16),
+      lineHeight: unit(24),
+      fontSize: unit(16),
       fontWeight: 500,
       fontFamily: "Roboto ,sans-serif",
-      letterSpacing: fontUnit(0.15),
+      letterSpacing: unit(0.15),
     },
     ".title-small": {
-      lineHeight: fontUnit(20),
-      fontSize: fontUnit(14),
+      lineHeight: unit(20),
+      fontSize: unit(14),
       fontWeight: 500,
       fontFamily: "Roboto ,sans-serif",
-      letterSpacing: fontUnit(0.1),
+      letterSpacing: unit(0.1),
     },
     ".label-large": {
-      lineHeight: fontUnit(20),
-      fontSize: fontUnit(14),
+      lineHeight: unit(20),
+      fontSize: unit(14),
       fontWeight: 400,
       fontFamily: "Roboto ,sans-serif",
-      letterSpacing: fontUnit(0.1),
+      letterSpacing: unit(0.1),
     },
     ".label-medium": {
-      lineHeight: fontUnit(16),
-      fontSize: fontUnit(12),
+      lineHeight: unit(16),
+      fontSize: unit(12),
       fontWeight: 500,
       fontFamily: "Roboto ,sans-serif",
-      letterSpacing: fontUnit(0.5),
+      letterSpacing: unit(0.5),
     },
     ".label-small": {
-      lineHeight: fontUnit(6),
-      fontSize: fontUnit(11),
+      lineHeight: unit(6),
+      fontSize: unit(11),
       fontWeight: 500,
       fontFamily: "Roboto ,sans-serif",
-      letterSpacing: fontUnit(0.5),
+      letterSpacing: unit(0.5),
     },
     ".body-large": {
-      lineHeight: fontUnit(24),
-      fontSize: fontUnit(16),
+      lineHeight: unit(24),
+      fontSize: unit(16),
       fontWeight: 500,
       fontFamily: "Roboto ,sans-serif",
-      letterSpacing: fontUnit(0.15),
+      letterSpacing: unit(0.15),
     },
     ".body-medium": {
-      lineHeight: fontUnit(20),
-      fontSize: fontUnit(14),
+      lineHeight: unit(20),
+      fontSize: unit(14),
       fontWeight: 500,
       fontFamily: "Roboto ,sans-serif",
-      letterSpacing: fontUnit(0.25),
+      letterSpacing: unit(0.25),
     },
     ".body-small": {
-      lineHeight: fontUnit(16),
-      fontSize: fontUnit(12),
+      lineHeight: unit(16),
+      fontSize: unit(12),
       fontWeight: 500,
       fontFamily: "Roboto ,sans-serif",
-      letterSpacing: fontUnit(0.4),
+      letterSpacing: unit(0.4),
     },
   });
 });
@@ -154,6 +161,13 @@ const config = {
     extend: {
       colors: {
         ...themeColors(),
+      },
+      boxShadow: {
+        el1: `0px ${unit(1)} ${unit(1)} 0px rgba(0,0,0,0.05)`,
+        el2: `0px ${unit(3)} ${unit(3)} 0px rgba(0,0,0,0.05)`,
+        el3: `0px ${unit(6)} ${unit(6)} 0px rgba(0,0,0,0.05)`,
+        el4: `0px ${unit(8)} ${unit(8)}  0px rgba(0,0,0,0.05)`,
+        el5: `0px ${unit(12)} ${unit(12)}  0px rgba(0,0,0,0.05)`,
       },
     },
   },

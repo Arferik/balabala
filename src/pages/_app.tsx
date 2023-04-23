@@ -7,6 +7,7 @@ import "bytemd/dist/index.css";
 import GlobalStyles from "../styles/GlobalStyles";
 import { Roboto } from "next/font/google";
 import { SnackbarProvider } from "~/components";
+import { ThemeProvider } from "~/components/myd";
 
 const inter = Roboto({ subsets: ["latin"], weight: "500" });
 
@@ -16,15 +17,17 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <SnackbarProvider>
-        <style jsx global>{`
-          html {
-            font-family: ${inter.style.fontFamily};
-          }
-        `}</style>
-        <GlobalStyles />
-        <Component {...pageProps} />
-      </SnackbarProvider>
+      <ThemeProvider>
+        <SnackbarProvider>
+          <style jsx global>{`
+            html {
+              font-family: ${inter.style.fontFamily};
+            }
+          `}</style>
+          <GlobalStyles />
+          <Component {...pageProps} />
+        </SnackbarProvider>
+      </ThemeProvider>
     </SessionProvider>
   );
 };
