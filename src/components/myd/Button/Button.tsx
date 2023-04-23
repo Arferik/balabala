@@ -1,10 +1,9 @@
-import React from "react";
+import React, { type ButtonHTMLAttributes } from "react";
 import tw, { styled, css } from "twin.macro";
-import { type ButtonUnstyledProps, useButton } from "@mui/base";
 import clsx from "clsx";
 import { BaseButton } from "../ButtonBase/ButtonBase";
 import { useThemeContext } from "../utils/themeProvider";
-import { hexToRgba } from "~/utils";
+import { paletteAlpha } from "../utils/materialYouColorToken";
 
 export type ButtonVariant =
   | "elevated"
@@ -12,13 +11,14 @@ export type ButtonVariant =
   | "outlined"
   | "text"
   | "tonal";
-export interface ButtonProps {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
 }
 const ButtonRoot = styled(BaseButton)<ButtonProps>(
   ({ variant = "elevated", disabled }) => {
     const themePalettes = useThemeContext();
     return [
+      tw`h-10 px-6`,
       variant === "elevated" &&
         tw`!bg-surface-container-low shadow-md text-primary label-large 
         hover:after:(w-[200%] h-[200%] bg-primary opacity-[.08] absolute top-[-50%] left-[-50%])
@@ -48,22 +48,73 @@ const ButtonRoot = styled(BaseButton)<ButtonProps>(
         active:after:(w-[200%] h-[200%] bg-on-secondary-container opacity-[.12] absolute top-[-50%] left-[-50%])
         `,
       disabled && tw`!shadow-none !cursor-not-allowed hover:!(shadow-none)`,
-      css`
-        &:disabled {
-          background-color: ${hexToRgba(
-            themePalettes["--md-sys-color-on-surface"],
-            0.12
-          )} !important;
-          color: ${hexToRgba(
-            themePalettes["--md-sys-color-on-surface"],
-            0.38
-          )} !important;
-        }
-      `,
-      disabled && variant === "filled" && tw``,
-      disabled && variant === "outlined" && tw``,
-      disabled && variant === "text" && tw``,
-      disabled && variant === "tonal" && tw``,
+      disabled &&
+        (variant === "elevated" ||
+          variant === "filled" ||
+          variant === "tonal") &&
+        css`
+          &:disabled {
+            background-color: ${paletteAlpha(
+              themePalettes,
+              "on-surface",
+              0.12
+            )} !important;
+            color: ${paletteAlpha(
+              themePalettes,
+              "on-surface",
+              0.38
+            )} !important;
+            &:hover:after {
+              background-color: ${paletteAlpha(
+                themePalettes,
+                "on-surface",
+                0.12
+              )} !important;
+            }
+          }
+        `,
+      disabled &&
+        variant === "text" &&
+        css`
+          &:disabled {
+            color: ${paletteAlpha(
+              themePalettes,
+              "on-surface",
+              0.38
+            )} !important;
+            &:hover:after {
+              background-color: transparent !important;
+            }
+          }
+        `,
+      disabled &&
+        variant === "outlined" &&
+        css`
+          &:disabled {
+            border-color: ${paletteAlpha(
+              themePalettes,
+              "outline",
+              0.38
+            )} !important;
+            background-color: ${paletteAlpha(
+              themePalettes,
+              "on-surface",
+              0.12
+            )} !important;
+            color: ${paletteAlpha(
+              themePalettes,
+              "on-surface",
+              0.38
+            )} !important;
+            &:hover:after {
+              background-color: ${paletteAlpha(
+                themePalettes,
+                "on-surface",
+                0.12
+              )} !important;
+            }
+          }
+        `,
     ];
   }
 );
@@ -71,23 +122,14 @@ const ButtonRoot = styled(BaseButton)<ButtonProps>(
 /**
  * @see https://mui.com/components/buttons/#customized-buttons
  */
-const Button = React.forwardRef(function CustomButton(
-  props: ButtonUnstyledProps & ButtonProps,
+const Button = React.forwardRef(function MdButton(
+  props: React.ComponentProps<"button"> & ButtonProps,
   ref: React.ForwardedRef<HTMLButtonElement>
 ) {
   const { children } = props;
-  const { active, disabled, focusVisible, getRootProps } = useButton({
-    ...props,
-    ref,
-  });
 
-  const classes = {
-    active,
-    disabled,
-    focusVisible,
-  };
   return (
-    <ButtonRoot {...props} {...getRootProps()} className={clsx(classes)}>
+    <ButtonRoot {...props} className={clsx(props.className)} ref={ref}>
       {children}
     </ButtonRoot>
   );

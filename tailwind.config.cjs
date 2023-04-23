@@ -1,8 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const plugin = require("tailwindcss/plugin");
-
 const themeColors = () => {
   return [
     "surface-dim",
@@ -40,14 +36,12 @@ const themeColors = () => {
     "inverse-primary",
     "inverse-surface",
   ].reduce((total, item) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     total[`${item}`] = `var(--md-sys-color-${item})`;
     return total;
   }, {});
 };
 
-const unit = (/** @type {number} */ size) => {
+const unit = (size) => {
   return `${size / 16}rem`;
 };
 

@@ -3,6 +3,7 @@ import Head from "next/head";
 import "twin.macro";
 import { Layout } from "~/components";
 import Button from "~/components/myd/Button/Button";
+import IconButton from "~/components/myd/IconButton/IconButton";
 
 const ViewCom: NextPage = () => {
   return (
@@ -14,14 +15,38 @@ const ViewCom: NextPage = () => {
       </Head>
       <Layout>
         <div tw="mt-52 container mx-auto px-4 flex">
-          <Button variant="elevated">elevated</Button>
+          <span className="material-symbols-rounded">cancel</span>
           <Button variant="elevated" disabled>
             elevated
           </Button>
+          <Button variant="filled" disabled>
+            filled
+          </Button>
+          <Button variant="outlined" disabled>
+            outlined
+          </Button>
+          <Button variant="text" disabled>
+            text
+          </Button>
+          <Button variant="tonal" disabled>
+            tonal
+          </Button>
+        </div>
+        <div tw="container mx-auto px-4 flex mt-8">
+          <Button variant="elevated">elevated</Button>
           <Button variant="filled">filled</Button>
           <Button variant="outlined">outlined</Button>
           <Button variant="text">text</Button>
           <Button variant="tonal">tonal</Button>
+        </div>
+
+        <div tw="container mx-auto px-4 flex mt-8">
+          <IconButton icon={"cancel"}></IconButton>
+          <IconButton icon={"cancel"} disabled></IconButton>
+          <IconButton icon={"cancel"} disabled variant="outlined"></IconButton>
+          <IconButton icon={"cancel"} variant="outlined"></IconButton>
+          <IconButton icon={"cancel"} disabled variant="tonal"></IconButton>
+          <IconButton icon={"cancel"} variant="tonal"></IconButton>
         </div>
       </Layout>
     </>

@@ -15,6 +15,7 @@ const config = {
   parserOptions: {
     project: "./tsconfig.json",
   },
+  ignorePatterns: [".next", "node_modules", "public", "tailwind.config.cjs "],
   // plugins: ["@typescript-eslint"],
   extends: ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
   rules: {

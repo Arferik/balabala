@@ -6,6 +6,7 @@ import {
   themeFromSourceColor,
   hexFromArgb,
 } from "@material/material-color-utilities";
+import { type ColorTokenType } from "./materialYouColorToken";
 
 type ThemeType = {
   color?: string;
@@ -14,12 +15,12 @@ const ThemeContext = createContext<Record<string, string>>({});
 
 const getTokenColorFromScheme = (
   colorScheme: Record<string, number>
-): Record<string, string> => {
+): Record<ColorTokenType, string> => {
   const tokenColorsMap: Record<string, string> = {};
   for (const [key, value] of Object.entries(colorScheme)) {
     const token = key.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
     const color = hexFromArgb(value);
-    tokenColorsMap[`--md-sys-color-` + token] = color;
+    tokenColorsMap[token] = color;
   }
   return tokenColorsMap;
 };
@@ -71,14 +72,15 @@ export function ThemeProvider({
   children,
   color,
 }: { children: React.ReactNode } & ThemeType) {
-  const [palettes, setColorPalettes] = useState({});
+  const [palettes, setColorPalettes] =
+    useState<Record<ColorTokenType, string>>();
   useEffect(() => {
     const theme = themeFromSourceColor(argbFromHex(color || "#066bf8"));
-    const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const isDark = false;
     const newPalettesSchema = getPalettes(theme, isDark);
     applyTheme(theme, {
       target: document.body,
-      dark: isDark,
+      dark: false,
     });
     const scheme = isDark ? theme.schemes.dark : theme.schemes.light;
     setColorPalettes({
@@ -95,5 +97,5 @@ export function ThemeProvider({
 }
 
 export function useThemeContext() {
-  return useContext(ThemeContext);
+  return useContext<Record<ColorTokenType, string>>(ThemeContext);
 }
