@@ -18,7 +18,7 @@ const ButtonRoot = styled(BaseButton)<ButtonProps>(
   ({ variant = "elevated", disabled }) => {
     const themePalettes = useThemeContext();
     return [
-      tw`h-10 px-6`,
+      tw`h-10 px-6 rounded-full`,
       variant === "elevated" &&
         tw`!bg-surface-container-low shadow-md text-primary label-large 
         hover:after:(w-[200%] h-[200%] bg-primary opacity-[.08] absolute top-[-50%] left-[-50%])
@@ -102,9 +102,6 @@ const ButtonRoot = styled(BaseButton)<ButtonProps>(
   }
 );
 
-/**
- * @see https://mui.com/components/buttons/#customized-buttons
- */
 const Button = React.forwardRef(function MdButton(
   props: React.ComponentProps<"button"> & ButtonProps,
   ref: React.ForwardedRef<HTMLButtonElement>

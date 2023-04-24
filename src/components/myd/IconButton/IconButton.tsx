@@ -6,14 +6,15 @@ import { Icon } from "../Icon/Icon";
 import { useThemeContext } from "../utils/themeProvider";
 import { paletteAlpha } from "../utils/materialYouColorToken";
 
-export type ButtonVariant = "filled" | "outlined" | "standard" | "tonal";
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: ButtonVariant;
+export type IconButtonVariant = "filled" | "outlined" | "standard" | "tonal";
+export interface IconButtonProps
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: IconButtonVariant;
   size?: "sm" | "md" | "lg";
   icon: string;
   unSelected?: boolean;
 }
-const IconRoot = styled(Icon)<ButtonProps>(
+const IconRoot = styled(Icon)<IconButtonProps>(
   ({ variant = "standard", unSelected, disabled }) => {
     const themePalettes = useThemeContext();
     return [
@@ -76,11 +77,11 @@ const IconRoot = styled(Icon)<ButtonProps>(
     ];
   }
 );
-const ButtonRoot = styled(BaseButton)<ButtonProps>(
+const ButtonRoot = styled(BaseButton)<IconButtonProps>(
   ({ variant = "standard", size = "md", disabled, unSelected }) => {
     const themePalettes = useThemeContext();
     return [
-      tw`flex`,
+      tw`flex justify-center items-center rounded-full`,
       size === "sm" && tw`h-[1.5rem]`,
       size === "md" && tw`h-[2.5rem] w-[2.5rem]`,
       size === "lg" && tw`h-[3rem] w-[3rem]`,
@@ -167,7 +168,7 @@ const ButtonRoot = styled(BaseButton)<ButtonProps>(
 );
 
 const IconButton = React.forwardRef(function MdIconButton(
-  props: React.ComponentProps<"button"> & ButtonProps,
+  props: React.ComponentProps<"button"> & IconButtonProps,
   ref: React.ForwardedRef<HTMLButtonElement>
 ) {
   return (

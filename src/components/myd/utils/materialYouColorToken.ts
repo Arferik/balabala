@@ -25,7 +25,7 @@ export type ColorTokenType =
   | "tertiary"
   | "onTertiary"
   | "tertiaryContainer"
-  | "on-tertiaryContainer"
+  | "onTertiaryContainer"
   | "background"
   | "onBackground"
   | "outline"
@@ -61,7 +61,7 @@ export const ColorTokens: Record<ColorTokenType, string> = {
   tertiary: "",
   onTertiary: "",
   tertiaryContainer: "",
-  "on-tertiaryContainer": "",
+  onTertiaryContainer: "",
   background: "",
   onBackground: "",
   outline: "",

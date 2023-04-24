@@ -3,6 +3,7 @@ import Head from "next/head";
 import "twin.macro";
 import { Layout } from "~/components";
 import Button from "~/components/myd/Button/Button";
+import FabButton from "~/components/myd/FabButton/ FabButton";
 import IconButton from "~/components/myd/IconButton/IconButton";
 
 const ViewCom: NextPage = () => {
@@ -14,7 +15,7 @@ const ViewCom: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <div tw="mt-52 container mx-auto px-4 flex space-x-1.5">
+        <div tw="mt-52 container mx-auto px-4 flex space-x-1.5  text-on-surface">
           <Button variant="elevated" disabled>
             elevated
           </Button>
@@ -102,6 +103,15 @@ const ViewCom: NextPage = () => {
             <IconButton icon={"star"}></IconButton>
             <IconButton icon={"cancel"} unSelected></IconButton>
             <IconButton icon={"cancel"} disabled unSelected></IconButton>
+          </div>
+        </div>
+        <div tw="container mx-auto px-4 mt-8">
+          <div tw="title-small">button default</div>
+          <div tw="flex mt-4 space-x-1.5">
+            <IconButton icon={"star"} size="sm"></IconButton>
+            <IconButton icon={"star"}></IconButton>
+            <IconButton icon={"star"} size="lg"></IconButton>
+            <FabButton icon={"star"}></FabButton>
           </div>
         </div>
       </Layout>
