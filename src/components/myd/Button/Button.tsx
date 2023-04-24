@@ -55,19 +55,13 @@ const ButtonRoot = styled(BaseButton)<ButtonProps>(
         css`
           &:disabled {
             background-color: ${paletteAlpha(
-              themePalettes,
-              "on-surface",
+              themePalettes.onSurface,
               0.12
             )} !important;
-            color: ${paletteAlpha(
-              themePalettes,
-              "on-surface",
-              0.38
-            )} !important;
+            color: ${paletteAlpha(themePalettes.onSurface, 0.38)} !important;
             &:hover:after {
               background-color: ${paletteAlpha(
-                themePalettes,
-                "on-surface",
+                themePalettes.onSurface,
                 0.12
               )} !important;
             }
@@ -77,11 +71,7 @@ const ButtonRoot = styled(BaseButton)<ButtonProps>(
         variant === "text" &&
         css`
           &:disabled {
-            color: ${paletteAlpha(
-              themePalettes,
-              "on-surface",
-              0.38
-            )} !important;
+            color: ${paletteAlpha(themePalettes.onSurface, 0.38)} !important;
             &:hover:after {
               background-color: transparent !important;
             }
@@ -92,24 +82,17 @@ const ButtonRoot = styled(BaseButton)<ButtonProps>(
         css`
           &:disabled {
             border-color: ${paletteAlpha(
-              themePalettes,
-              "outline",
+              themePalettes.outline,
               0.38
             )} !important;
             background-color: ${paletteAlpha(
-              themePalettes,
-              "on-surface",
+              themePalettes.onSurface,
               0.12
             )} !important;
-            color: ${paletteAlpha(
-              themePalettes,
-              "on-surface",
-              0.38
-            )} !important;
+            color: ${paletteAlpha(themePalettes.onSurface, 0.38)} !important;
             &:hover:after {
               background-color: ${paletteAlpha(
-                themePalettes,
-                "on-surface",
+                themePalettes.onSurface,
                 0.12
               )} !important;
             }

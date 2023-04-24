@@ -1,74 +1,74 @@
 export type ColorTokenType =
   | "primary"
-  | "on-primary"
-  | "primary-container"
-  | "on-primary-container"
+  | "onPrimary"
+  | "primaryContainer"
+  | "onPrimaryContainer"
   | "error"
-  | "on-error"
-  | "error-container"
-  | "on-error-container"
+  | "onError"
+  | "errorContainer"
+  | "onErrorContainer"
   | "secondary"
-  | "on-secondary"
-  | "secondary-container"
-  | "on-secondary-container"
+  | "onSecondary"
+  | "secondaryContainer"
+  | "onSecondaryContainer"
   | "surface"
-  | "surface-dim"
-  | "surface-bright"
-  | "surface-container-lowest"
-  | "surface-container-low"
-  | "surface-container"
-  | "surface-container-high"
-  | "surface-container-highest"
-  | "on-surface"
-  | "surface-variant"
-  | "on-surface-variant"
+  | "surfaceDim"
+  | "surfaceBright"
+  | "surfaceContainerLowest"
+  | "surfaceContainerLow"
+  | "surfaceContainer"
+  | "surfaceContainerHigh"
+  | "surfaceContainerHighest"
+  | "onSurface"
+  | "surfaceVariant"
+  | "onSurfaceVariant"
   | "tertiary"
-  | "on-tertiary"
-  | "tertiary-container"
-  | "on-tertiary-container"
+  | "onTertiary"
+  | "tertiaryContainer"
+  | "on-tertiaryContainer"
   | "background"
-  | "on-background"
+  | "onBackground"
   | "outline"
   | "shadow"
-  | "inverse-on-surface"
-  | "inverse-primary"
-  | "inverse-surface";
+  | "inverseOnSurface"
+  | "inversePrimary"
+  | "inverseSurface";
 
 export const ColorTokens: Record<ColorTokenType, string> = {
   primary: "",
-  "on-primary": "",
-  "primary-container": "",
-  "on-primary-container": "",
+  onPrimary: "",
+  primaryContainer: "",
+  onPrimaryContainer: "",
   error: "",
-  "on-error": "",
-  "error-container": "",
-  "on-error-container": "",
+  onError: "",
+  errorContainer: "",
+  onErrorContainer: "",
   secondary: "",
-  "on-secondary": "",
-  "secondary-container": "",
-  "on-secondary-container": "",
+  onSecondary: "",
+  secondaryContainer: "",
+  onSecondaryContainer: "",
   surface: "",
-  "surface-dim": "",
-  "surface-bright": "",
-  "surface-container-lowest": "",
-  "surface-container-low": "",
-  "surface-container": "",
-  "surface-container-high": "",
-  "surface-container-highest": "",
-  "on-surface": "",
-  "surface-variant": "",
-  "on-surface-variant": "",
+  surfaceDim: "",
+  surfaceBright: "",
+  surfaceContainerLowest: "",
+  surfaceContainerLow: "",
+  surfaceContainer: "",
+  surfaceContainerHigh: "",
+  surfaceContainerHighest: "",
+  onSurface: "",
+  surfaceVariant: "",
+  onSurfaceVariant: "",
   tertiary: "",
-  "on-tertiary": "",
-  "tertiary-container": "",
-  "on-tertiary-container": "",
+  onTertiary: "",
+  tertiaryContainer: "",
+  "on-tertiaryContainer": "",
   background: "",
-  "on-background": "",
+  onBackground: "",
   outline: "",
   shadow: "",
-  "inverse-on-surface": "",
-  "inverse-primary": "",
-  "inverse-surface": "",
+  inverseOnSurface: "",
+  inversePrimary: "",
+  inverseSurface: "",
 };
 
 export const getCssVariableForTailwind = () => {
@@ -80,17 +80,12 @@ export const getCssVariableForTailwind = () => {
   return variableCss as Record<ColorTokenType, string>;
 };
 
-export const paletteAlpha = (
-  colorPalette: Record<ColorTokenType, string>,
-  colorTokens: ColorTokenType,
-  alpha: number
-) => {
-  const curColor = colorPalette[colorTokens];
-  if (!curColor) {
+export const paletteAlpha = (paletteAlphaHex: string, alpha: number) => {
+  if (!paletteAlphaHex) {
     return "";
   }
-  const r = parseInt(curColor.slice(1, 3), 16);
-  const g = parseInt(curColor.slice(3, 5), 16);
-  const b = parseInt(curColor.slice(5, 7), 16);
+  const r = parseInt(paletteAlphaHex.slice(1, 3), 16);
+  const g = parseInt(paletteAlphaHex.slice(3, 5), 16);
+  const b = parseInt(paletteAlphaHex.slice(5, 7), 16);
   return `rgba(${r},${g},${b},${alpha})`;
 };

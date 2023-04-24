@@ -14,8 +14,7 @@ const ViewCom: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <div tw="mt-52 container mx-auto px-4 flex">
-          <span className="material-symbols-rounded">cancel</span>
+        <div tw="mt-52 container mx-auto px-4 flex space-x-1.5">
           <Button variant="elevated" disabled>
             elevated
           </Button>
@@ -32,7 +31,7 @@ const ViewCom: NextPage = () => {
             tonal
           </Button>
         </div>
-        <div tw="container mx-auto px-4 flex mt-8">
+        <div tw="container mx-auto px-4 flex mt-8 space-x-1.5">
           <Button variant="elevated">elevated</Button>
           <Button variant="filled">filled</Button>
           <Button variant="outlined">outlined</Button>
@@ -40,13 +39,70 @@ const ViewCom: NextPage = () => {
           <Button variant="tonal">tonal</Button>
         </div>
 
-        <div tw="container mx-auto px-4 flex mt-8">
-          <IconButton icon={"cancel"}></IconButton>
-          <IconButton icon={"cancel"} disabled></IconButton>
-          <IconButton icon={"cancel"} disabled variant="outlined"></IconButton>
-          <IconButton icon={"cancel"} variant="outlined"></IconButton>
-          <IconButton icon={"cancel"} disabled variant="tonal"></IconButton>
-          <IconButton icon={"cancel"} variant="tonal"></IconButton>
+        <div tw="container mx-auto px-4 mt-8">
+          <div tw="title-small">button filled</div>
+          <div tw="flex mt-4 space-x-1.5">
+            <IconButton icon={"cancel"} disabled variant="filled"></IconButton>
+            <IconButton icon={"cancel"} variant="filled"></IconButton>
+            <IconButton
+              icon={"cancel"}
+              variant="filled"
+              unSelected
+            ></IconButton>
+            <IconButton
+              icon={"cancel"}
+              disabled
+              variant="filled"
+              unSelected
+            ></IconButton>
+          </div>
+        </div>
+        <div tw="container mx-auto px-4 mt-8">
+          <div tw="title-small">button tonal</div>
+          <div tw="flex mt-4 space-x-1.5">
+            <IconButton icon={"cancel"} disabled variant="tonal"></IconButton>
+            <IconButton icon={"cancel"} variant="tonal"></IconButton>
+            <IconButton icon={"cancel"} variant="tonal" unSelected></IconButton>
+            <IconButton
+              icon={"cancel"}
+              disabled
+              variant="tonal"
+              unSelected
+            ></IconButton>
+          </div>
+        </div>
+
+        <div tw="container mx-auto px-4 mt-8">
+          <div tw="title-small">button outlined</div>
+          <div tw="flex mt-4 space-x-1.5">
+            <IconButton
+              icon={"cancel"}
+              disabled
+              variant="outlined"
+            ></IconButton>
+            <IconButton icon={"cancel"} variant="outlined"></IconButton>
+            <IconButton
+              icon={"cancel"}
+              variant="outlined"
+              unSelected
+            ></IconButton>
+            <IconButton
+              icon={"cancel"}
+              disabled
+              variant="outlined"
+              unSelected
+            ></IconButton>
+          </div>
+        </div>
+
+        <div tw="container mx-auto px-4 mt-8">
+          <div tw="title-small">button default</div>
+          <div tw="flex mt-4 space-x-1.5">
+            <IconButton icon={"cancel"} disabled></IconButton>
+            <IconButton icon={"star"}></IconButton>
+            <IconButton icon={"cancel"} unSelected></IconButton>
+            <IconButton icon={"cancel"} disabled unSelected></IconButton>
+          </div>
         </div>
       </Layout>
     </>

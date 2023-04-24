@@ -18,9 +18,8 @@ const getTokenColorFromScheme = (
 ): Record<ColorTokenType, string> => {
   const tokenColorsMap: Record<string, string> = {};
   for (const [key, value] of Object.entries(colorScheme)) {
-    const token = key.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
     const color = hexFromArgb(value);
-    tokenColorsMap[token] = color;
+    tokenColorsMap[key] = color;
   }
   return tokenColorsMap;
 };
