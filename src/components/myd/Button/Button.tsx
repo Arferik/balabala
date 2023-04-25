@@ -4,6 +4,7 @@ import clsx from "clsx";
 import { BaseButton } from "../ButtonBase/ButtonBase";
 import { useThemeContext } from "../utils/themeProvider";
 import { paletteAlpha } from "../utils/materialYouColorToken";
+import { Icon } from "../Icon/Icon";
 
 export type ButtonVariant =
   | "elevated"
@@ -13,12 +14,14 @@ export type ButtonVariant =
   | "tonal";
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
+  icon?: string;
 }
 const ButtonRoot = styled(BaseButton)<ButtonProps>(
-  ({ variant = "elevated", disabled }) => {
+  ({ variant = "elevated", disabled, icon }) => {
     const themePalettes = useThemeContext();
     return [
-      tw`h-10 px-6 rounded-full`,
+      tw`flex`,
+      icon ? tw`h-10 pl-4 pr-6 rounded-full` : tw`h-10 px-6 rounded-full`,
       variant === "elevated" &&
         tw`!bg-surface-container-low shadow-md text-primary label-large 
         hover:after:(w-[200%] h-[200%] bg-primary opacity-[.08] absolute top-[-50%] left-[-50%])
@@ -102,15 +105,20 @@ const ButtonRoot = styled(BaseButton)<ButtonProps>(
   }
 );
 
+const IconRoot = styled(Icon)(() => {
+  return [];
+});
+
 const Button = React.forwardRef(function MdButton(
   props: React.ComponentProps<"button"> & ButtonProps,
   ref: React.ForwardedRef<HTMLButtonElement>
 ) {
-  const { children } = props;
+  const { children, icon } = props;
 
   return (
     <ButtonRoot {...props} className={clsx(props.className)} ref={ref}>
-      {children}
+      {icon && <IconRoot name={icon} tw="mr-2" />}
+      <span>{children}</span>
     </ButtonRoot>
   );
 });
