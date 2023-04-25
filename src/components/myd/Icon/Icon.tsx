@@ -9,7 +9,7 @@ type IconProps = {
   size?: "sm" | "md" | "xl" | "lg" | number;
 };
 
-export const Icon: React.FC<IconProps> = ({ name, className, size = "md" }) => {
+const Icon: React.FC<IconProps> = ({ name, className, size = "md" }) => {
   const sizeWH = React.useMemo(() => {
     if (typeof size === "number") {
       return unit(size);
@@ -38,6 +38,4 @@ export const Icon: React.FC<IconProps> = ({ name, className, size = "md" }) => {
   );
 };
 
-Icon.defaultProps = {
-  className: "",
-};
+export default Icon;

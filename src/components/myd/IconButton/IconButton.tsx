@@ -2,7 +2,7 @@ import React, { type ButtonHTMLAttributes } from "react";
 import tw, { css, styled } from "twin.macro";
 import clsx from "clsx";
 import { BaseButton } from "../ButtonBase/ButtonBase";
-import { Icon } from "../Icon/Icon";
+import Icon from "../Icon/Icon";
 import { useThemeContext } from "../utils/themeProvider";
 import { paletteAlpha } from "../utils/materialYouColorToken";
 

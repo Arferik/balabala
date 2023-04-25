@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { BaseButton } from "../ButtonBase/ButtonBase";
 import { useThemeContext } from "../utils/themeProvider";
 import { paletteAlpha } from "../utils/materialYouColorToken";
-import { Icon } from "../Icon/Icon";
+import Icon from "../Icon/Icon";
 
 export type ButtonVariant =
   | "elevated"

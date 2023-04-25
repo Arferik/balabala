@@ -3,7 +3,7 @@ import Head from "next/head";
 import "twin.macro";
 import { Layout } from "~/components";
 import Button from "~/components/myd/Button/Button";
-import FabButton from "~/components/myd/FabButton/ FabButton";
+import FabButton from "~/components/myd/FabButton/FabButton";
 import IconButton from "~/components/myd/IconButton/IconButton";
 
 const ViewCom: NextPage = () => {

@@ -2,7 +2,7 @@ import React, { type ButtonHTMLAttributes } from "react";
 import tw, { styled } from "twin.macro";
 import clsx from "clsx";
 import { BaseButton } from "../ButtonBase/ButtonBase";
-import { Icon } from "../Icon/Icon";
+import Icon from "../Icon/Icon";
 
 export type FabButtonColor = "primary" | "surface" | "secondary" | "tertiary";
 export interface FabButtonProps
@@ -53,7 +53,7 @@ const ButtonRoot = styled(BaseButton)<FabButtonProps>(
   ]
 );
 
-const FabButton = React.forwardRef(function FabButton(
+const FabButton = React.forwardRef(function MdFabButton(
   props: React.ComponentProps<"button"> & FabButtonProps,
   ref: React.ForwardedRef<HTMLButtonElement>
 ) {
