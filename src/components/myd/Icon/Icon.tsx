@@ -6,11 +6,14 @@ import clsx from "clsx";
 type IconProps = {
   name: string;
   className?: string;
-  size?: "sm" | "md" | "xl" | "lg";
+  size?: "sm" | "md" | "xl" | "lg" | number;
 };
 
 export const Icon: React.FC<IconProps> = ({ name, className, size = "md" }) => {
   const sizeWH = React.useMemo(() => {
+    if (typeof size === "number") {
+      return unit(size);
+    }
     switch (size) {
       case "sm":
         return unit(20);
@@ -23,7 +26,7 @@ export const Icon: React.FC<IconProps> = ({ name, className, size = "md" }) => {
     }
   }, [size]);
   return (
-    <i
+    <span
       className={clsx(className, "material-symbols-rounded")}
       aria-hidden="true"
       style={{
@@ -31,7 +34,7 @@ export const Icon: React.FC<IconProps> = ({ name, className, size = "md" }) => {
       }}
     >
       {name}
-    </i>
+    </span>
   );
 };
 
