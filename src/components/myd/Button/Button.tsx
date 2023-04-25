@@ -23,7 +23,7 @@ const ButtonRoot = styled(BaseButton)<ButtonProps>(
       tw`flex`,
       icon ? tw`h-10 pl-4 pr-6 rounded-full` : tw`h-10 px-6 rounded-full`,
       variant === "elevated" &&
-        tw`!bg-surface-container-low shadow-md text-primary label-large 
+        tw`!bg-surface-container-low shadow-md text-primary label-large
         hover:after:(w-[200%] h-[200%] bg-primary opacity-[.08] absolute top-[-50%] left-[-50%])
         hover:(shadow-lg)
         active:after:(w-[200%] h-[200%] bg-primary opacity-[.12] absolute top-[-50%] left-[-50%])

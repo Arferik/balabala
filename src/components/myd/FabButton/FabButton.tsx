@@ -13,7 +13,12 @@ export interface FabButtonProps
   elevation?: "default" | "lowered";
 }
 
-const IconRoot = styled(Icon)<FabButtonProps>(({ color = "primary", size }) => [
+interface IconRootProps {
+  color?: FabButtonColor;
+  size?: "sm" | "md" | "lg" | number;
+}
+
+const IconRoot = styled(Icon)<IconRootProps>(({ color = "primary", size }) => [
   size === "lg" && tw`text-4xl`,
   color === "primary" && tw`text-on-primary-container `,
   color === "surface" && tw`text-on-surface-variant`,
@@ -30,9 +35,9 @@ const ButtonRoot = styled(BaseButton)<FabButtonProps>(
     size === "sm" && tw`w-10 h-10 rounded-xl`,
     size === "lg" && tw`w-24 h-24 rounded-[1.75rem]`,
     color === "primary" &&
-      tw`bg-primary-container 
-        hover:after:(w-[200%] h-[200%] bg-on-primary-container opacity-[.08] absolute top-[-50%] left-[-50%])
-        active:after:(w-[200%] h-[200%] bg-on-primary-container opacity-[.12] absolute top-[-50%] left-[-50%])
+      tw`bg-primary-container
+        hover:after:(w-[200%] h-[200%] opacity-[.08] bg-on-primary-container absolute top-[-50%] left-[-50%])
+        active:after:(w-[200%] h-[200%]  opacity-[.12] bg-on-primary-container absolute top-[-50%] left-[-50%])
     `,
     color === "surface" &&
       tw`bg-surface-variant 
@@ -60,7 +65,6 @@ const FabButton = React.forwardRef(function MdFabButton(
   return (
     <ButtonRoot {...props} className={clsx(props.className)} ref={ref}>
       <IconRoot
-        {...props}
         size={props.size === "lg" ? 36 : "md"}
         name={props.icon}
       ></IconRoot>

@@ -14,7 +14,15 @@ export interface IconButtonProps
   icon: string;
   unSelected?: boolean;
 }
-const IconRoot = styled(Icon)<IconButtonProps>(
+
+interface IconRootProps {
+  variant?: IconButtonVariant;
+  size?: "sm" | "md" | "lg";
+  unSelected?: boolean;
+  disabled?: boolean;
+}
+
+const IconRoot = styled(Icon)<IconRootProps>(
   ({ variant = "standard", unSelected, disabled }) => {
     const themePalettes = useThemeContext();
     return [
@@ -173,7 +181,13 @@ const IconButton = React.forwardRef(function MdIconButton(
 ) {
   return (
     <ButtonRoot {...props} className={clsx(props.className)} ref={ref}>
-      <IconRoot {...props} size="md" name={props.icon}></IconRoot>
+      <IconRoot
+        variant={props.variant}
+        disabled={props.disabled}
+        unSelected={props.unSelected}
+        size="md"
+        name={props.icon}
+      ></IconRoot>
     </ButtonRoot>
   );
 });

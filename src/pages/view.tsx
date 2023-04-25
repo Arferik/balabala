@@ -2,6 +2,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import "twin.macro";
 import { Layout } from "~/components";
+import { Card } from "~/components/myd";
 import Button from "~/components/myd/Button/Button";
 import FabButton from "~/components/myd/FabButton/FabButton";
 import IconButton from "~/components/myd/IconButton/IconButton";
@@ -153,6 +154,14 @@ const ViewCom: NextPage = () => {
             <FabButton icon={"star"} color="surface" size="lg"></FabButton>
             <FabButton icon={"star"} color="secondary" size="lg"></FabButton>
             <FabButton icon={"star"} color="tertiary" size="lg"></FabButton>
+          </div>
+          <div tw="container mx-auto px-4 mt-8">
+            <div tw="title-small">card</div>
+            <div tw="flex mt-4 space-x-1.5">
+              <Card>d sadaa</Card>
+              <Card></Card>
+              <Card></Card>
+            </div>
           </div>
         </div>
       </Layout>

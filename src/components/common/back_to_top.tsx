@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import throttle from "lodash/throttle";
-import { Fab } from "../ui/fab";
 import "twin.macro";
+import { FabButton } from "../myd";
 
 const THROTTLE_TIME = 500;
 const MOVE_DOWN_DISTANCE = 200;
@@ -45,7 +45,8 @@ const BackToTopBtn: React.FC = () => {
   return (
     <>
       {visibleBackTopBtn && (
-        <Fab
+        <FabButton
+          size="lg"
           tw="fixed bottom-4 right-4 z-10"
           icon="vertical_align_top"
           color="secondary"

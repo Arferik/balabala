@@ -5,3 +5,4 @@ export { default as Button } from "./Button/Button";
 export { default as FabButton } from "./FabButton/FabButton";
 export { default as Icon } from "./Icon/Icon";
 export { default as IconButton } from "./IconButton/IconButton";
+export { default as Card } from "./Card/Card";
