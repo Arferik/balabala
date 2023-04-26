@@ -158,9 +158,37 @@ const ViewCom: NextPage = () => {
           <div tw="container mx-auto px-4 mt-8">
             <div tw="title-small">card</div>
             <div tw="flex mt-4 space-x-1.5">
-              <Card>d sadaa</Card>
-              <Card></Card>
-              <Card></Card>
+              <Card>
+                <div tw="display-large w-40 h-40 flex justify-center items-center">
+                  card
+                </div>
+              </Card>
+              <Card disabled>
+                <div tw="display-large w-40 h-40 flex justify-center items-center">
+                  card
+                </div>
+              </Card>
+              <Card type="filled">
+                <div tw="display-large w-40 h-40 flex justify-center items-center">
+                  card
+                </div>
+              </Card>
+
+              <Card type="filled" disabled>
+                <div tw="display-large w-40 h-40 flex justify-center items-center">
+                  card
+                </div>
+              </Card>
+              <Card type="outlined">
+                <div tw="display-large w-40 h-40 flex justify-center items-center">
+                  card
+                </div>
+              </Card>
+              <Card type="outlined" disabled>
+                <div tw="display-large w-40 h-40 flex justify-center items-center">
+                  card
+                </div>
+              </Card>
             </div>
           </div>
         </div>
