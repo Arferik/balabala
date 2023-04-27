@@ -3,9 +3,10 @@ import Head from "next/head";
 import Link from "next/link";
 import "twin.macro";
 import { api } from "~/utils/api";
-import { Card, Chips, Layout } from "~/components";
+import { Chips, Layout } from "~/components";
 import Image from "next/image";
 import { env } from "~/env.mjs";
+import { Card } from "~/components/myd";
 
 const Home: NextPage<{ coverUrl: string }> = ({ coverUrl }) => {
   const config = api.config.get.useQuery();
@@ -66,7 +67,7 @@ const Home: NextPage<{ coverUrl: string }> = ({ coverUrl }) => {
                       key={post.id}
                     >
                       <a tw="z-10 m-4 flex shrink cursor-pointer flex-col overflow-hidden w-auto basis-80 pb-5">
-                        <Card key={post.id} type="filled">
+                        <Card key={post.id}>
                           <div title={post.title}>
                             <div tw="overflow-hidden rounded-xl h-48 w-full bg-no-repeat relative">
                               {post?.cover && (
@@ -120,9 +121,21 @@ const Home: NextPage<{ coverUrl: string }> = ({ coverUrl }) => {
 export default Home;
 
 export async function getServerSideProps() {
-  const imageUrl = await fetch(env.UNSPLASH_RANDOM_IMAGE_API).then(
-    (res) => res.url
-  );
+  //set fetch timeout 5000s
+  const controller = new AbortController();
+  const timeout = setTimeout(() => {
+    controller.abort();
+  }, 2000);
+  let imageUrl = "";
+  try {
+    imageUrl = await fetch(env.UNSPLASH_RANDOM_IMAGE_API, {
+      signal: controller.signal,
+    }).then((res) => res.url);
+  } catch (error) {
+    imageUrl = "";
+  } finally {
+    clearTimeout(timeout);
+  }
 
   return {
     props: {

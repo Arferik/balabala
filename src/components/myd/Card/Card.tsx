@@ -1,13 +1,17 @@
 import tw, { css, styled } from "twin.macro";
 import { useThemeContext } from "../utils/themeProvider";
 import { paletteAlpha } from "../utils/materialYouColorToken";
+import { useRef, type ReactNode } from "react";
+import TouchRipple from "../Ripple/TouchRipple";
+import useEventCallback from "~/hooks/useEventCallback";
 type CardType = "elevated" | "filled" | "outlined";
 interface CardProps {
   type?: CardType;
+  children?: ReactNode;
   disabled?: boolean;
 }
 
-const Card = styled.div<CardProps>(({ type = "elevated", disabled }) => {
+const CardRoot = styled.div<CardProps>(({ type = "elevated", disabled }) => {
   const themePalettes = useThemeContext();
   return [
     tw`overflow-hidden relative box-border rounded-xl`,
@@ -56,4 +60,60 @@ const Card = styled.div<CardProps>(({ type = "elevated", disabled }) => {
   ];
 });
 
+const Card: React.FC<CardProps> = ({ children, disabled, ...props }) => {
+  const rippleRef = useRef<any>(null);
+
+  function useRippleHandler(
+    rippleAction: "start" | "stop" | "pulsate",
+    eventCallback?: (event: React.MouseEvent<HTMLDivElement>) => void,
+    skipRippleAction = false
+  ) {
+    return useEventCallback((event) => {
+      if (eventCallback) {
+        eventCallback(event);
+      }
+
+      const ignore = skipRippleAction;
+      if (!ignore && rippleRef.current) {
+        rippleRef.current[rippleAction](event);
+      }
+    });
+  }
+
+  const handleMouseDown = useRippleHandler("start", undefined, disabled);
+  const handleContextMenu = useRippleHandler("stop", undefined, disabled);
+  const handleDragLeave = useRippleHandler("stop", undefined, disabled);
+  const handleMouseUp = useRippleHandler("stop", undefined, disabled);
+  const handleMouseLeave = useRippleHandler("stop", undefined, disabled);
+  const handleTouchStart = useRippleHandler("start", undefined, disabled);
+  const handleTouchEnd = useRippleHandler("stop", undefined, disabled);
+  const handleTouchMove = useRippleHandler("stop", undefined, disabled);
+
+  return (
+    <CardRoot
+      onMouseDown={handleMouseDown}
+      onContextMenu={handleContextMenu}
+      onDragLeave={handleDragLeave}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseLeave}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onTouchMove={handleTouchMove}
+      disabled={disabled}
+      {...props}
+    >
+      {children}
+      <TouchRipple
+        ref={rippleRef}
+        classes={{
+          rippleVisible: "rippleVisible",
+          child: "child",
+          childLeaving: "childLeaving",
+          childPulsate: "childPulsate",
+          ripplePulsate: "ripplePulsate",
+        }}
+      ></TouchRipple>
+    </CardRoot>
+  );
+};
 export default Card;

@@ -46,11 +46,11 @@ const pulsateKeyframe = keyframes`
 
 export const TouchRippleRoot = tw.span`overflow-hidden pointer-events-none absolute z-0 top-0 right-0 bottom-0 left-0 rounded-[inherit]`;
 
-export const TouchRippleRipple = styled<RipplePropTypes>(Ripple)(() => {
+export const TouchRippleRipple = styled(Ripple)<RipplePropTypes>(() => {
   return [
-    tw`opacity-0 absolute`,
+    tw`opacity-0 absolute `,
     css`
-      & .rippleVisible {
+      &.rippleVisible {
         opacity: 0.3;
         transform: scale(1);
         animation-name: ${enterKeyframe};
@@ -59,8 +59,7 @@ export const TouchRippleRipple = styled<RipplePropTypes>(Ripple)(() => {
       }
 
       &.ripplePulsate {
-        animation-duration: ${({ theme }) =>
-          theme.transitions.duration.shorter}ms;
+        animation-duration: ${DURATION}ms;
       }
 
       & .child {
@@ -111,7 +110,7 @@ const TouchRipple = React.forwardRef(function TouchRipple(
     className,
     ...other
   } = props;
-  const [ripples, setRipples] = React.useState([]);
+  const [ripples, setRipples] = React.useState<any[]>([]);
   const nextKey = React.useRef(0);
   const rippleCallback = React.useRef<() => void>();
 
@@ -126,11 +125,11 @@ const TouchRipple = React.forwardRef(function TouchRipple(
   const ignoringMouseDown = React.useRef(false);
   // We use a timer in order to only show the ripples for touch "click" like events.
   // We don't want to display the ripple for touch scroll events.
-  const startTimer = React.useRef<number>();
+  const startTimer = React.useRef<NodeJS.Timeout>();
 
   // This is the hook called once the previous timeout is ready.
-  const startTimerCommit = React.useRef(null);
-  const container = React.useRef(null);
+  const startTimerCommit = React.useRef<() => void>();
+  const container = React.useRef<HTMLSpanElement>(null);
 
   React.useEffect(() => {
     return () => {
@@ -138,10 +137,17 @@ const TouchRipple = React.forwardRef(function TouchRipple(
     };
   }, []);
 
-  const startCommit = React.useCallback(
-    (params: any) => {
+  const startCommit = React.useCallback<
+    (params: {
+      pulsate: boolean;
+      rippleX: number;
+      rippleY: number;
+      rippleSize: number;
+      cb?: () => void;
+    }) => void
+  >(
+    (params) => {
       const { pulsate, rippleX, rippleY, rippleSize, cb } = params;
-
       setRipples((oldRipples) => [
         ...oldRipples,
         <TouchRippleRipple
@@ -167,8 +173,16 @@ const TouchRipple = React.forwardRef(function TouchRipple(
     [classes]
   );
 
-  const start = React.useCallback(
-    (event = {}, options = {}, cb = () => {}) => {
+  const start = React.useCallback<
+    (
+      event: React.MouseEvent<HTMLElement> & {
+        touches: React.MouseEvent<HTMLElement>[];
+      } & any,
+      options: any,
+      callback?: () => void
+    ) => void
+  >(
+    (event, options = {}, cb) => {
       const {
         pulsate = false,
         center = centerProp || options.pulsate,
@@ -184,7 +198,7 @@ const TouchRipple = React.forwardRef(function TouchRipple(
         ignoringMouseDown.current = true;
       }
 
-      const element = fakeElement ? null : container.current;
+      const element = fakeElement ? null : (container.current as HTMLElement);
       const rect = element
         ? element.getBoundingClientRect()
         : {
@@ -201,15 +215,17 @@ const TouchRipple = React.forwardRef(function TouchRipple(
 
       if (
         center ||
-        event === undefined ||
-        (event.clientX === 0 && event.clientY === 0) ||
+        !event ||
+        (event?.clientX === 0 && event.clientY === 0) ||
         (!event.clientX && !event.touches)
       ) {
         rippleX = Math.round(rect.width / 2);
         rippleY = Math.round(rect.height / 2);
       } else {
-        const { clientX, clientY } =
-          event.touches && event.touches.length > 0 ? event.touches[0] : event;
+        const { clientX = 0, clientY = 0 } =
+          Array.isArray(event.touches) && event.touches.length > 0
+            ? event.touches[0] || {}
+            : event;
         rippleX = Math.round(clientX - rect.left);
         rippleY = Math.round(clientY - rect.top);
       }
@@ -253,7 +269,7 @@ const TouchRipple = React.forwardRef(function TouchRipple(
           startTimer.current = setTimeout(() => {
             if (startTimerCommit.current) {
               startTimerCommit.current();
-              startTimerCommit.current = null;
+              startTimerCommit.current = void 0;
             }
           }, DELAY_RIPPLE); // We have to make a tradeoff with this value.
         }
@@ -268,30 +284,33 @@ const TouchRipple = React.forwardRef(function TouchRipple(
     start({}, { pulsate: true });
   }, [start]);
 
-  const stop = React.useCallback((event, cb) => {
-    clearTimeout(startTimer.current);
+  const stop = React.useCallback<(event: Event, callback: () => void) => void>(
+    (event, cb) => {
+      clearTimeout(startTimer.current);
 
-    // The touch interaction occurs too quickly.
-    // We still want to show ripple effect.
-    if (event?.type === "touchend" && startTimerCommit.current) {
-      startTimerCommit.current();
-      startTimerCommit.current = null;
-      startTimer.current = setTimeout(() => {
-        stop(event, cb);
-      });
-      return;
-    }
-
-    startTimerCommit.current = null;
-
-    setRipples((oldRipples) => {
-      if (oldRipples.length > 0) {
-        return oldRipples.slice(1);
+      // The touch interaction occurs too quickly.
+      // We still want to show ripple effect.
+      if (event?.type === "touchend" && startTimerCommit.current) {
+        startTimerCommit.current();
+        startTimerCommit.current = void 0;
+        startTimer.current = setTimeout(() => {
+          stop(event, cb);
+        });
+        return;
       }
-      return oldRipples;
-    });
-    rippleCallback.current = cb;
-  }, []);
+
+      startTimerCommit.current = void 0;
+
+      setRipples((oldRipples) => {
+        if (oldRipples.length > 0) {
+          return oldRipples.slice(1);
+        }
+        return oldRipples;
+      });
+      rippleCallback.current = cb;
+    },
+    []
+  );
 
   React.useImperativeHandle(
     ref,
@@ -305,7 +324,7 @@ const TouchRipple = React.forwardRef(function TouchRipple(
 
   return (
     <TouchRippleRoot
-      className={clsx(touchRippleClasses.root, classes.root, className)}
+      className={clsx(classes.root, className)}
       ref={container}
       {...other}
     >
