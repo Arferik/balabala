@@ -1,9 +1,8 @@
 import tw, { css, styled } from "twin.macro";
-import { useThemeContext } from "../utils/themeProvider";
-import { paletteAlpha } from "../utils/materialYouColorToken";
+import { paletteAlpha } from "../../utils/materialYouColorToken";
 import { useRef, type ReactNode } from "react";
 import TouchRipple from "../Ripple/TouchRipple";
-import useEventCallback from "~/hooks/useEventCallback";
+import useEventCallback from "../../hooks/useEventCallback";
 type CardType = "elevated" | "filled" | "outlined";
 interface CardProps {
   type?: CardType;
@@ -12,7 +11,6 @@ interface CardProps {
 }
 
 const CardRoot = styled.div<CardProps>(({ type = "elevated", disabled }) => {
-  const themePalettes = useThemeContext();
   return [
     tw`overflow-hidden relative box-border rounded-xl`,
     type === "elevated" && [
@@ -24,10 +22,8 @@ const CardRoot = styled.div<CardProps>(({ type = "elevated", disabled }) => {
             active:shadow-md`
         : css`
             & {
-              background-color: ${paletteAlpha(
-                themePalettes.surfaceVariant,
-                0.38
-              )}!important;
+              background-color: ${({ theme }) =>
+                paletteAlpha(theme.surfaceVariant, 0.38)}!important;
             }
           `,
       ,
@@ -39,10 +35,8 @@ const CardRoot = styled.div<CardProps>(({ type = "elevated", disabled }) => {
         active:after:(w-[200%] h-[200%] bg-on-surface  opacity-[.12] absolute top-[-50%] left-[-50%])`
         : css`
             & {
-              background-color: ${paletteAlpha(
-                themePalettes.surface,
-                0.38
-              )}!important;
+              background-color: ${({ theme }) =>
+                paletteAlpha(theme.surface, 0.38)}!important;
             }
           `,
     ],
@@ -53,7 +47,8 @@ const CardRoot = styled.div<CardProps>(({ type = "elevated", disabled }) => {
           active:after:(w-[200%] h-[200%] bg-on-surface opacity-[.12] absolute top-[-50%] left-[-50%])`
         : css`
             & {
-              border: 1px solid ${paletteAlpha(themePalettes.outline, 0.12)};
+              border: 1px solid
+                ${({ theme }) => paletteAlpha(theme.outline, 0.12)};
             }
           `,
     ],

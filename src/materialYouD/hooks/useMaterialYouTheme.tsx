@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   type Theme,
   applyTheme,
@@ -6,12 +6,7 @@ import {
   themeFromSourceColor,
   hexFromArgb,
 } from "@material/material-color-utilities";
-import { type ColorTokenType } from "./materialYouColorToken";
-
-type ThemeType = {
-  color?: string;
-};
-const ThemeContext = createContext<Record<string, string>>({});
+import { type ColorTokenType } from "../utils/materialYouColorToken";
 
 const getTokenColorFromScheme = (
   colorScheme: Record<string, number>
@@ -67,10 +62,7 @@ const getPalettes = (theme: Theme, isDark: boolean) => {
   }
 };
 
-export function ThemeProvider({
-  children,
-  color,
-}: { children: React.ReactNode } & ThemeType) {
+export const useMaterialYouTheme = (color?: string) => {
   const [palettes, setColorPalettes] =
     useState<Record<ColorTokenType, string>>();
   useEffect(() => {
@@ -88,14 +80,5 @@ export function ThemeProvider({
       ...getTokenColorFromScheme(newPalettesSchema),
     });
   }, [color]);
-
-  return (
-    <ThemeContext.Provider value={{ ...palettes }}>
-      {children}
-    </ThemeContext.Provider>
-  );
-}
-
-export function useThemeContext() {
-  return useContext<Record<ColorTokenType, string>>(ThemeContext);
-}
+  return { palettes };
+};

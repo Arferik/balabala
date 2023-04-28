@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import throttle from "lodash/throttle";
 import "twin.macro";
-import { FabButton } from "../myd";
+import { FabButton } from "~/materialYouD";
 
 const THROTTLE_TIME = 500;
 const MOVE_DOWN_DISTANCE = 200;

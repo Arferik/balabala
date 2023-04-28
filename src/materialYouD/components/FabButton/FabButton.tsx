@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { BaseButton } from "../ButtonBase/ButtonBase";
 import Icon from "../Icon/Icon";
 import TouchRipple from "../Ripple/TouchRipple";
-import useEventCallback from "~/hooks/useEventCallback";
+import useEventCallback from "../../hooks/useEventCallback";
 
 export type FabButtonColor = "primary" | "surface" | "secondary" | "tertiary";
 export interface FabButtonProps

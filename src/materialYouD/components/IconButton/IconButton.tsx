@@ -3,8 +3,7 @@ import tw, { css, styled } from "twin.macro";
 import clsx from "clsx";
 import { BaseButton } from "../ButtonBase/ButtonBase";
 import Icon from "../Icon/Icon";
-import { useThemeContext } from "../utils/themeProvider";
-import { paletteAlpha } from "../utils/materialYouColorToken";
+import { paletteAlpha } from "../../utils/materialYouColorToken";
 
 export type IconButtonVariant = "filled" | "outlined" | "standard" | "tonal";
 export interface IconButtonProps
@@ -24,16 +23,13 @@ interface IconRootProps {
 
 const IconRoot = styled(Icon)<IconRootProps>(
   ({ variant = "standard", unSelected, disabled }) => {
-    const themePalettes = useThemeContext();
     return [
       variant === "filled" && [
         disabled
           ? css`
               & {
-                color: ${paletteAlpha(
-                  themePalettes.onSurface,
-                  0.38
-                )} !important;
+                color: ${({ theme }) =>
+                  paletteAlpha(theme.onSurface, 0.38)} !important;
               }
             `
           : [unSelected ? tw`text-primary` : tw`text-on-primary`],
@@ -42,10 +38,8 @@ const IconRoot = styled(Icon)<IconRootProps>(
         disabled
           ? css`
               & {
-                color: ${paletteAlpha(
-                  themePalettes.onSurface,
-                  0.38
-                )} !important;
+                color: ${({ theme }) =>
+                  paletteAlpha(theme.onSurface, 0.38)} !important;
               }
             `
           : [
@@ -58,10 +52,8 @@ const IconRoot = styled(Icon)<IconRootProps>(
         disabled
           ? css`
               & {
-                color: ${paletteAlpha(
-                  themePalettes.onSurface,
-                  0.38
-                )} !important;
+                color: ${({ theme }) =>
+                  paletteAlpha(theme.onSurface, 0.38)} !important;
               }
             `
           : [unSelected ? tw`text-on-surface-variant` : tw`text-primary`],
@@ -70,10 +62,8 @@ const IconRoot = styled(Icon)<IconRootProps>(
         disabled
           ? css`
               & {
-                color: ${paletteAlpha(
-                  themePalettes.onSurface,
-                  0.38
-                )} !important;
+                color: ${({ theme }) =>
+                  paletteAlpha(theme.onSurface, 0.38)} !important;
               }
             `
           : [
@@ -87,7 +77,6 @@ const IconRoot = styled(Icon)<IconRootProps>(
 );
 const ButtonRoot = styled(BaseButton)<IconButtonProps>(
   ({ variant = "standard", size = "md", disabled, unSelected }) => {
-    const themePalettes = useThemeContext();
     return [
       tw`flex justify-center items-center rounded-full`,
       size === "sm" && tw`h-[1.5rem]`,
@@ -107,10 +96,8 @@ const ButtonRoot = styled(BaseButton)<IconButtonProps>(
         disabled &&
           css`
             &:disabled {
-              background-color: ${paletteAlpha(
-                themePalettes.onSurface,
-                0.12
-              )} !important;
+              background-color: ${({ theme }) =>
+                paletteAlpha(theme.onSurface, 0.12)} !important;
             }
           `,
       ],
@@ -129,10 +116,8 @@ const ButtonRoot = styled(BaseButton)<IconButtonProps>(
         disabled &&
           css`
             &:disabled {
-              background-color: ${paletteAlpha(
-                themePalettes.onSurface,
-                0.12
-              )} !important;
+              background-color: ${({ theme }) =>
+                paletteAlpha(theme.onSurface, 0.12)} !important;
             }
           `,
       ],
@@ -151,10 +136,8 @@ const ButtonRoot = styled(BaseButton)<IconButtonProps>(
         disabled &&
           css`
             &:disabled {
-              background-color: ${paletteAlpha(
-                themePalettes.onSurface,
-                0.12
-              )} !important;
+              background-color: ${({ theme }) =>
+                paletteAlpha(theme.onSurface, 0.12)} !important;
             }
           `,
       ],

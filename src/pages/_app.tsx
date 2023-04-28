@@ -7,7 +7,8 @@ import "bytemd/dist/index.css";
 import GlobalStyles from "../styles/GlobalStyles";
 import { Roboto } from "next/font/google";
 import { SnackbarProvider } from "~/components";
-import { ThemeProvider } from "~/components/myd";
+import { ThemeProvider } from "styled-components";
+import { useMaterialYouTheme } from "~/materialYouD";
 
 const inter = Roboto({ subsets: ["latin"], weight: "500" });
 
@@ -15,9 +16,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+  const { palettes } = useMaterialYouTheme();
+  console.log(palettes);
   return (
     <SessionProvider session={session}>
-      <ThemeProvider>
+      <ThemeProvider theme={palettes}>
         <SnackbarProvider>
           <style jsx global>{`
             html {

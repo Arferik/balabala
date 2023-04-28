@@ -3,10 +3,9 @@ import Head from "next/head";
 import Link from "next/link";
 import "twin.macro";
 import { api } from "~/utils/api";
-import { Chips, Layout } from "~/components";
+import { Card, Chips, Layout } from "~/components";
 import Image from "next/image";
 import { env } from "~/env.mjs";
-import { Card } from "~/components/myd";
 
 const Home: NextPage<{ coverUrl: string }> = ({ coverUrl }) => {
   const config = api.config.get.useQuery();

@@ -2,9 +2,8 @@ import React, { type ButtonHTMLAttributes } from "react";
 import tw, { styled, css } from "twin.macro";
 import clsx from "clsx";
 import { BaseButton } from "../ButtonBase/ButtonBase";
-import { useThemeContext } from "../utils/themeProvider";
-import { paletteAlpha } from "../utils/materialYouColorToken";
 import Icon from "../Icon/Icon";
+import { paletteAlpha } from "../../utils/materialYouColorToken";
 
 export type ButtonVariant =
   | "elevated"
@@ -18,7 +17,6 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 const ButtonRoot = styled(BaseButton)<ButtonProps>(
   ({ variant = "elevated", disabled, icon }) => {
-    const themePalettes = useThemeContext();
     return [
       tw`flex`,
       icon ? tw`h-10 pl-4 pr-6 rounded-full` : tw`h-10 px-6 rounded-full`,
@@ -57,16 +55,13 @@ const ButtonRoot = styled(BaseButton)<ButtonProps>(
           variant === "tonal") &&
         css`
           &:disabled {
-            background-color: ${paletteAlpha(
-              themePalettes.onSurface,
-              0.12
-            )} !important;
-            color: ${paletteAlpha(themePalettes.onSurface, 0.38)} !important;
+            background-color: ${({ theme }) =>
+              paletteAlpha(theme.onSurface, 0.12)} !important;
+            color: ${({ theme }) =>
+              paletteAlpha(theme.onSurface, 0.38)} !important;
             &:hover:after {
-              background-color: ${paletteAlpha(
-                themePalettes.onSurface,
-                0.12
-              )} !important;
+              background-color: ${({ theme }) =>
+                paletteAlpha(theme.onSurface, 0.12)} !important;
             }
           }
         `,
@@ -74,7 +69,8 @@ const ButtonRoot = styled(BaseButton)<ButtonProps>(
         variant === "text" &&
         css`
           &:disabled {
-            color: ${paletteAlpha(themePalettes.onSurface, 0.38)} !important;
+            color: ${({ theme }) =>
+              paletteAlpha(theme.onSurface, 0.38)} !important;
             &:hover:after {
               background-color: transparent !important;
             }
@@ -84,20 +80,15 @@ const ButtonRoot = styled(BaseButton)<ButtonProps>(
         variant === "outlined" &&
         css`
           &:disabled {
-            border-color: ${paletteAlpha(
-              themePalettes.outline,
-              0.38
-            )} !important;
-            background-color: ${paletteAlpha(
-              themePalettes.onSurface,
-              0.12
-            )} !important;
-            color: ${paletteAlpha(themePalettes.onSurface, 0.38)} !important;
+            border-color: ${({ theme }) =>
+              paletteAlpha(theme.outline, 0.38)} !important;
+            background-color: ${({ theme }) =>
+              paletteAlpha(theme.onSurface, 0.12)} !important;
+            color: ${({ theme }) =>
+              paletteAlpha(theme.onSurface, 0.38)} !important;
             &:hover:after {
-              background-color: ${paletteAlpha(
-                themePalettes.onSurface,
-                0.12
-              )} !important;
+              background-color: ${({ theme }) =>
+                paletteAlpha(theme.onSurface, 0.12)} !important;
             }
           }
         `,

@@ -1,6 +1,6 @@
 import tw, { css, styled } from "twin.macro";
 import Icon from "../Icon/Icon";
-import { unit } from "../utils/materialCommon";
+import { unit } from "../../utils/materialCommon";
 
 export type ChipType = "assist" | "filter" | "input" | "suggestion";
 
@@ -39,7 +39,7 @@ const ChipTextRoot = styled.span<ChipProps>(({ variant = "assist" }) => {
   return [variant === "assist" && [tw`text-on-surface label-large`]];
 });
 
-export const Chip: React.FC<ChipProps> = ({
+const Chip: React.FC<ChipProps> = ({
   variant = "assist",
   text = "",
   icon = "",
@@ -53,3 +53,5 @@ export const Chip: React.FC<ChipProps> = ({
     </ChipRoot>
   );
 };
+
+export default Chip;
