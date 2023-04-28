@@ -3,10 +3,11 @@ import Head from "next/head";
 import Link from "next/link";
 import "twin.macro";
 import { api } from "~/utils/api";
-import { Chips, Layout } from "~/components";
+import { Layout } from "~/components";
 import Image from "next/image";
 import { env } from "~/env.mjs";
 import { Card } from "~/components/myd";
+import { Chip } from "~/components/myd/Chip/Chip";
 
 const Home: NextPage<{ coverUrl: string }> = ({ coverUrl }) => {
   const config = api.config.get.useQuery();
@@ -89,17 +90,15 @@ const Home: NextPage<{ coverUrl: string }> = ({ coverUrl }) => {
                               <div tw="md:mt-2">
                                 {["tag1", "tah2"].map((tag) => {
                                   return (
-                                    <Chips
+                                    <Chip
                                       onClick={(event) => {
                                         event.stopPropagation();
                                       }}
                                       tw="z-10 m-1"
                                       icon="tag"
                                       key={tag}
-                                      type="suggestion"
-                                    >
-                                      {tag}
-                                    </Chips>
+                                      text={tag}
+                                    ></Chip>
                                   );
                                 })}
                               </div>
