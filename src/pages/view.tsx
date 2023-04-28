@@ -4,6 +4,7 @@ import "twin.macro";
 import { Layout } from "~/components";
 import { Card } from "~/components/myd";
 import Button from "~/components/myd/Button/Button";
+import { Chip } from "~/components/myd/Chip/Chip";
 import FabButton from "~/components/myd/FabButton/FabButton";
 import IconButton from "~/components/myd/IconButton/IconButton";
 
@@ -189,6 +190,14 @@ const ViewCom: NextPage = () => {
                   card
                 </div>
               </Card>
+            </div>
+          </div>
+
+          <div tw="container mx-auto px-4 mt-8">
+            <div tw="title-small">chip</div>
+            <div tw="flex mt-4 space-x-1.5">
+              <Chip text="test chip txt" icon="star"></Chip>
+              <Chip text="test chip txt" icon="star" disabled></Chip>
             </div>
           </div>
         </div>

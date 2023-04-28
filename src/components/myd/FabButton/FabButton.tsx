@@ -1,8 +1,10 @@
-import React, { type ButtonHTMLAttributes } from "react";
+import React, { useRef, type ButtonHTMLAttributes } from "react";
 import tw, { styled } from "twin.macro";
 import clsx from "clsx";
 import { BaseButton } from "../ButtonBase/ButtonBase";
 import Icon from "../Icon/Icon";
+import TouchRipple from "../Ripple/TouchRipple";
+import useEventCallback from "~/hooks/useEventCallback";
 
 export type FabButtonColor = "primary" | "surface" | "secondary" | "tertiary";
 export interface FabButtonProps
@@ -62,12 +64,61 @@ const FabButton = React.forwardRef(function MdFabButton(
   props: React.ComponentProps<"button"> & FabButtonProps,
   ref: React.ForwardedRef<HTMLButtonElement>
 ) {
+  const rippleRef = useRef<any>(null);
+
+  function useRippleHandler(
+    rippleAction: "start" | "stop" | "pulsate",
+    eventCallback?: (event: React.MouseEvent<HTMLDivElement>) => void,
+    skipRippleAction = false
+  ) {
+    return useEventCallback((event) => {
+      if (eventCallback) {
+        eventCallback(event);
+      }
+
+      const ignore = skipRippleAction;
+      if (!ignore && rippleRef.current) {
+        rippleRef.current[rippleAction](event);
+      }
+    });
+  }
+
+  const handleMouseDown = useRippleHandler("start", undefined, props.disabled);
+  const handleContextMenu = useRippleHandler("stop", undefined, props.disabled);
+  const handleDragLeave = useRippleHandler("stop", undefined, props.disabled);
+  const handleMouseUp = useRippleHandler("stop", undefined, props.disabled);
+  const handleMouseLeave = useRippleHandler("stop", undefined, props.disabled);
+  const handleTouchStart = useRippleHandler("start", undefined, props.disabled);
+  const handleTouchEnd = useRippleHandler("stop", undefined, props.disabled);
+  const handleTouchMove = useRippleHandler("stop", undefined, props.disabled);
   return (
-    <ButtonRoot {...props} className={clsx(props.className)} ref={ref}>
+    <ButtonRoot
+      {...props}
+      className={clsx(props.className)}
+      ref={ref}
+      onMouseDown={handleMouseDown}
+      onContextMenu={handleContextMenu}
+      onDragLeave={handleDragLeave}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseLeave}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onTouchMove={handleTouchMove}
+    >
       <IconRoot
         size={props.size === "lg" ? 36 : "md"}
         name={props.icon}
       ></IconRoot>
+      <TouchRipple
+        ref={rippleRef}
+        classes={{
+          rippleVisible: "rippleVisible",
+          child: "child",
+          childLeaving: "childLeaving",
+          childPulsate: "childPulsate",
+          ripplePulsate: "ripplePulsate",
+        }}
+      ></TouchRipple>
     </ButtonRoot>
   );
 });
