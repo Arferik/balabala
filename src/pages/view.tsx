@@ -197,7 +197,34 @@ const ViewCom: NextPage = () => {
             <div tw="title-small">chip</div>
             <div tw="flex mt-4 space-x-1.5">
               <Chip text="test chip txt" icon="star"></Chip>
+              <Chip text="test chip txt"></Chip>
               <Chip text="test chip txt" icon="star" disabled></Chip>
+              <Chip text="test chip txt" icon="star" elevated></Chip>
+              <Chip text="test chip txt" elevated></Chip>
+              <Chip text="test chip txt" icon="star" elevated></Chip>
+            </div>
+            <div tw="flex mt-4 space-x-1.5">
+              <Chip text="test chip txt" icon="star" variant="filter"></Chip>
+              <Chip text="test chip txt"></Chip>
+              <Chip
+                text="test chip txt"
+                icon="star"
+                variant="filter"
+                disabled
+              ></Chip>
+              <Chip
+                text="test chip txt"
+                icon="star"
+                variant="filter"
+                elevated
+              ></Chip>
+              <Chip text="test chip txt" elevated></Chip>
+              <Chip
+                text="test chip txt"
+                icon="star"
+                variant="filter"
+                elevated
+              ></Chip>
             </div>
           </div>
         </div>

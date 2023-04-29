@@ -13,79 +13,61 @@ interface ChipProps {
   variant?: ChipType;
   icon?: string;
   text?: string;
+  elevated?: boolean;
   disabled?: boolean;
 }
 
 const ChipBase = tw.button`h-8 rounded-lg flex items-center relative overflow-hidden`;
 
-const ChipRoot = styled(ChipBase)<ChipProps>(
-  ({ variant = "assist", disabled, icon }) => {
-    const themePalettes = useThemeContext();
-    return [
-      [icon ? tw`pl-2 pr-4` : tw`px-4`],
-      variant === "assist" && [
-        disabled
-          ? css`
-              &:disabled {
-                border: ${paletteAlpha(themePalettes.onSurface, 0.12)} solid
-                  ${unit(1)};
-              }
-            `
-          : tw`border border-outline bg-surface-container-low shadow
-          hover:after:(w-[200%] h-[200%] bg-on-surface opacity-[.08] absolute top-[-50%] left-[-50%])
-          hover:(shadow-lg)
-          active:after:(w-[200%] h-[200%] bg-on-surface opacity-[.12] absolute top-[-50%] left-[-50%])
+const ChipRoot = styled(ChipBase)<ChipProps>(({ disabled, icon, elevated }) => {
+  const themePalettes = useThemeContext();
+  return [
+    [icon ? tw`pl-2 pr-4` : tw`px-4`],
+    [
+      disabled
+        ? css`
+            &:disabled {
+              border: ${paletteAlpha(themePalettes.onSurface, 0.12)} solid
+                ${unit(1)};
+              color: ${paletteAlpha(themePalettes.onSurface, 0.38)} !important;
+            }
+          `
+        : [
+            elevated
+              ? tw`bg-surface-container-low shadow`
+              : tw`border border-outline`,
+            tw`hover:after:(w-[200%] h-[200%] bg-on-surface opacity-[.08] absolute top-[-50%] left-[-50%])
+              hover:(shadow-lg)
+              active:after:(w-[200%] h-[200%] bg-on-surface opacity-[.12] absolute top-[-50%] left-[-50%])`,
+          ],
+    ],
+  ];
+});
+
+const IconRoot = styled(Icon)<{ disabled?: boolean }>(({ disabled }) => {
+  return [tw`mr-2`, [!disabled && tw`text-primary`]];
+});
+
+const ChipTextRoot = styled.span<ChipProps>(({ disabled }) => {
+  const themePalettes = useThemeContext();
+  return [
+    [
+      !disabled
+        ? tw`text-on-surface label-large`
+        : css`
+            &:disabled {
+              color: ${paletteAlpha(themePalettes.onSurface, 0.38)} !important;
+            }
           `,
-      ],
-    ];
-  }
-);
-
-const IconRoot = styled(Icon)<{ chipVariant: ChipType; disabled?: boolean }>(
-  ({ chipVariant = "assist", disabled }) => {
-    const themePalettes = useThemeContext();
-    return [
-      tw`mr-2`,
-      chipVariant === "assist" && [
-        !disabled
-          ? tw`text-primary`
-          : css`
-              &:disabled {
-                color: ${paletteAlpha(
-                  themePalettes.onSurface,
-                  0.38
-                )} !important;
-              }
-            `,
-      ],
-    ];
-  }
-);
-
-const ChipTextRoot = styled.span<ChipProps>(
-  ({ variant = "assist", disabled }) => {
-    const themePalettes = useThemeContext();
-    return [
-      variant === "assist" && [
-        !disabled
-          ? tw`text-on-surface label-large`
-          : css`
-              &:disabled {
-                color: ${paletteAlpha(
-                  themePalettes.onSurface,
-                  0.38
-                )} !important;
-              }
-            `,
-      ],
-    ];
-  }
-);
+    ],
+  ];
+});
 
 export const Chip: React.FC<ChipProps> = ({
   variant = "assist",
   text = "",
   icon = "",
+  elevated = false,
   disabled,
 }) => {
   const handleMouseDown = useRippleHandler("start", undefined, disabled);
@@ -120,6 +102,7 @@ export const Chip: React.FC<ChipProps> = ({
       variant={variant}
       disabled={disabled}
       icon={icon}
+      elevated={elevated}
       onMouseDown={handleMouseDown}
       onContextMenu={handleContextMenu}
       onDragLeave={handleDragLeave}
@@ -129,17 +112,8 @@ export const Chip: React.FC<ChipProps> = ({
       onTouchEnd={handleTouchEnd}
       onTouchMove={handleTouchMove}
     >
-      {icon && (
-        <IconRoot
-          size={18}
-          name={icon}
-          chipVariant={variant}
-          disabled={disabled}
-        ></IconRoot>
-      )}
-      <ChipTextRoot disabled={disabled} variant={variant}>
-        {text}
-      </ChipTextRoot>
+      {icon && <IconRoot size={18} name={icon} disabled={disabled}></IconRoot>}
+      <ChipTextRoot disabled={disabled}>{text}</ChipTextRoot>
       <TouchRipple
         ref={rippleRef}
         classes={{
