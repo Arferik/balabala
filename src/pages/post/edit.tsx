@@ -2,16 +2,7 @@ import { type NextPage } from "next";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import Drawer from "rc-drawer";
-import {
-  Button,
-  Layout,
-  Input,
-  Card,
-  Icon,
-  useSnackbar,
-  PostLayout,
-  Textarea,
-} from "~/components";
+import { Layout, Input, useSnackbar, PostLayout, Textarea } from "~/components";
 import breaks from "@bytemd/plugin-breaks";
 import frontMatter from "@bytemd/plugin-frontmatter";
 import gemoji from "@bytemd/plugin-gemoji";
@@ -31,6 +22,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useMerge } from "~/hooks";
+import { Button, Card, Icon, IconButton } from "~/components/myd";
 const plugins = [
   gfm(),
   breaks(),
@@ -209,14 +201,11 @@ const NewPost: NextPage = () => {
           onChange={onInputChange}
           value={articleTitle}
         />
-        <Button
-          icon={<Icon name="menu-4" tw="fill-on-surface"></Icon>}
+        <IconButton
+          icon="menu"
           onClick={() => setShowPostSlider(true)}
-        ></Button>
-        <Button
-          onClick={beginPublish}
-          icon={<Icon name="file-upload" tw="fill-on-surface"></Icon>}
-        ></Button>
+        ></IconButton>
+        <IconButton onClick={beginPublish} icon="file-upload"></IconButton>
       </div>
       <Editor
         value={value}
@@ -258,7 +247,7 @@ const NewPost: NextPage = () => {
               {...register("title")}
             ></Input>
             <Button onClick={() => setShowCategoryDialog(false)}>取消</Button>
-            <Button nativeType="submit">确认</Button>
+            <Button type="submit">确认</Button>
           </form>
         </Drawer>
         <div tw="title-small box-border py-4 space-y-3 leading-[3.5rem] text-on-surface-variant flex flex-col items-center">
@@ -303,11 +292,11 @@ const NewPost: NextPage = () => {
                 );
               })}
           </Select>
-          <Button type="outlined" tw="w-full" onClick={openAddCateDialog}>
+          <Button variant="outlined" tw="w-full" onClick={openAddCateDialog}>
             新增类别
           </Button>
           <Textarea tw="h-36 w-full" label="摘要"></Textarea>
-          <Button type="filled" tw="w-full m-14" onClick={beginPublish}>
+          <Button variant="filled" tw="w-full m-14" onClick={beginPublish}>
             确认发布
           </Button>
         </div>

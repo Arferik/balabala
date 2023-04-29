@@ -3,9 +3,9 @@ import { useRouter } from "next/router";
 import Drawer from "rc-drawer";
 import "twin.macro";
 import React, { forwardRef } from "react";
-import { Icon } from "../ui/icon";
 import tw, { styled } from "twin.macro";
 import Footer from "./footer";
+import { Icon } from "../myd";
 
 interface Menu {
   title: string;
@@ -44,12 +44,7 @@ export const MenuItem = forwardRef<HTMLAnchorElement, MenuProps>(
   ({ title, icon, href, onClick, exact = false }, ref) => {
     return (
       <ItemContainer exact={exact} href={href} onClick={onClick} ref={ref}>
-        <Icon
-          name={icon}
-          size="md"
-          tw="mr-3 fill-on-surface"
-          type="line"
-        ></Icon>
+        <Icon name={icon} size="md" tw="mr-3"></Icon>
         <div tw="label-large flex-1 text-on-secondary-container">{title}</div>
       </ItemContainer>
     );

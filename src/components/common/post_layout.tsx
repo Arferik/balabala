@@ -1,11 +1,10 @@
 import { api } from "~/utils";
 import InfiniteScroll from "react-infinite-scroll-component";
 import "twin.macro";
-import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { Icon } from "../ui/icon";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { IconButton } from "../myd";
 
 export const PostLayout = () => {
   const { mutate: postEmptyMutate } = api.post.savePostEmpty.useMutation({
@@ -24,9 +23,7 @@ export const PostLayout = () => {
         getNextPageParam: (lastPage) => lastPage.nextCursor,
       }
     );
-  console.log("ssssss");
   useEffect(() => {
-    console.log("ssssss");
     if (
       data &&
       Array.isArray(data.pages) &&
@@ -44,10 +41,7 @@ export const PostLayout = () => {
   const addPost = () => postEmptyMutate();
   return (
     <div>
-      <Button
-        icon={<Icon name="add" tw="fill-on-surface"></Icon>}
-        onClick={addPost}
-      ></Button>
+      <IconButton icon="add" onClick={addPost}></IconButton>
       <Input type="text" label="请输入文章标题" onChange={onInputChange} />
       <InfiniteScroll
         dataLength={data?.pages.length || 0} //This is important field to render the next data

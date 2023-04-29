@@ -1,8 +1,7 @@
 import React, { forwardRef, useEffect, useState } from "react";
-import { Button } from "./button";
 import tw, { css, styled } from "twin.macro";
-import { Icon } from "./icon";
 import { type FieldErrors } from "react-hook-form";
+import { IconButton } from "../myd";
 
 const InputLabel = styled.label(() => [
   tw`body-large absolute pointer-events-none top-4 left-3 text-on-surface-variant transition-all px-1`,
@@ -107,13 +106,11 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           <InputLabel className="input-label">{label}</InputLabel>
           {isShowClearButton && (
             <div tw=" absolute  bottom-2 right-0">
-              <Button
+              <IconButton
                 onClick={onClearHandle}
-                type="text"
-                icon={
-                  <Icon name="close-circle" tw="fill-on-surface-variant"></Icon>
-                }
-              ></Button>
+                variant="tonal"
+                icon="close-circle"
+              ></IconButton>
             </div>
           )}
         </InputContainer>

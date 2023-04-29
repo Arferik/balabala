@@ -1,9 +1,9 @@
 import "twin.macro";
-import { Button } from "../ui/button";
 import { useRouter } from "next/router";
 import { api } from "~/utils";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
+import { Button } from "../myd";
 
 const SVGLine = () => {
   return (
@@ -93,11 +93,11 @@ const Footer: React.FC = () => {
         <div tw="title-medium flex w-full items-center">
           <span>&copy; {new Date().getFullYear()} tansincosy</span>
           {session ? (
-            <Button type="text" onClick={() => signOut()}>
+            <Button variant="text" onClick={() => signOut()}>
               {session.user.name} 注销
             </Button>
           ) : (
-            <Button type="text" onClick={() => router.push("/auth/sign_in")}>
+            <Button variant="text" onClick={() => router.push("/auth/sign_in")}>
               登录
             </Button>
           )}

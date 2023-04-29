@@ -1,8 +1,7 @@
 import React, { forwardRef, useState } from "react";
-import { Button } from "./button";
 import tw, { css, styled } from "twin.macro";
-import { Icon } from "./icon";
 import { type FieldErrors } from "react-hook-form";
+import { IconButton } from "../myd";
 
 const InputLabel = styled.label<{ trailingIcon: boolean }>(
   ({ trailingIcon }) => [
@@ -95,7 +94,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       >
         <InputContainer>
           {trailingIcon && (
-            <Icon name={trailingIcon} tw="absolute left-3"></Icon>
+            <IconButton icon={trailingIcon} tw="absolute left-3"></IconButton>
           )}
           <InputMain
             trailingIcon={trailingIcon}
@@ -114,13 +113,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           </InputLabel>
           {isShowClearButton && (
             <div tw="flex items-center absolute right-0">
-              <Button
+              <IconButton
                 onClick={onClearHandle}
-                type="text"
-                icon={
-                  <Icon name="close-circle" tw="fill-on-surface-variant"></Icon>
-                }
-              ></Button>
+                icon="close-circle"
+              ></IconButton>
             </div>
           )}
         </InputContainer>

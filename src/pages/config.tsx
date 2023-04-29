@@ -2,14 +2,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import "twin.macro";
 import { api } from "~/utils/api";
-import {
-  Button,
-  Icon,
-  Input,
-  Layout,
-  Textarea,
-  useSnackbar,
-} from "~/components";
+import { Input, Layout, Textarea, useSnackbar } from "~/components";
 import { useForm, type SubmitHandler, useFieldArray } from "react-hook-form";
 import { useRouter } from "next/router";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,6 +12,7 @@ import { prisma } from "~/server/db";
 import { configRouter } from "~/server/api/routers/config";
 import { useEffect } from "react";
 import { defer } from "lodash";
+import { Button, IconButton } from "~/components/myd";
 
 interface ConfigForm extends Config {
   socials: { name: string; url: string }[];
@@ -120,17 +114,17 @@ const ConfigManager: NextPage<{ config: ConfigParams }> = ({ config }) => {
                   label="社交链接"
                   errors={errors}
                 />
-                <Button
-                  icon={<Icon name="delete-bin-5"></Icon>}
+                <IconButton
+                  icon="delete"
                   onClick={() => remove(index)}
-                ></Button>
+                ></IconButton>
               </div>
             ))}
             <Button onClick={() => append({ name: "", url: "" })}>
               新增友联
             </Button>
             <div tw="flex flex-col md:flex-row justify-center space-y-2 md:(space-x-2 space-y-0)">
-              <Button nativeType="submit" type="filled" tw="w-full">
+              <Button type="submit" variant="filled" tw="w-full">
                 保存
               </Button>
             </div>

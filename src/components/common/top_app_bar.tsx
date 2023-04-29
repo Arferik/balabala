@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
-import { Button, Card, Icon } from "../index";
 import "twin.macro";
 import Drawer from "rc-drawer";
 import { useSession } from "next-auth/react";
 import { SideMenu } from "./side_menu";
 import { themeColors } from "~/utils";
 import { useMediaQuery } from "~/hooks";
+import { Button, Card, IconButton } from "../myd";
 
 export interface TopAppBarProps {
   appTitle?: string;
@@ -87,11 +87,11 @@ export const TopAppBar = ({ appTitle = "", category = {} }: TopAppBarProps) => {
   return (
     <div tw="flex fixed h-16  top-0 left-0 w-full box-border px-4 md:px-0 z-30 bg-surface backdrop-filter backdrop-blur backdrop-saturate-50">
       <div tw="container mx-auto flex h-full items-center justify-between">
-        <Icon
+        <IconButton
           onClick={onClickHandle}
-          name={query.source ? "arrow-left-s" : "menu"}
+          icon={query.source ? "arrow-left-s" : "menu"}
           tw="h-12 w-12 cursor-pointer fill-on-surface md:!hidden"
-        ></Icon>
+        ></IconButton>
         <div
           tw="title-large ml-6 mr-6 w-full cursor-pointer text-center text-on-surface md:w-auto"
           onClick={targetHomePage}
@@ -104,7 +104,7 @@ export const TopAppBar = ({ appTitle = "", category = {} }: TopAppBarProps) => {
               <Link href={`${menu.path}`} key={menu.title}>
                 <Button
                   className="title-medium text-on-surface-variant"
-                  type={
+                  variant={
                     menu.path === "/" && activeClass === menu.path
                       ? "filled"
                       : menu.path + "/" === activeClass
@@ -118,20 +118,18 @@ export const TopAppBar = ({ appTitle = "", category = {} }: TopAppBarProps) => {
             ))}
           </div>
         </div>
-        <Icon
+        <IconButton
           onClick={openSearchDialog}
-          name="search"
-          type="line"
+          icon="search"
           tw="h-12 w-12 cursor-pointer fill-on-surface"
-        ></Icon>
-        <Icon
+        ></IconButton>
+        <IconButton
           onClick={() => {
             setDebugSide(true);
           }}
-          name="bug"
-          type="line"
+          icon="bug"
           tw="h-12 w-12 cursor-pointer fill-on-surface"
-        ></Icon>
+        ></IconButton>
       </div>
       {!isDesktop && (
         <SideMenu
