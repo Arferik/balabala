@@ -47,6 +47,18 @@ const unit = (size) => {
 
 const typography = plugin(({ addComponents, theme }) => {
   addComponents({
+    ".display-xxl": {
+      lineHeight: unit(112),
+      fontSize: unit(112),
+      fontWeight: 400,
+      fontFamily: "Roboto ,sans-serif",
+    },
+    ".display-xl": {
+      lineHeight: unit(96),
+      fontSize: unit(88),
+      fontWeight: 400,
+      fontFamily: "Roboto ,sans-serif",
+    },
     ".display-large": {
       lineHeight: unit(64),
       fontSize: unit(57),

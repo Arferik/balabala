@@ -8,6 +8,7 @@ import GlobalStyles from "../styles/GlobalStyles";
 import { Roboto } from "next/font/google";
 import { SnackbarProvider } from "~/components";
 import { ThemeProvider } from "~/components/myd";
+import "highlight.js/scss/atom-one-dark.scss";
 
 const inter = Roboto({ subsets: ["latin"], weight: "500" });
 

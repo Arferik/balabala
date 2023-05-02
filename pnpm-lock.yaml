@@ -44,6 +44,7 @@ specifiers:
   eslint: ^8.34.0
   eslint-config-next: ^13.2.1
   formidable: ^2.1.1
+  highlight.js: ^11.8.0
   jsonwebtoken: ^9.0.0
   lodash: ^4.17.21
   next: ^13.2.1
@@ -95,6 +96,7 @@ dependencies:
   bytemd: 1.20.2
   clsx: 1.2.1
   formidable: 2.1.1
+  highlight.js: 11.8.0
   jsonwebtoken: 9.0.0
   lodash: 4.17.21
   next: 13.2.3_25kmi7vfezlcrjsbskfdxaf5qu
@@ -424,7 +426,7 @@ packages:
       bytemd: ^1.5.0
     dependencies:
       bytemd: 1.20.2
-      highlight.js: 11.7.0
+      highlight.js: 11.8.0
     dev: false
 
   /@bytemd/plugin-math/1.20.2_bytemd@1.20.2:
@@ -3077,8 +3079,8 @@ packages:
     engines: {node: '>=8'}
     dev: false
 
-  /highlight.js/11.7.0:
-    resolution: {integrity: sha512-1rRqesRFhMO/PRF+G86evnyJkCgaZFOI+Z6kdj15TA18funfoqJXvgPCLSf0SWq3SRfg1j3HlDs8o4s3EGq1oQ==}
+  /highlight.js/11.8.0:
+    resolution: {integrity: sha512-MedQhoqVdr0U6SSnWPzfiadUcDHfN/Wzq25AkXiQv9oiOO/sG0S7XkvpFIqWBl9Yq1UYyYOOVORs5UW2XlPyzg==}
     engines: {node: '>=12.0.0'}
     dev: false
 

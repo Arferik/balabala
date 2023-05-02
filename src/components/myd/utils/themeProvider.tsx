@@ -74,9 +74,9 @@ export function ThemeProvider({
   const [palettes, setColorPalettes] =
     useState<Record<ColorTokenType, string>>();
   useEffect(() => {
-    const theme = themeFromSourceColor(argbFromHex(color || "#066bf8"));
+    const theme = themeFromSourceColor(argbFromHex(color || "#06a7f8"));
     const isDark =
-      window.matchMedia("(prefers-color-scheme: dark)").matches && false;
+      window.matchMedia("(prefers-color-scheme: dark)").matches && true;
     const newPalettesSchema = getPalettes(theme, isDark);
     applyTheme(theme, {
       target: document.body,

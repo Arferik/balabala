@@ -2,56 +2,133 @@ $monospace-font: Menlo, Monaco, Consolas, "Courier New", monospace;
 $line-space: 22px;
 
 .markdown-body {
-  word-break: break-word;
-  line-height: 1.75;
-  font-weight: 400;
-  font-size: 16px;
-  overflow-x: hidden;
-  color: #333;
-
+  a,
+  abbr,
+  acronym,
+  address,
+  applet,
+  article,
+  aside,
+  audio,
+  b,
+  big,
+  blockquote,
+  body,
+  canvas,
+  caption,
+  center,
+  cite,
+  code,
+  dd,
+  del,
+  details,
+  dfn,
+  div,
+  dl,
+  dt,
+  em,
+  embed,
+  fieldset,
+  figcaption,
+  figure,
+  footer,
+  form,
   h1,
   h2,
   h3,
   h4,
   h5,
-  h6 {
-    line-height: 1.5;
-    margin-top: 35px;
-    margin-bottom: 10px;
-    padding-bottom: 5px;
+  h6,
+  header,
+  hgroup,
+  html,
+  i,
+  iframe,
+  img,
+  ins,
+  kbd,
+  label,
+  legend,
+  li,
+  mark,
+  menu,
+  nav,
+  object,
+  ol,
+  output,
+  p,
+  pre,
+  q,
+  ruby,
+  s,
+  samp,
+  section,
+  small,
+  span,
+  strike,
+  strong,
+  sub,
+  summary,
+  sup,
+  table,
+  tbody,
+  td,
+  tfoot,
+  th,
+  thead,
+  time,
+  tr,
+  tt,
+  u,
+  ul,
+  var,
+  video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    font-size: 100%;
+    vertical-align: baseline;
   }
-
-  h1 {
-    font-size: 24px;
-    margin-bottom: 5px;
+  @apply container mx-auto overflow-hidden break-words px-4 text-on-background md:w-[128ch] md:px-0;
+  em {
+    @apply italic;
   }
+  strong {
+    @apply font-semibold;
+  }
+  h1,
   h2,
-  h3,
+  h3 {
+    @apply my-20 lg:my-14;
+  }
   h4,
   h5,
   h6 {
-    font-size: 20px;
+    @apply my-20 lg:my-9;
+  }
+
+  h1 {
+    @apply display-large md:display-xl lg:display-xxl;
   }
   h2 {
-    padding-bottom: 12px;
-    border-bottom: 1px solid #ececec;
+    @apply display-small md:display-medium lg:display-large;
   }
   h3 {
-    font-size: 18px;
-    padding-bottom: 0;
+    @apply headline-small md:headline-medium lg:headline-large;
   }
+  h4,
+  h5,
   h6 {
-    margin-top: 5px;
+    @apply headline-small;
   }
 
   p {
-    line-height: inherit;
-    margin-top: $line-space;
-    margin-bottom: $line-space;
+    @apply body-medium my-2 md:body-large lg:title-large md:my-4 lg:my-6;
   }
 
   img {
-    max-width: 100%;
+    @apply h-96 rounded-2xl;
   }
 
   hr {
@@ -64,14 +141,10 @@ $line-space: 22px;
   }
 
   code {
-    font-family: $monospace-font;
     word-break: break-word;
-    border-radius: 2px;
     overflow-x: auto;
-    background-color: #fff5f5;
-    color: #ff502c;
-    font-size: 0.87em;
     padding: 0.065em 0.4em;
+    @apply rounded-md bg-primary-container text-on-primary-container;
   }
 
   pre {
@@ -80,45 +153,37 @@ $line-space: 22px;
     position: relative;
     line-height: 1.75;
     > code {
-      font-size: 12px;
       padding: 15px 12px;
       margin: 0;
       word-break: normal;
       display: block;
       overflow-x: auto;
-      color: #333;
-      background: #f8f8f8;
+      @apply bg-on-primary-container text-primary;
     }
   }
 
   a {
-    text-decoration: none;
-    color: #0269c8;
-    border-bottom: 1px solid #d1e9ff;
+    @apply text-primary underline decoration-primary decoration-2;
     &:hover,
     &:active {
-      color: #275b8c;
+      @apply text-on-primary-container;
     }
   }
 
   table {
-    display: inline-block !important;
-    font-size: 12px;
-    width: auto;
-    max-width: 100%;
-    overflow: auto;
-    border: solid 1px #f6f6f6;
+    @apply w-full border-collapse border-spacing-0 overflow-x-auto rounded-3xl border border-surface-variant;
   }
   thead {
-    background: #f6f6f6;
-    color: #000;
-    text-align: left;
-  }
-  tr:nth-child(2n) {
-    background-color: #fcfcfc;
+    @apply border border-surface-variant text-on-background;
+    tr {
+      th {
+        @apply bg-surface-container-low;
+      }
+    }
   }
   th,
   td {
+    @apply border border-surface-variant;
     padding: 12px 7px;
     line-height: 24px;
   }
@@ -127,11 +192,10 @@ $line-space: 22px;
   }
 
   blockquote {
-    color: #666;
     padding: 1px 23px;
     margin: 22px 0;
     border-left: 4px solid #cbcbcb;
-    background-color: #f8f8f8;
+    @apply border-l-secondary-container bg-on-secondary text-secondary;
     &::after {
       display: block;
       content: "";
@@ -143,26 +207,46 @@ $line-space: 22px;
 
   ol,
   ul {
-    padding-left: 28px;
+    max-width: 768px;
+    @apply body-medium mt-2 md:body-large lg:title-large;
     li {
-      margin-bottom: 0;
-      list-style: inherit;
+      @apply relative ml-[22px] mb-4;
+      list-style-type: none;
       & .task-list-item {
         list-style: none;
         ul,
         ol {
-          margin-top: 0;
+          @apply relative mb-4;
         }
       }
     }
-
     ul,
     ol {
       margin-top: 3px;
     }
   }
-  ol li {
-    padding-left: 6px;
+
+  ul {
+    li {
+      &:before {
+        @apply absolute top-2 -left-4 h-2 w-2 rounded-full bg-on-background text-center content-[''];
+      }
+    }
+  }
+
+  ol {
+    @apply list-none pl-0;
+    counter-reset: item;
+    li {
+      @apply ml-9;
+      counter-increment: item;
+      &:before {
+        @apply label-large absolute float-left -mt-1 mr-[10px] -ml-9 block h-8 w-6 rounded-xl bg-inverse-surface text-center leading-8 text-inverse-on-surface content-[counter(item)];
+      }
+    }
+  }
+  ol[start] {
+    counter-reset: listitem;
   }
 
   .contains-task-list {
@@ -171,17 +255,5 @@ $line-space: 22px;
 
   .task-list-item {
     list-style: none;
-  }
-
-  @media (max-width: 720px) {
-    h1 {
-      font-size: 24px;
-    }
-    h2 {
-      font-size: 20px;
-    }
-    h3 {
-      font-size: 18px;
-    }
   }
 }

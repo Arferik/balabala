@@ -13,6 +13,15 @@ const CustomStyles = createGlobalStyle({
   ".bytemd": {
     height: "100vh",
   },
+  "::-moz-selection": {
+    /* Code for Firefox */ color: "var(--md-sys-color-on-background)",
+    background: "var(--md-sys-color-primary-container)",
+  },
+
+  "::selection": {
+    color: "var(--md-sys-color-on-background)",
+    background: "var(--md-sys-color-primary-container)",
+  },
 });
 
 const GlobalStyles = () => (
