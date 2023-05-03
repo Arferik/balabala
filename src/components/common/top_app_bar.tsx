@@ -26,7 +26,7 @@ export const TopAppBar = ({ appTitle = "", category = {} }: TopAppBarProps) => {
       {
         title: "主页",
         path: "/",
-        icon: "home-4",
+        icon: "home",
       },
     ];
     if (session?.user) {
@@ -35,17 +35,17 @@ export const TopAppBar = ({ appTitle = "", category = {} }: TopAppBarProps) => {
         {
           title: "配置",
           path: "/config",
-          icon: "settings-2",
+          icon: "settings",
         },
         {
           title: "博客编辑",
           path: "/post/edit",
-          icon: "edit-box",
+          icon: "edit",
         },
         {
           title: "日志",
           path: "/log",
-          icon: "file-4",
+          icon: "bug_report",
         },
       ];
     }
@@ -90,7 +90,7 @@ export const TopAppBar = ({ appTitle = "", category = {} }: TopAppBarProps) => {
         <IconButton
           onClick={onClickHandle}
           icon={query.source ? "arrow-left-s" : "menu"}
-          tw="h-12 w-12 cursor-pointer fill-on-surface md:!hidden"
+          tw="h-12 w-12 cursor-pointer fill-on-surface md:!hidden flex-none"
         ></IconButton>
         <div
           tw="title-large ml-6 mr-6 w-full cursor-pointer text-center text-on-surface md:w-auto"
@@ -121,14 +121,14 @@ export const TopAppBar = ({ appTitle = "", category = {} }: TopAppBarProps) => {
         <IconButton
           onClick={openSearchDialog}
           icon="search"
-          tw="h-12 w-12 cursor-pointer fill-on-surface"
+          tw="h-12 w-12 cursor-pointer fill-on-surface flex-none"
         ></IconButton>
         <IconButton
           onClick={() => {
             setDebugSide(true);
           }}
-          icon="bug"
-          tw="h-12 w-12 cursor-pointer fill-on-surface"
+          icon="pest_control"
+          tw="h-12 w-12 cursor-pointer fill-on-surface flex-none"
         ></IconButton>
       </div>
       {!isDesktop && (

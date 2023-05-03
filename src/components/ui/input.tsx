@@ -113,10 +113,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           </InputLabel>
           {isShowClearButton && (
             <div tw="flex items-center absolute right-0">
-              <IconButton
-                onClick={onClearHandle}
-                icon="close-circle"
-              ></IconButton>
+              <IconButton onClick={onClearHandle} icon="close"></IconButton>
             </div>
           )}
         </InputContainer>

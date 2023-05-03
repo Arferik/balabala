@@ -109,7 +109,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
               <IconButton
                 onClick={onClearHandle}
                 variant="tonal"
-                icon="close-circle"
+                icon="close"
               ></IconButton>
             </div>
           )}

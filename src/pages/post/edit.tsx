@@ -21,7 +21,6 @@ import Upload, { type UploadProps } from "rc-upload";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useMerge } from "~/hooks";
 import { Button, Card, Icon, IconButton } from "~/components/myd";
 const plugins = [
   gfm(),
@@ -202,10 +201,15 @@ const NewPost: NextPage = () => {
           value={articleTitle}
         />
         <IconButton
+          tw="flex-none"
           icon="menu"
           onClick={() => setShowPostSlider(true)}
         ></IconButton>
-        <IconButton onClick={beginPublish} icon="file-upload"></IconButton>
+        <IconButton
+          onClick={beginPublish}
+          icon="publish"
+          tw="flex-none"
+        ></IconButton>
       </div>
       <Editor
         value={value}
@@ -241,13 +245,23 @@ const NewPost: NextPage = () => {
           </div>
           <form onSubmit={handleSubmit(onCategorySubmit)}>
             <Input
-              trailingIcon="text"
+              trailingIcon="title"
               label="标题"
               errors={errors}
               {...register("title")}
             ></Input>
-            <Button onClick={() => setShowCategoryDialog(false)}>取消</Button>
-            <Button type="submit">确认</Button>
+            <div tw="space-y-3">
+              <Button
+                tw="w-full"
+                onClick={() => setShowCategoryDialog(false)}
+                variant="outlined"
+              >
+                取消
+              </Button>
+              <Button tw="w-full" type="submit" variant="filled">
+                确认
+              </Button>
+            </div>
           </form>
         </Drawer>
         <div tw="title-small box-border py-4 space-y-3 leading-[3.5rem] text-on-surface-variant flex flex-col items-center">

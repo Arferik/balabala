@@ -80,20 +80,17 @@ const Home: NextPage<{ coverUrl: string }> = ({ coverUrl }) => {
                                 ></Image>
                               )}
                             </div>
-                            <div tw="box-border flex flex-col justify-center px-6">
+                            <div tw="box-border flex flex-col justify-center p-6">
                               <h1 tw="text-on-surface mt-5 display-small">
                                 {post.title}
                               </h1>
                               <h2 tw="title-medium text-secondary md:mt-2">
                                 {post.introduce}
                               </h2>
-                              <div tw="md:mt-2">
+                              <div tw="md:mt-2 flex space-x-1 ">
                                 {["tag1", "tah2"].map((tag) => {
                                   return (
                                     <Chip
-                                      onClick={(event) => {
-                                        event.stopPropagation();
-                                      }}
                                       tw="z-10 m-1"
                                       icon="tag"
                                       key={tag}

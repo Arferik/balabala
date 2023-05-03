@@ -86,13 +86,13 @@ const ConfigManager: NextPage<{ config: ConfigParams }> = ({ config }) => {
           </div>
           <form onSubmit={handleSubmit(onSubmit)} tw="space-y-5">
             <Input
-              trailingIcon="text"
+              trailingIcon="title"
               label="标题"
               errors={errors}
               {...register("blog_title")}
             ></Input>
             <Input
-              trailingIcon="play"
+              trailingIcon="description"
               {...register("slogan")}
               label="标语"
               errors={errors}
@@ -116,11 +116,17 @@ const ConfigManager: NextPage<{ config: ConfigParams }> = ({ config }) => {
                 />
                 <IconButton
                   icon="delete"
+                  tw="flex-none"
+                  variant="filled"
+                  unSelected
                   onClick={() => remove(index)}
                 ></IconButton>
               </div>
             ))}
-            <Button onClick={() => append({ name: "", url: "" })}>
+            <Button
+              onClick={() => append({ name: "", url: "" })}
+              variant="tonal"
+            >
               新增友联
             </Button>
             <div tw="flex flex-col md:flex-row justify-center space-y-2 md:(space-x-2 space-y-0)">

@@ -172,30 +172,28 @@ $line-space: 22px;
 
   table {
     @apply w-full border-collapse border-spacing-0 overflow-x-auto rounded-3xl border border-surface-variant;
-  }
-  thead {
-    @apply border border-surface-variant text-on-background;
-    tr {
-      th {
-        @apply bg-surface-container-low;
+    thead {
+      @apply border border-surface-variant text-on-background;
+      tr {
+        th {
+          @apply bg-surface-container-low;
+        }
       }
     }
-  }
-  th,
-  td {
-    @apply border border-surface-variant;
-    padding: 12px 7px;
-    line-height: 24px;
-  }
-  td {
-    min-width: 120px;
+    th,
+    td {
+      @apply border-t border-r border-solid border-surface-variant align-middle;
+      padding: 16px 24px;
+    }
+    td {
+      min-width: 120px;
+    }
   }
 
   blockquote {
     padding: 1px 23px;
     margin: 22px 0;
-    border-left: 4px solid #cbcbcb;
-    @apply border-l-secondary-container bg-on-secondary text-secondary;
+    @apply border-l-4 border-solid border-l-tertiary-container bg-on-tertiary text-tertiary;
     &::after {
       display: block;
       content: "";
