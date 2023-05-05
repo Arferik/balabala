@@ -46,7 +46,6 @@ export function SnackbarProvider({ children }: { children: React.ReactNode }) {
       cusParma = {}
     ) {
       setOpen(true);
-      console.log("sssss open");
       setMessage(message);
       if (actionText) setText(actionText);
       const autoDismiss = cusParma?.autoDismiss;

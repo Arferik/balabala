@@ -3,6 +3,7 @@ import { type NextApiRequest, type NextApiHandler } from "next";
 import formidable, { type Options, type Files } from "formidable";
 import path, { join } from "path";
 import { mkdir, readdir } from "fs/promises";
+import { Logger } from "~/utils/logger";
 /**
  * 处理图片请求
  * @param req
@@ -36,6 +37,7 @@ const readFile = (
   });
 };
 const handler: NextApiHandler = async (req, res) => {
+  const LOG = Logger.getLogger("APIImagesHandle");
   const { id, type } = req.query;
   if (!id || !type) {
     res.status(400).json({
@@ -55,10 +57,14 @@ const handler: NextApiHandler = async (req, res) => {
     await readdir(imageSavePath);
   } catch (err) {
     await mkdir(imageSavePath, { recursive: true });
+    LOG.info("create image path: ", imageSavePath);
   }
+
+  LOG.info("read images from path: ", imageSavePath);
   const files = await readFile(req, imageSavePath);
+  LOG.info("read files success");
+
   const file = files["file"] as formidable.File;
-  console.log(file);
   res.json({
     success: true,
     image: join("/", "images", id as string, type as string, file.newFilename),

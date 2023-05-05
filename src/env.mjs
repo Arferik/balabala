@@ -25,6 +25,9 @@ const server = z.object({
   GITHUB_SECRET: z.string(),
   BLOG_ID: z.string(),
   UNSPLASH_RANDOM_IMAGE_API: z.string().optional().default(UnsplashImageUrl),
+  LOG_PATH: z.string().optional().default(""),
+  LOG_LEVEL: z.string().default("info"),
+  LOG_NAME: z.string().default("Blog"),
 });
 
 /**
@@ -51,6 +54,9 @@ const processEnv = {
   GITHUB_SECRET: process.env.GITHUB_SECRET,
   BLOG_ID: process.env.BLOG_ID,
   UNSPLASH_RANDOM_IMAGE_API: process.env.UNSPLASH_RANDOM_IMAGE_API,
+  LOG_PATH: process.env.LOG_PATH,
+  LOG_LEVEL: process.env.LOG_LEVEL,
+  LOG_NAME: process.env.LOG_NAME,
 };
 
 // Don't touch the part below

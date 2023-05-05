@@ -1,11 +1,12 @@
 import { type InferGetServerSidePropsType, type NextPage } from "next";
 import Head from "next/head";
 import "twin.macro";
-import { Button, Icon, Layout } from "~/components";
+import { Layout } from "~/components";
 import { getProviders, signIn } from "next-auth/react";
 import type { GetServerSidePropsContext } from "next";
 import { getServerSession } from "next-auth";
 import { authOptions } from "~/server/auth";
+import { Button } from "~/components/myd";
 
 const SignIn: NextPage<{
   providers: InferGetServerSidePropsType<typeof getServerSideProps>;
@@ -28,10 +29,9 @@ const SignIn: NextPage<{
             {Object.values(providers).map((provider: any) => (
               <Button
                 key={provider.id}
-                type="outlined"
+                variant="outlined"
                 onClick={() => signIn(provider?.id)}
                 tw="w-full"
-                icon={<Icon name="github" tw="fill-primary"></Icon>}
               >
                 {provider.name} 登录
               </Button>

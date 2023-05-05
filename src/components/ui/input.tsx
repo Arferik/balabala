@@ -40,7 +40,13 @@ export type InputProps = {
   label?: string;
 } & Pick<
   React.ComponentProps<"input">,
-  "onChange" | "type" | "name" | "autoComplete" | "autoFocus" | "onBlur"
+  | "onChange"
+  | "type"
+  | "name"
+  | "autoComplete"
+  | "autoFocus"
+  | "onBlur"
+  | "defaultValue"
 >;
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -55,6 +61,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       errors,
       type = "text",
       onBlur,
+      defaultValue,
     }: InputProps,
     ref
   ) => {
@@ -97,6 +104,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             <IconButton icon={trailingIcon} tw="absolute left-3"></IconButton>
           )}
           <InputMain
+            defaultValue={defaultValue}
             trailingIcon={trailingIcon}
             ref={ref}
             autoComplete={autoComplete}

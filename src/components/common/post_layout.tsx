@@ -30,8 +30,11 @@ export const PostLayout = () => {
       data?.pages?.length > 0 &&
       route.pathname === "/post/edit"
     ) {
-      const [firstPost] = data?.pages[0].items || [];
-      if (firstPost) route.push(`/post/edit?p=${firstPost.id}`);
+      const firstPage = data.pages[0];
+      if (firstPage) {
+        const [firstPost] = firstPage.items || [];
+        if (firstPost) route.push(`/post/edit?p=${firstPost.id}`);
+      }
     }
   }, []);
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

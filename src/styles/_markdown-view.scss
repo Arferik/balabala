@@ -212,6 +212,9 @@ $line-space: 22px;
       list-style-type: none;
       & .task-list-item {
         list-style: none;
+        & :before {
+          @apply not-sr-only;
+        }
         ul,
         ol {
           @apply relative mb-4;
