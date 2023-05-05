@@ -1,6 +1,10 @@
 import path from "path";
 import babelPluginMacros from "babel-plugin-macros";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import babelPluginStyledComponent from "babel-plugin-styled-components";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import babelSyntaxTypescript from "@babel/plugin-syntax-typescript";
 // The folders containing files importing twin.macro
 

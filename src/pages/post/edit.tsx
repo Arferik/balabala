@@ -129,7 +129,7 @@ const NewPost: NextPage = () => {
       const formData = new FormData();
       if (data) {
         Object.keys(data).forEach((key) => {
-          formData.append(key, data[key]);
+          formData.append(key, data[key] as string);
         });
       }
       if (filename) formData.append(filename, file);
@@ -140,7 +140,7 @@ const NewPost: NextPage = () => {
           headers: headers,
         }).then((resp) => resp.json());
 
-        onSuccess && onSuccess(res, file);
+        onSuccess && onSuccess(res);
       } catch (err: any) {
         onError && onError(err, null);
       }
