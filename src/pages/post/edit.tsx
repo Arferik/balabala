@@ -231,7 +231,11 @@ const NewPost: NextPage = () => {
         autoFocus={true}
         prefixCls="drawer"
       >
-        <PostLayout></PostLayout>
+        <PostLayout
+          onClosed={() => {
+            setShowPostSlider(false);
+          }}
+        ></PostLayout>
       </Drawer>
       <Drawer
         open={confirmPublish}
