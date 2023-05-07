@@ -4,6 +4,7 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
+import { Logger } from "~/utils/logger";
 
 export const postRouter = createTRPCRouter({
   savePostEmpty: protectedProcedure.mutation(async ({ ctx }) => {
@@ -47,7 +48,7 @@ export const postRouter = createTRPCRouter({
         },
       });
 
-      console.log(
+      Logger.getLogger("updatePost").info(
         "input.category =",
         input.category,
         "currentCategoryId = ",

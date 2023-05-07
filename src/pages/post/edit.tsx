@@ -278,7 +278,11 @@ const NewPost: NextPage = () => {
         <div tw="title-small box-border py-4 space-y-3 leading-[3.5rem] text-on-surface-variant flex flex-col items-center">
           <Card tw="w-64 h-32 flex items-center justify-center bg-on-primary-container cursor-pointer">
             <Upload {...uploadProps}>
-              <Icon name="upload" tw="text-9xl fill-primary" size="lg"></Icon>
+              <Icon
+                name="upload"
+                tw="text-9xl fill-primary z-50"
+                size="lg"
+              ></Icon>
               <Image src={coverImage?.url || ""} alt="cover" fill></Image>
             </Upload>
           </Card>

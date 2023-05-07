@@ -81,6 +81,7 @@ export const PostLayout: React.FC<{ onClosed: () => void }> = ({
                     href={`/post/edit?p=${post.id}`}
                   >
                     <MenuItem
+                      key={post.id}
                       onClick={onClosed}
                       title={post.title}
                       href={`/post/edit?p=${post.id}`}
