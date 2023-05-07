@@ -2,7 +2,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import "twin.macro";
 import { api } from "~/utils/api";
-import { Input, Layout, Textarea, useSnackbar } from "~/components";
+import { Layout, useSnackbar } from "~/components";
 import { useForm, type SubmitHandler, useFieldArray } from "react-hook-form";
 import { useRouter } from "next/router";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,7 +12,7 @@ import { prisma } from "~/server/db";
 import { configRouter } from "~/server/api/routers/config";
 import { useEffect } from "react";
 import { defer } from "lodash";
-import { Button, IconButton } from "~/components/myd";
+import { Button, IconButton, Input, Textarea } from "~/components/myd";
 
 interface ConfigForm extends Config {
   socials: { name: string; url: string }[];
@@ -33,6 +33,11 @@ const ConfigManager: NextPage<{ config: ConfigParams }> = ({ config }) => {
     resolver: zodResolver(ConfigSchema),
   });
 
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "socials",
+  });
+
   const ConfigApi = api.config.upSert.useMutation({
     onSuccess: () => {
       open && open("保存成功");
@@ -41,11 +46,6 @@ const ConfigManager: NextPage<{ config: ConfigParams }> = ({ config }) => {
     onError: () => {
       open && open("保存失败");
     },
-  });
-
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "socials",
   });
 
   const route = useRouter();

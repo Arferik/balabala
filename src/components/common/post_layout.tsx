@@ -1,15 +1,13 @@
 import { api } from "~/utils";
 import InfiniteScroll from "react-infinite-scroll-component";
 import "twin.macro";
-import { Input } from "../ui/input";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { IconButton } from "../myd";
+import { IconButton, Input } from "../myd";
 
 export const PostLayout = () => {
   const { mutate: postEmptyMutate } = api.post.savePostEmpty.useMutation({
     onSuccess: (data) => {
-      console.log("postEmptyMutate", data);
       data && route.push(`/post/edit?p=${data.id}`);
     },
   });

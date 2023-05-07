@@ -1,8 +1,8 @@
 import { type NextPage } from "next";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Drawer from "rc-drawer";
-import { Layout, Input, useSnackbar, PostLayout, Textarea } from "~/components";
+import { Layout, useSnackbar, PostLayout } from "~/components";
 import breaks from "@bytemd/plugin-breaks";
 import frontMatter from "@bytemd/plugin-frontmatter";
 import gemoji from "@bytemd/plugin-gemoji";
@@ -21,7 +21,14 @@ import Upload, { type UploadProps } from "rc-upload";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Button, Card, Icon, IconButton } from "~/components/myd";
+import {
+  Button,
+  Card,
+  Icon,
+  IconButton,
+  Input,
+  Textarea,
+} from "~/components/myd";
 const plugins = [
   gfm(),
   breaks(),

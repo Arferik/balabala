@@ -22,7 +22,9 @@ class DBService extends PrismaClient<
       const { action, args } = params;
       if (action === "update") {
         const { data } = args || {};
-        data.updatedAt = new Date().toISOString();
+        if (data.updatedAt) {
+          data.updatedAt = new Date().toISOString();
+        }
       }
       const before = Date.now();
       const result = await next(params);

@@ -6,3 +6,5 @@ export { default as FabButton } from "./FabButton/FabButton";
 export { default as Icon } from "./Icon/Icon";
 export { default as IconButton } from "./IconButton/IconButton";
 export { default as Card } from "./Card/Card";
+export { default as Input } from "./Input/Input";
+export { default as Textarea } from "./Textarea/Textarea";

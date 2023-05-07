@@ -1,7 +1,7 @@
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef } from "react";
 import tw, { css, styled } from "twin.macro";
 import { type FieldErrors } from "react-hook-form";
-import { IconButton } from "../myd";
+import IconButton from "../IconButton/IconButton";
 
 const InputLabel = styled.label<{ trailingIcon: boolean }>(
   ({ trailingIcon }) => [
@@ -49,7 +49,7 @@ export type InputProps = {
   | "defaultValue"
 >;
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(
+ const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
       label,
@@ -60,25 +60,26 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       onChange,
       errors,
       type = "text",
+      value,
       onBlur,
       defaultValue,
     }: InputProps,
     ref
   ) => {
-    const [value, setValue] = useState<string>("");
+    // const [value, setValue] = useState<string>("");
 
     const isShowClearButton = React.useMemo(() => {
-      return value.length > 0;
+      return false;
     }, [value]);
 
     const onChangeHandle: React.ChangeEventHandler<HTMLInputElement> = (
       event
     ) => {
-      setValue(event.target.value);
+      // setValue(event.target.value);
       onChange && onChange(event);
     };
     const onClearHandle = () => {
-      setValue("");
+      // setValue("");
     };
 
     const errorMessage = () => {
@@ -119,7 +120,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           <InputLabel className="input-label" trailingIcon={!!trailingIcon}>
             {label}
           </InputLabel>
-          {isShowClearButton && (
+          {!!value && (
             <div tw="flex items-center absolute right-0">
               <IconButton onClick={onClearHandle} icon="close"></IconButton>
             </div>
@@ -132,3 +133,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 );
 
 Input.displayName = "Input";
+
+
+export default Input

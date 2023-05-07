@@ -41,6 +41,7 @@ model Session {
     userId       String
     expires      DateTime
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    updateAt     DateTime @default(now()) @map("update_at")
 
     @@map("t_bl_session")
 }

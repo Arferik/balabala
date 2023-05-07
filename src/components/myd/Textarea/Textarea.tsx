@@ -1,7 +1,7 @@
-import React, { forwardRef, useEffect, useState } from "react";
+import React, { forwardRef } from "react";
 import tw, { css, styled } from "twin.macro";
 import { type FieldErrors } from "react-hook-form";
-import { IconButton } from "../myd";
+import IconButton from "../IconButton/IconButton";
 
 const InputLabel = styled.label(() => [
   tw`body-large absolute pointer-events-none top-4 left-3 text-on-surface-variant transition-all px-1`,
@@ -38,7 +38,7 @@ type TextAreaProps = {
   "onChange" | "name" | "autoComplete" | "onBlur"
 >;
 
-export const Textarea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
+const Textarea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   (
     {
       label,
@@ -47,30 +47,20 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       name = "",
       onChange,
       errors,
+      value,
       onBlur,
     }: TextAreaProps,
     ref
   ) => {
-    const [value, setValue] = useState<string>("");
-
     const isShowClearButton = React.useMemo(() => {
-      return value.length > 0;
+      return false;
     }, [value]);
 
     const onChangeHandle: React.ChangeEventHandler<HTMLTextAreaElement> = (
       event
     ) => {
-      setValue(event.target.value);
       onChange && onChange(event);
     };
-
-    const onClearHandle = () => {
-      setValue("");
-    };
-
-    useEffect(() => {
-      console.log("error", errors);
-    }, [errors]);
 
     const errorMessage = () => {
       const [parentsName, indexName = -1, subName] = name.split(".") || "";
@@ -106,11 +96,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           <InputLabel className="input-label">{label}</InputLabel>
           {isShowClearButton && (
             <div tw=" absolute  bottom-2 right-0">
-              <IconButton
-                onClick={onClearHandle}
-                variant="tonal"
-                icon="close"
-              ></IconButton>
+              <IconButton variant="tonal" icon="close"></IconButton>
             </div>
           )}
         </InputContainer>
@@ -121,3 +107,5 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
 );
 
 Textarea.displayName = "TextArea";
+
+export default Textarea;

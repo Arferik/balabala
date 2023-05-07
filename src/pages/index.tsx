@@ -87,14 +87,14 @@ const Home: NextPage<{ coverUrl: string }> = ({ coverUrl }) => {
                               <h2 tw="title-medium text-secondary md:mt-2">
                                 {post.introduce}
                               </h2>
-                              <div tw="md:mt-2 flex space-x-1 ">
-                                {["tag1", "tah2"].map((tag) => {
+                              <div tw="md:mt-2 flex space-x-1 z-10">
+                                {post.PostOnTag.map((item) => {
                                   return (
                                     <Chip
                                       tw="z-10 m-1"
                                       icon="tag"
-                                      key={tag}
-                                      text={tag}
+                                      key={item.tag.name}
+                                      text={item.tag.name}
                                     ></Chip>
                                   );
                                 })}
