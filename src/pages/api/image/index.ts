@@ -39,6 +39,7 @@ const readFile = (
 const handler: NextApiHandler = async (req, res) => {
   const LOG = Logger.getLogger("APIImagesHandle");
   const { id, type } = req.query;
+  LOG.info("image handler begin id = ", id, " type = ", type);
   if (!id || !type) {
     res.status(400).json({
       success: false,
